@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    数据库类型映射java类型映射配置，如果在本文件中没有匹配上，则默认使用String映射
+-->
+<db2javaTypeMap>
+
+	<keyValue key="VARCHAR" name="字符">String</keyValue>
+	<keyValue key="VARCHAR2" name="字符">String</keyValue>
+	<keyValue key="CHAR" name="字符">String</keyValue>
+	<keyValue key="TEXT" name="字符">String</keyValue>
+	<keyValue key="BOOLEAN" name="布尔值">Boolean</keyValue>
+	<keyValue key="FLOAT" name="单精度浮点">Float</keyValue>
+	<keyValue key="DOUBLE" name="双精度浮点">Double</keyValue>
+	<keyValue key="DECIMAL" name="定点精度">java.math.BigDecimal</keyValue>
+	<keyValue key="TINYINT" name="1byte的int">Integer</keyValue>
+	<keyValue key="TINYINT UNSIGNED" name="1byte的int">Integer</keyValue>
+	<keyValue key="SMALLINT" name="2byte的int">Integer</keyValue>
+	<keyValue key="SMALLINT UNSIGNED" name="2byte的int">Integer</keyValue>
+	<keyValue key="INT" name="4byte的int">Integer</keyValue>
+	<keyValue key="INT UNSIGNED" name="4byte的int">Integer</keyValue>
+	<keyValue key="INTEGER" name="4byte的int">Integer</keyValue>
+	<keyValue key="BIGINT" name="8byte的int">Long</keyValue>
+	<keyValue key="BIGINT UNSIGNED" name="8byte的int">Long</keyValue>
+	<keyValue key="DATE" name="日期">java.util.Date</keyValue>
+	<keyValue key="DATETIME" name="日期+时间">java.util.Date</keyValue>
+	<keyValue key="TIMESTAMP" name="时间戳">java.sql.Timestamp</keyValue>
+</db2javaTypeMap>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration packages="com.shareyi.molicode.log.FrontConsoleAppender">
+    <properties>
+        <!-- 文件输出格式 -->
+        <property name="patternLayout">%d [%t] %-5p %X{GUID} (%c:%L) - %m%n</property>
+        <property name="LOG_PATH">logs/</property>
+        <property name="sizeMB">100MB</property>
+        <property name="rolloverMax">5</property>
+        <property name="LOG_LEVEL">INFO</property>
+    </properties>
+    <appenders>
+        <Console name="CONSOLE" target="system_out">
+            <PatternLayout pattern="${patternLayout}" />
+        </Console>
+
+        <RollingFile name="DEFAULT_FILE" fileName="${LOG_PATH}/default.log"  immediateFlush="false" append="true"  filePattern="${LOG_PATH}/default-%d{yyyyMMdd}_%i.log" >
+            <PatternLayout Pattern="${patternLayout}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${sizeMB}"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="EXCEPTION_FILE" fileName="${LOG_PATH}/exception.log"  immediateFlush="false" append="true"  filePattern="${LOG_PATH}/exception-%d{yyyyMMdd}_%i.log" >
+            <PatternLayout Pattern="${patternLayout}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${sizeMB}"/>
+            </Policies>
+        </RollingFile>
+
+
+        <RollingFile name="BROWSER_FILE" fileName="${LOG_PATH}/browser.log"  immediateFlush="false" append="true"  filePattern="${LOG_PATH}/browser-%d{yyyyMMdd}_%i.log" >
+            <PatternLayout Pattern="${patternLayout}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${sizeMB}"/>
+            </Policies>
+        </RollingFile>
+
+        <FrontConsoleAppender name="FRONT_CONSOLE">
+            <PatternLayout Pattern="${patternLayout}" />
+        </FrontConsoleAppender>
+    </appenders>
+    <loggers>
+        <logger name="com.shareyi" level="${LOG_LEVEL}" />
+
+
+        <AsyncLogger name="defaultLog" level="${LOG_LEVEL}" additivity="false" includeLocation="true">
+            <AppenderRef ref="DEFAULT_FILE"/>
+            <AppenderRef ref="CONSOLE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="exceptionLog" level="${LOG_LEVEL}" additivity="false" includeLocation="true">
+            <AppenderRef ref="EXCEPTION_FILE"/>
+            <AppenderRef ref="CONSOLE"/>
+        </AsyncLogger>
+
+
+        <AsyncLogger name="browserConsole" level="${LOG_LEVEL}" additivity="false" includeLocation="true">
+            <AppenderRef ref="BROWSER_FILE"/>
+            <AppenderRef ref="CONSOLE"/>
+        </AsyncLogger>
+
+
+        <root level="${LOG_LEVEL}">
+            <AppenderRef ref="DEFAULT_FILE"/>
+            <appenderref ref="CONSOLE" />
+        </root>
+
+        <Logger name="frontConsole" level="${LOG_LEVEL}" additivity="false" includeLocation="true">
+            <AppenderRef ref="FRONT_CONSOLE"/>
+            <AppenderRef ref="DEFAULT_FILE"/>
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+
+    </loggers>
+</configuration>

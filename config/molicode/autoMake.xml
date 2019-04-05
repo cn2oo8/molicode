@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<autoMake>
+  <properties>
+    <!--  公共字典项使用，一般可以忽略（使用场景小）-->
+	<dict.path>config/molicode/dict.xml</dict.path>
+	<!-- 代码片段配置文件，将部分公用的代码抽取出来放置到此处 -->
+	<snippet.template.path>config/molicode/snippetTemplate.xml</snippet.template.path>
+	<!-- 用户自定义的配置文件，配置的值以文本方式直接可以在：extendConf.get("") 到-->
+	<extend.text.config>config/molicode/extendConfig.xml</extend.text.config>
+	  <!-- 页面依赖资源配置文件（可支持requirejs和 普通引入）-->
+	<pagerequire.map.config>config/molicode/requireConfig.xml</pagerequire.map.config>
+	<!-- 数据库类型到java类型映射-->
+	<dbtype.javatype.map.config>config/molicode/db2javaTypeMap.xml</dbtype.javatype.map.config>
+	<!-- 数据库类型到页面类型映射-->
+	<dbtype.columntag.map.config>config/molicode/dbType2ColumnTagMap.xml</dbtype.columntag.map.config>
+
+
+ </properties>
+ 
+ <template id="domain" desc="domain类" destFile="/${config.artifactId}-domain/src/main/java/${PubUtils.packageToPath(config.basePackage)}/domain/${PubUtils.packageToPath(config.category)}/${tableDefine.id}.java">
+	templates/domain/domain.template
+</template>
+ 
+
+<!-- struts2 action模板 --> 
+<!--
+    <template id="Action" desc="Action类" destFile="/${config.artifactId}-web/src/main/java/${PubUtils.packageToPath(config.basePackage)}/web/action/${PubUtils.packageToPath(config.category)}/${tableDefine.id}Action.java">
+		templates/action/action.template
+	</template>
+ -->
+
+<!-- springmvc controller模板 --> 
+    <template id="Controller" desc="Controller类" destFile="/${config.artifactId}-web/src/main/java/${PubUtils.packageToPath(config.basePackage)}/controller/${PubUtils.packageToPath(config.category)}/${tableDefine.id}Controller.java">
+		templates/controller/controller.template
+	</template>
+
+	
+	   <template id="serviceIntf" desc="service接口" destFile="/${config.artifactId}-service/src/main/java/${PubUtils.packageToPath(config.basePackage)}/service/${PubUtils.packageToPath(config.category)}/${tableDefine.id}Service.java">
+		templates/service/serviceIntf.template
+	</template>
+	    <template id="serviceImpl" desc="service接口 实现" destFile="/${config.artifactId}-service/src/main/java/${PubUtils.packageToPath(config.basePackage)}/service/${PubUtils.packageToPath(config.category)}/impl/${tableDefine.id}ServiceImpl.java">
+		templates/service/serviceImpl.template
+	</template>
+	 
+	    <template id="managerIntf" desc="manager 接口" destFile="/${config.artifactId}-manager/src/main/java/${PubUtils.packageToPath(config.basePackage)}/manager/${PubUtils.packageToPath(config.category)}/${tableDefine.id}Manager.java">
+		templates/manager/managerIntf.template
+	</template>
+	    <template id="managerImpl" desc="manager接口 实现" destFile="/${config.artifactId}-manager/src/main/java/${PubUtils.packageToPath(config.basePackage)}/manager/${PubUtils.packageToPath(config.category)}/impl/${tableDefine.id}ManagerImpl.java">
+		templates/manager/managerImpl.template
+	</template>
+	 
+<!-- 	 
+	<template id="ibatisDaoIntf" desc="dao接口" destFile="${config.artifactId}-dao/src/main/java/${PubUtils.packageToPath(config.basePackage)}/dao/${PubUtils.packageToPath(config.category)}/${tableDefine.id}Dao.java">
+		templates/dao/ibatis/daoIntf.template
+	</template>
+	
+	<template id="ibatisDaoImpl" desc="dao接口实现" destFile="${config.artifactId}-dao/src/main/java/${PubUtils.packageToPath(config.basePackage)}/dao/${PubUtils.packageToPath(config.category)}/impl/${tableDefine.id}DaoImpl.java">
+		templates/dao/ibatis/daoImpl.template
+	</template>
+	
+	<template id="ibatisMapper" desc="ibatisMapper" destFile="${config.artifactId}-dao/src/main/resources/sqlmap/${PubUtils.packageToPath(config.category)}/${tableDefine.id}.xml">
+		templates/mapper/ibatis/mapper.template
+	</template>
+	 -->
+	
+	<template id="mybatisDaoIntf" desc="dao接口" destFile="${config.artifactId}-dao/src/main/java/${PubUtils.packageToPath(config.basePackage)}/dao/${PubUtils.packageToPath(config.category)}/${tableDefine.id}Dao.java">
+		templates/dao/mybatis/daoIntf.template
+	</template>
+	
+	<template id="mybatisMapper" desc="mybatisMapper" destFile="${config.artifactId}-dao/src/main/resources/sqlmap/${PubUtils.packageToPath(config.category)}/${tableDefine.id}.xml">
+		templates/mapper/mybatis/mapper.template
+	</template>
+	
+	 
+	 <template id="config" desc="配置文件的一些模板" destFile="${config.artifactId}-web/src/main/resources/config.txt">
+		templates/config/config.template
+	</template>
+	
+	
+	
+	<template id="manage" desc="manage页面" destFile="/${config.artifactId}-web/src/main/webapp/WEB-INF/vm/${PubUtils.packageToPath(config.category)}/${tableNameUtil.lowerCaseFirst(tableDefine.id)}/manage.vm">
+		templates/page/bootstrap/manage.template
+	</template>
+	<template id="list" desc="list页面" destFile="/${config.artifactId}-web/src/main/webapp/WEB-INF/vm/${PubUtils.packageToPath(config.category)}/${tableNameUtil.lowerCaseFirst(tableDefine.id)}/list.vm">
+		templates/page/bootstrap/list.template
+	</template>
+	<template id="add" desc="add页面" destFile="/${config.artifactId}-web/src/main/webapp/WEB-INF/vm/${PubUtils.packageToPath(config.category)}/${tableNameUtil.lowerCaseFirst(tableDefine.id)}/add.vm">
+		templates/page/bootstrap/add.template
+	</template>
+	 <template id="update" desc="update页面" destFile="/${config.artifactId}-web/src/main/webapp/WEB-INF/vm/${PubUtils.packageToPath(config.category)}/${tableNameUtil.lowerCaseFirst(tableDefine.id)}/update.vm">
+		templates/page/bootstrap/update.template
+	</template>
+	 <template id="view" desc="view页面" destFile="/${config.artifactId}-web/src/main/webapp/WEB-INF/vm/${PubUtils.packageToPath(config.category)}/${tableNameUtil.lowerCaseFirst(tableDefine.id)}/view.vm">
+		templates/page/bootstrap/view.template
+	</template>
+
+
+</autoMake>

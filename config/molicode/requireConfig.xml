@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<requireConfigs>
+
+    <requireConfig columnTag="editor" requireModule="xheditor_lang" desc="富文本编辑器" sortNo="0">
+        <![CDATA[
+            <script src="/misc/js/plugin/xheditor/xheditor-1.2.2.min.js"></script>
+            <script src="/misc/js/plugin/xheditor/xheditor_lang/zh-cn.js"></script>
+        ]]>
+    </requireConfig>
+
+    <requireConfig columnTag="ztree" requireModule="ztree" desc="ztree树形"  sortNo="0">
+        <![CDATA[
+          <script src="/misc/js/plugin/jquery.color.picker.js"></script>
+        ]]>
+    </requireConfig>
+
+    <requireConfig columnTag="color" requireModule="color" desc="颜色选择器"  sortNo="0">
+        <![CDATA[
+           <script src="/misc/js/plugin/jquery.color.picker.js"></script>
+        ]]>
+    </requireConfig>
+
+
+    <requireConfig columnTag="ajaxfile" requireModule="ajaxfile" desc="ajax文件上传"  sortNo="0">
+        <![CDATA[
+            <script src="/misc/js/plugin/ajaxfileupload.js"></script>
+        ]]>
+    </requireConfig>
+
+
+     <requireConfig columnTag="date" requireModule="calendar" desc="日期选择器"  sortNo="0">
+        <![CDATA[
+            <script src="/misc/js/plugin/calendar/calendar.js"></script>
+            <link rel="stylesheet" href="/misc/js/plugin/calendar/calendar.css">
+        ]]>
+    </requireConfig>
+
+    <requireConfig columnTag="datetime" requireModule="calendar" desc="日期选择器"  sortNo="0">
+        <![CDATA[
+            <script src="/misc/js/plugin/calendar/calendar.js"></script>
+            <link rel="stylesheet" href="/misc/js/plugin/calendar/calendar.css">
+        ]]>
+    </requireConfig>
+
+</requireConfigs>

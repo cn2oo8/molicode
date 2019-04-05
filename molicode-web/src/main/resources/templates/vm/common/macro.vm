@@ -1,0 +1,86 @@
+
+## 显示空列表信息提示
+#macro(showEmptyListTip $list)
+	#if(!$list || $list.size() < 1)
+		<tr>
+    		<td colspan="20" style="width:100%;height:50px">
+    			暂无数据！
+    		</td>
+    	</tr>
+	#end
+#end
+
+
+## 显示分页尾巴
+#macro(showPagePos $page $methodName)
+	#if($!methodName.empty)
+		#set($methodName = "queryList")
+	#end
+	
+	#set($currentPageNo=$!page.currentPageNo)
+	#set($startPos=$currentPageNo - 2)
+	#if($startPos<1)
+		#set($startPos=1)
+	#end
+
+	#set($endPos=${startPos} + 4)
+	#if($endPos>$page.pageCount)
+		#set($endPos=$page.pageCount)
+	#end
+	
+	#if($startPos > 2)<li><a href="javascript:;">...</a></li> #end ##显示前面的省略号
+    #foreach($pageNum in [$startPos..$endPos]) ##增加前面的尾巴
+            <li  #if($pageNum==$page.currentPageNo) class="active" #end><a href="javascript:;" 
+				#if($pageNum!=$page.currentPageNo)	onclick="$methodName($pageNum)" #end>$pageNum</a></li>
+	#end
+	#if($endPos < $page.pageCount)<li><a href="javascript:;">...</a></li> #end ##显示后面的省略号
+#end
+
+
+
+					
+## 显示分页条
+#macro(showPageQuery $page $methodName $pageSizeType)
+	<div class="row">
+    	<div class="col-xs-6">
+    					<span class="pull-right" style="line-height:20px;padding:4px 12px;margin:20px 0">
+    						<b>共$!{page.pageCount}页,$!{page.totalCount}条</b>
+							#if($pageSizeType=='input')
+								每页
+									<input type="text" id="JPageSize_$methodName"
+										class="input-mini" style="width:30px" value="$!{page.pageSize}" onkeyup="gUtils.fPageSize('$methodName',this,event);"/>
+								条
+							#end
+    					</span>
+        </div>
+    	
+    	
+    	<div class="col-xs-6">
+    				<div>
+                		<ul  class="pagination">
+                           #if ($page.currentPageNo > 1)
+    							<li><a href="javascript:;" onclick="$methodName(1)">首页</a></li>
+    							<li><a href="javascript:;" onclick="$methodName($!page.currentPageNo - 1)">上一页</a></li>
+                           #else
+    							<li  class="active"><a href="javascript:;">首页</a></li>
+    						   #end
+    						   
+    						   #showPagePos($page, $methodName)
+       
+                               #if ($!page.currentPageNo < $!page.pageCount)
+    							<li><a href="javascript:;" onclick="$methodName($!page.currentPageNo + 1)">下一页</a></li>
+    							<li><a href="javascript:;" onclick="$methodName($!page.pageCount)">末页</a></li>
+							   #else
+                        		<li  class="active"><a href="javascript:;">末页</a></li>
+							   #end
+                			<li class="input-pagination">
+								<a href="javascript:;" style="padding: 3px 3px;">
+									<input type="text"  id="J_Input_page_$!{methodName}" value="$!page.currentPageNo">
+								</a>
+							</li>
+                			<li><a href="javascript:void();" onclick="$methodName(jQuery('#J_Input_page_$!{methodName}').val())">Go</a></li>
+    					</ul>
+               		</div>
+    		</div>
+	</div>
+#end

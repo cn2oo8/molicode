@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shareyi.molicode.dao.conf.CommonExtInfoDao">
+
+    <resultMap id="CommonExtInfo-Map" type="com.shareyi.molicode.domain.conf.CommonExtInfo">
+        <id property="id" column="id"/>
+        <result property="ownerType" column="owner_type"/>
+        <result property="ownerCode" column="owner_code"/>
+        <result property="extKey" column="ext_key"/>
+        <result property="extValue" column="ext_value"/>
+        <result property="creator" column="creator"/>
+        <result property="operator" column="operator"/>
+        <result property="concurrentVersion" column="concurrent_version"/>
+        <result property="dataVersion" column="data_version"/>
+        <result property="status" column="status"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+        <result property="type" column="type"/>
+
+    </resultMap>
+
+
+    <!-- 可以包含bean里面没有的字段-->
+    <sql id="MAP-COMMON-SQL">
+        <where>
+            <if test="id != null">AND id = #{id}</if>
+            <if test="ownerType != null">AND owner_type = #{ownerType}</if>
+            <if test="ownerCode != null">AND owner_code = #{ownerCode}</if>
+            <if test="extKey != null">AND ext_key = #{extKey}</if>
+            <if test="extValue != null">AND ext_value = #{extValue}</if>
+            <if test="creator != null">AND creator = #{creator}</if>
+            <if test="operator != null">AND operator = #{operator}</if>
+            <if test="concurrentVersion != null">AND concurrent_version = #{concurrentVersion}</if>
+            <if test="dataVersion != null">AND data_version = #{dataVersion}</if>
+            <if test="status != null">AND status = #{status}</if>
+            <if test="created != null">AND created = #{created}</if>
+            <if test="modified != null">AND modified = #{modified}</if>
+            <if test="type != null">AND type = #{type}</if>
+        </where>
+    </sql>
+
+    <sql id="ORDER-SQL">
+        <choose>
+            <when test="orderBy != null and orderBy != '' and sortType != null and sortType != ''">
+                ORDER BY ${orderBy} ${sortType}
+            </when>
+            <otherwise>
+                ORDER BY id desc
+            </otherwise>
+        </choose>
+
+    </sql>
+
+
+    <sql id="All-FIELDS">
+		id,owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,type
+	</sql>
+
+    <insert id="add" parameterType="com.shareyi.molicode.domain.conf.CommonExtInfo"
+            keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO ac_common_ext_info (owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,type)
+			VALUES(#{ownerType},#{ownerCode},#{extKey},#{extValue},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified},#{type})
+	 </insert>
+
+
+    <!-- 批量添加数据  -->
+    <insert id="batchAdd" parameterType="java.util.List">
+        INSERT INTO ac_common_ext_info
+        (owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,type)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.ownerType},#{item.ownerCode},#{item.extKey},#{item.extValue},#{item.creator},#{item.operator},#{item.concurrentVersion},#{item.dataVersion},#{item.status},#{item.created},#{item.modified},#{type})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.shareyi.molicode.domain.conf.CommonExtInfo">
+        UPDATE ac_common_ext_info
+        <set>
+            <if test="ownerType !=null">owner_type = #{ownerType},</if>
+            <if test="ownerCode !=null">owner_code = #{ownerCode},</if>
+            <if test="extKey !=null">ext_key = #{extKey},</if>
+            <if test="extValue !=null">ext_value = #{extValue},</if>
+            <if test="operator !=null">operator = #{operator},</if>
+            <if test="dataVersion !=null">data_version = #{dataVersion},</if>
+            <if test="status !=null">status = #{status},</if>
+            <if test="type !=null">type = #{type},</if>
+
+            concurrent_version = concurrent_version + 1
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="deleteByPk" parameterType="com.shareyi.molicode.domain.conf.CommonExtInfo">
+		DELETE FROM ac_common_ext_info WHERE id = #{id}
+	</delete>
+
+    <select id="getByPk" resultMap="CommonExtInfo-Map" parameterType="java.lang.Long">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_common_ext_info WHERE id = #{id}
+    </select>
+
+
+    <select id="getListByExample" resultMap="CommonExtInfo-Map" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_common_ext_info
+        <include refid="MAP-COMMON-SQL"/>
+        LIMIT 0,1000
+    </select>
+
+
+    <select id="queryByPage" resultMap="CommonExtInfo-Map" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_common_ext_info
+        <include refid="MAP-COMMON-SQL"/>
+        <include refid="ORDER-SQL"/>
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+
+    <select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        <![CDATA[
+			SELECT COUNT(1) FROM ac_common_ext_info
+		]]>
+        <include refid="MAP-COMMON-SQL"/>
+    </select>
+
+
+</mapper>

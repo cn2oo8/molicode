@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shareyi.molicode.dao.conf.AcConfigDao">
+
+    <resultMap id="AcConfig-Map" type="com.shareyi.molicode.domain.conf.AcConfig">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="projectKey" column="project_key"/>
+        <result property="scope" column="scope"/>
+        <result property="configKey" column="config_key"/>
+        <result property="configValue" column="config_value"/>
+        <result property="ext1" column="ext1"/>
+        <result property="ext2" column="ext2"/>
+        <result property="ext3" column="ext3"/>
+        <result property="creator" column="creator"/>
+        <result property="operator" column="operator"/>
+        <result property="concurrentVersion" column="concurrent_version"/>
+        <result property="dataVersion" column="data_version"/>
+        <result property="status" column="status"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+
+    </resultMap>
+
+
+    <!-- 可以包含bean里面没有的字段-->
+    <sql id="MAP-COMMON-SQL">
+        <where>
+            <if test="id != null">AND id = #{id}</if>
+            <if test="type != null">AND type = #{type}</if>
+            <if test="projectKey != null">AND project_key = #{projectKey}</if>
+            <if test="scope != null">AND scope = #{scope}</if>
+            <if test="configKey != null">AND config_key = #{configKey}</if>
+            <if test="configValue != null">AND config_value = #{configValue}</if>
+            <if test="ext1 != null">AND ext1 = #{ext1}</if>
+            <if test="ext2 != null">AND ext2 = #{ext2}</if>
+            <if test="ext3 != null">AND ext3 = #{ext3}</if>
+            <if test="creator != null">AND creator = #{creator}</if>
+            <if test="operator != null">AND operator = #{operator}</if>
+            <if test="concurrentVersion != null">AND concurrent_version = #{concurrentVersion}</if>
+            <if test="dataVersion != null">AND data_version = #{dataVersion}</if>
+            <if test="status != null">AND status = #{status}</if>
+            <if test="created != null">AND created = #{created}</if>
+            <if test="modified != null">AND modified = #{modified}</if>
+        </where>
+    </sql>
+
+    <sql id="ORDER-SQL">
+        <choose>
+            <when test="orderBy != null and orderBy != '' and sortType != null and sortType != ''">
+                ORDER BY ${orderBy} ${sortType}
+            </when>
+            <otherwise>
+                ORDER BY id desc
+            </otherwise>
+        </choose>
+
+    </sql>
+
+
+    <sql id="All-FIELDS">
+		id,type,project_key,scope,config_key,config_value,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified
+	</sql>
+
+    <insert id="add" parameterType="com.shareyi.molicode.domain.conf.AcConfig"
+            keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO ac_config (type,project_key,scope,config_key,config_value,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+			VALUES(#{type},#{projectKey},#{scope},#{configKey},#{configValue},#{ext1},#{ext2},#{ext3},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified})
+	 </insert>
+
+
+    <!-- 批量添加数据  -->
+    <insert id="batchAdd" parameterType="java.util.List">
+        INSERT INTO ac_config
+        (type,project_key,scope,config_key,config_value,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.type},#{item.projectKey},#{item.scope},#{item.configKey},#{item.configValue},#{item.ext1},#{item.ext2},#{item.ext3},#{item.creator},#{item.operator},#{item.concurrentVersion},#{item.dataVersion},#{item.status},#{item.created},#{item.modified})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.shareyi.molicode.domain.conf.AcConfig">
+        UPDATE ac_config
+        <set>
+            <if test="type !=null">type = #{type},</if>
+            <if test="projectKey !=null">project_key = #{projectKey},</if>
+            <if test="scope !=null">scope = #{scope},</if>
+            <if test="configKey !=null">config_key = #{configKey},</if>
+            <if test="configValue !=null">config_value = #{configValue},</if>
+            <if test="ext1 !=null">ext1 = #{ext1},</if>
+            <if test="ext2 !=null">ext2 = #{ext2},</if>
+            <if test="ext3 !=null">ext3 = #{ext3},</if>
+            <if test="operator !=null">operator = #{operator},</if>
+            <if test="dataVersion !=null">data_version = #{dataVersion},</if>
+            <if test="status !=null">status = #{status},</if>
+            concurrent_version = concurrent_version + 1
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="deleteByPk" parameterType="com.shareyi.molicode.domain.conf.AcConfig">
+		DELETE FROM ac_config WHERE id = #{id}
+	</delete>
+
+    <select id="getByPk" resultMap="AcConfig-Map" parameterType="java.lang.Long">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_config WHERE id = #{id}
+    </select>
+
+
+    <select id="getListByExample" resultMap="AcConfig-Map" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_config
+        <include refid="MAP-COMMON-SQL"/>
+        LIMIT 0,1000
+    </select>
+
+
+    <select id="queryByPage" resultMap="AcConfig-Map" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_config
+        <include refid="MAP-COMMON-SQL"/>
+        <include refid="ORDER-SQL"/>
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+
+    <select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        <![CDATA[
+			SELECT COUNT(1) FROM ac_config
+		]]>
+        <include refid="MAP-COMMON-SQL"/>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    数据库类型映射页面类型映射配置，如果在本文件中没有匹配上，则默认使用TEXT映射
+-->
+<db2javaTypeMap>
+
+	<keyValue key="DATE" name="日期">DATE</keyValue>
+	<keyValue key="DATETIME" name="日期时间">DATETIME</keyValue>
+	<keyValue key="TIMESTAMP" name="时间戳">DATETIME</keyValue>
+
+</db2javaTypeMap>

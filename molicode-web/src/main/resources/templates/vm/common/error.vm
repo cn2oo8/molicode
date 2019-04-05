@@ -1,0 +1,151 @@
+<script language="javascript" type="text/javascript">
+/**
+        var i = 5;
+        var intervalid;
+        intervalid = setInterval("fun()", 1000);
+        function fun() {
+            if (i == 0) {
+                window.location.href = "/index.html";
+                clearInterval(intervalid);
+            }
+            document.getElementById("mes").innerHTML = i;
+            i--;
+        }
+		**/
+</script>
+
+<!--
+<div class="m_404">
+	<div class="error">
+        <h3>
+            #if($exception)
+                $!exception.printStackTrace()
+                #if($!exception.class.simpleName=="NoSuchMethodException")
+                    $!response.setStatus(404)
+                    404! 您请求的内容不存在
+                #elseif($!exception.message)
+                    出错了：  $!exception.message
+                #else
+                    出错了系统错误！
+                #end
+            #else
+                #showSimpleError()
+            #end
+        </h3>
+        <div class="btn-link" >
+            <a href="/index.html>返回商家后台首页</a>
+            <a href="javascript:history.go(-1)">返回上一页</a>
+        </div>
+        <p><span class="ftx04" id="mes">5</span>&nbsp秒钟后自动返回到商家后台首页
+        </p>
+    </div>
+    
+	<h4>您可以通过下面的按钮快速使用常用功能：</h4>
+	<ul>
+		<li><a href="/ware/publish/ware_navigation.action">发布新商品</a></li>
+	</ul>
+</div>
+-->
+#set($detail="")
+#set($description="")
+#set($affect="系统错误，请与管理人员联系！")
+
+	#if($exception)
+		#set($detail=$!exception.toString())
+		#if($!exception.class.simpleName=="NoSuchMethodException")
+			#set($description="404! 请求的内容不存在")
+			#set($affect="访问的页面或则方法不存在！")
+		#elseif($!exception.toString().trim().equals("Ice.TimeoutException"))
+			#set($description="服务器繁忙，ICE 超时！")
+			#set($affect="查看数据是否成功执行，建议重新执行刚才执行的操作")
+		#elseif($!exception.message)
+		##	#set($description=$!exception.getMessage()) 
+		#set($description="访问页面时出现异常！") 
+		#else
+			#set($description="出错了系统错误！")
+		#end
+    #else
+		#set($description="未知错误")
+		#set($detail="未知错误")
+		#set($affect="未知错误，请与管理人员联系！")
+    #end
+
+<script language="javascript">
+
+  function showError(){
+	  var _obj = document.getElementById("errorMemo");
+	  var _linkTile = document.getElementById("linkTitle");
+	  if(_obj.style.display=="none"){
+		   _obj.style.display="block";
+		   _linkTile.innerHTML = "关闭详细信息";
+		  }else{
+			  _obj.style.display="none";
+			   _linkTile.innerHTML = "查看详细信息";
+			  }
+	  }
+
+</script>
+<style type="text/css">
+body{
+	font-family: "Microsoft YaHei",微软雅黑,"Microsoft JhengHei",华文细黑,STHeiti,MingLiu;
+	
+	}
+   #messageArea{
+	   background-color:#fff;
+	   width:90%;
+	   margin:0 auto;
+	   border: solid 1px #D4D4D4;
+	   }
+	#title{
+		width:100%;
+		margin:0;
+		height:28px;
+		line-height:28px;
+		background-color:#FFC;
+		border-bottom: solid 1px #D4D4D4;
+	}
+	#titleMemo{
+		
+		 font-weight: bold;
+		 color:red;
+		 margin-left: 7px;
+		}
+	#errorMemo{
+		border-top: solid 1px #D4D4D4;
+		}
+	 .titleStyle{
+		 font-weight: bold;
+		 font-style:normal;
+		 }
+		 p{
+			 margin-left: 24px;
+			 font-style:italic;
+			 }
+</style>
+<body>
+
+<div style="width:100%;height:60px;"><p></p></div>
+	
+<div id="messageArea">
+
+   <div id="title">
+   	 <span id="titleMemo">出错了</span>
+     <div style="margin:0;float:right;">
+        <span style="cursor:pointer;color:#06C;" onclick="showError();" id="linkTitle">查看详细信息</span>
+     </div>
+    </div>
+   <div id="error">
+      <p><span class="titleStyle">错误描述：</span>
+       $!{description} 
+      </p>
+      <p><span class="titleStyle">错误影响：</span>
+        $!{affect}
+      </p>      
+   </div>
+   <div id="errorMemo" style="display:none">
+             <p><span class="titleStyle">错误详细：</span><br /> 
+			   $!{detail}
+			 </p>
+   </div>
+</div>
+</body>

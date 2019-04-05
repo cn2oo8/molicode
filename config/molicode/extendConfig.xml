@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    扩展属性配置文件，用于配置在界面上无法配置的数据，
+    可以任意扩展，在模板中可以通过: extendConf 这个map来获取值，key即是配置的key值
+-->
+
+<extendConfigs>
+
+    <keyValue key="ext1" name="扩展性1">
+        <![CDATA[
+		    扩展属性1
+	    ]]>
+    </keyValue>
+
+    <keyValue key="requirejs" name="是否使用requireJS">true</keyValue>
+	<keyValue key="autoKey" name="自增主键">true</keyValue>
+
+    <keyValue key="springMvc" name="是否springMvc模式">true</keyValue>
+
+
+</extendConfigs>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shareyi.molicode.dao.sys.AcUserDao">
+
+    <resultMap id="AcUser-Map" type="com.shareyi.molicode.domain.sys.AcUser">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="gender" column="gender"/>
+        <result property="passwordMd5" column="password_md5"/>
+        <result property="birthDay" column="birth_day"/>
+        <result property="userMark" column="user_mark"/>
+        <result property="remark" column="remark"/>
+        <result property="ext1" column="ext1"/>
+        <result property="ext2" column="ext2"/>
+        <result property="ext3" column="ext3"/>
+        <result property="creator" column="creator"/>
+        <result property="operator" column="operator"/>
+        <result property="concurrentVersion" column="concurrent_version"/>
+        <result property="dataVersion" column="data_version"/>
+        <result property="status" column="status"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+
+    </resultMap>
+
+
+    <!-- 可以包含bean里面没有的字段-->
+    <sql id="MAP-COMMON-SQL">
+        <where>
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userName != null">AND user_name = #{userName}</if>
+            <if test="nickName != null">AND nick_name = #{nickName}</if>
+            <if test="gender != null">AND gender = #{gender}</if>
+            <if test="passwordMd5 != null">AND password_md5 = #{passwordMd5}</if>
+            <if test="birthDay != null">AND birth_day = #{birthDay}</if>
+            <if test="userMark != null">AND user_mark = #{userMark}</if>
+            <if test="remark != null">AND remark = #{remark}</if>
+            <if test="ext1 != null">AND ext1 = #{ext1}</if>
+            <if test="ext2 != null">AND ext2 = #{ext2}</if>
+            <if test="ext3 != null">AND ext3 = #{ext3}</if>
+            <if test="creator != null">AND creator = #{creator}</if>
+            <if test="operator != null">AND operator = #{operator}</if>
+            <if test="concurrentVersion != null">AND concurrent_version = #{concurrentVersion}</if>
+            <if test="dataVersion != null">AND data_version = #{dataVersion}</if>
+            <if test="status != null">AND status = #{status}</if>
+            <if test="created != null">AND created = #{created}</if>
+            <if test="modified != null">AND modified = #{modified}</if>
+        </where>
+    </sql>
+
+    <sql id="ORDER-SQL">
+        <choose>
+            <when test="orderBy != null and orderBy != '' and sortType != null and sortType != ''">
+                ORDER BY ${orderBy} ${sortType}
+            </when>
+            <otherwise>
+                ORDER BY id desc
+            </otherwise>
+        </choose>
+
+    </sql>
+
+
+    <sql id="All-FIELDS">
+        id,user_name,nick_name,gender,password_md5,birth_day,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified
+    </sql>
+
+    <insert id="add" parameterType="com.shareyi.molicode.domain.sys.AcUser"
+            keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO ac_user
+        (user_name,nick_name,gender,password_md5,birth_day,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+        VALUES(#{userName},#{nickName},#{gender},#{passwordMd5},#{birthDay},#{userMark},#{remark},#{ext1},#{ext2},#{ext3},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified})
+    </insert>
+
+
+    <!-- 批量添加数据  -->
+    <insert id="batchAdd" parameterType="java.util.List">
+        INSERT INTO ac_user
+        (user_name,nick_name,gender,password_md5,birth_day,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userName},#{item.nickName},#{item.gender},#{item.passwordMd5},#{item.birthDay},#{item.userMark},#{item.remark},#{item.ext1},#{item.ext2},#{item.ext3},#{item.creator},#{item.operator},#{item.concurrentVersion},#{item.dataVersion},#{item.status},#{item.created},#{item.modified})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.shareyi.molicode.domain.sys.AcUser">
+        UPDATE ac_user
+        <set>
+            <if test="userName !=null">user_name = #{userName},</if>
+            <if test="nickName !=null">nick_name = #{nickName},</if>
+            <if test="gender !=null">gender = #{gender},</if>
+            <if test="passwordMd5 !=null">password_md5 = #{passwordMd5},</if>
+            <if test="birthDay !=null">birth_day = #{birthDay},</if>
+            <if test="userMark !=null">user_mark = #{userMark},</if>
+            <if test="remark !=null">remark = #{remark},</if>
+            <if test="ext1 !=null">ext1 = #{ext1},</if>
+            <if test="ext2 !=null">ext2 = #{ext2},</if>
+            <if test="ext3 !=null">ext3 = #{ext3},</if>
+            <if test="operator !=null">operator = #{operator},</if>
+            <if test="dataVersion !=null">data_version = #{dataVersion},</if>
+            <if test="status !=null">status = #{status},</if>
+            concurrent_version = concurrent_version + 1
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="deleteByPk" parameterType="com.shareyi.molicode.domain.sys.AcUser">
+        DELETE FROM ac_user WHERE id = #{id}
+    </delete>
+
+    <select id="getByPk" resultMap="AcUser-Map" parameterType="java.lang.Long">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_user WHERE id = #{id}
+    </select>
+
+
+    <select id="getListByExample" resultMap="AcUser-Map" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_user
+        <include refid="MAP-COMMON-SQL"/>
+        LIMIT 0,1000
+    </select>
+
+
+    <select id="queryByPage" resultMap="AcUser-Map" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="All-FIELDS"/>
+        FROM ac_user
+        <include refid="MAP-COMMON-SQL"/>
+        <include refid="ORDER-SQL"/>
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+
+    <select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        <![CDATA[
+			SELECT COUNT(1) FROM ac_user
+		]]>
+        <include refid="MAP-COMMON-SQL"/>
+    </select>
+
+
+</mapper>

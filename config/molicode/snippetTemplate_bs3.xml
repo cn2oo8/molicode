@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    公用代码片段，用于抽取公用的代码片段，以便于直接调用和集中管理
+-->
+<snippetTemplates>
+
+	<snippetTemplate id="dict-searchPage-disp" name="搜索下拉框">
+		<![CDATA[
+		<select class="forms_select input-medium" name="${column.dataName}" id="${column.dataName}_search">
+			<option value="">全部</option>
+			<%
+			 optionList.each{option-> %>
+				<option value="${option.value}">${option.name}</option><%
+			}
+			%>
+		</select>
+	]]>
+	</snippetTemplate>
+
+
+	<snippetTemplate id="dict-listPage-disp" name="字典项列表页展示">
+		<![CDATA[
+			<%
+			 optionList.each{option-> %>
+				#if(\$item.${column.dataName}==${option.value})<span class="${option.cssClass}">${option.name}</span> #end	
+			<%
+			}
+			%>
+	]]>
+	</snippetTemplate>
+
+
+	<snippetTemplate id="dict-addPage-disp" name="字典项列表页展示">
+		<![CDATA[
+		<select class="forms_select input-medium" name="${column.dataName}" id="${column.dataName}">
+			<%
+			 optionList.each{option-> %>
+				<option value="${option.value}">${option.name}</option><%
+			}
+			%>
+		</select>
+	]]>
+	</snippetTemplate>
+
+
+	<snippetTemplate id="dict-updatePage-disp" name="字典项列表页展示">
+		<![CDATA[
+		<select class="forms_select input-medium" name="${column.dataName}" id="${column.dataName}">
+<%
+			 optionList.each{option-> 
+				println """				<option value="${option.value}" #if(\$${tableDefine.varDomainName}.${column.dataName}==${option.value}) selected #end>${option.name}</option>""";
+			}
+			
+		%></select>
+		]]>
+	</snippetTemplate>
+
+
+
+	<snippetTemplate id="dict-viewPage-disp" name="字典项列表页展示">
+		<![CDATA[
+		<select class="forms_select input-medium form-control" name="${column.dataName}" id="${column.dataName}" disabled>
+		<%
+			 optionList.each{option-> 
+				println """				<option value="${option.value}" #if(\$${tableDefine.varDomainName}.${column.dataName}==${option.value}) selected  #end>${option.name}</option>""";
+			}
+			
+		%>
+		</select>
+	]]>
+	</snippetTemplate>
+
+
+
+
+	<snippetTemplate id="dict-radio-add" name="字典项radio add">
+		<![CDATA[<%
+		optionList.each{option->
+				%>
+		<label class="radio inline">
+		  <input type="radio" name="${column.dataName}" id="${column.dataName}_${option.value}" value="${option.value}">
+		  ${option.name}
+		</label>
+		<%
+			}
+		%>]]>
+	</snippetTemplate>
+
+
+
+	<snippetTemplate id="dict-radio-update" name="字典项radio update">
+		<![CDATA[<%
+		optionList.each{option->
+				%>
+		<label class="radio inline">
+		  <input type="radio" name="${column.dataName}" id="${column.dataName}_${option.value}" value="${option.value}" #if(\$${tableDefine.varDomainName}.${column.dataName}==${option.value}) checked #end>
+		  ${option.name}
+		</label>
+		<%
+			}
+		%>]]>
+	</snippetTemplate>
+
+
+
+	<snippetTemplate id="dict-radio-readonly" name="字典项radio只读">
+		<![CDATA[<%
+		optionList.each{option->
+				%>
+		<label class="radio inline">
+		  <input type="radio" name="${column.dataName}" id="${column.dataName}_${option.value}" value="${option.value}" #if(\$${tableDefine.varDomainName}.${column.dataName}==${option.value}) checked #end disabled>
+		  ${option.name}
+		</label>
+		<%
+			}
+		%>]]>
+	</snippetTemplate>
+
+
+
+
+	<snippetTemplate id="dict-checkbox-add" name="字典项checkbox add">
+		<![CDATA[<%
+		optionList.each{option->
+				%>
+		<label class="checkbox inline">
+		  <input type="checkbox" name="${column.dataName}" id="${column.dataName}_${option.value}" value="${option.value}">
+		  ${option.name}
+		</label>
+		<%
+			}
+		%>]]>
+	</snippetTemplate>
+
+
+
+	<snippetTemplate id="dict-checkbox-update" name="字典项checkbox update">
+		<![CDATA[<%
+		optionList.each{option->
+				%>
+		<label class="checkbox inline">
+		  <input type="checkbox" name="${column.dataName}" id="${column.dataName}_${option.value}" value="${option.value}" #if(\$${tableDefine.varDomainName}.${column.dataName}==${option.value}) checked #end>
+		  ${option.name}
+		</label>
+		<%
+			}
+		%>]]>
+	</snippetTemplate>
+
+
+
+	<snippetTemplate id="dict-checkbox-readonly" name="字典项checkbox 只读">
+		<![CDATA[<%
+		optionList.each{option->
+				%>
+		<label class="checkbox inline">
+		  <input type="checkbox" name="${column.dataName}" id="${column.dataName}_${option.value}" value="${option.value}" #if(\$${tableDefine.varDomainName}.${column.dataName}==${option.value}) checked #end disabled>
+		  ${option.name}
+		</label>
+		<%
+			}
+		%>]]>
+	</snippetTemplate>
+
+
+
+
+
+
+
+	<snippetTemplate id="requireJsScript" name="requireJs相关脚本">
+		<![CDATA[
+	<script type="text/javascript">
+		require([${requireInfo.getModuleNames("'")}],function(${requireInfo.getModuleNames("")}){
+			<%
+			if(requireInfo.containsTag('date')){
+				%>
+				jQuery("#${containerId}").find(".j_date_picker").calendar({
+						disabled: false
+					});
+				<%
+			}
+
+			if(requireInfo.containsTag('datetime')){
+				%>
+				jQuery("#${containerId}").find(".j_datetime_picker").calendar({
+						frondose : true,
+						disabled: false
+					});
+				<%
+			}
+
+
+			if(requireInfo.containsTag('editor')){
+				%>
+				jQuery("#${containerId}").find(".j_editor").xheditor();
+				<%
+			}
+			%>
+		});
+
+	</script>
+	]]>
+	</snippetTemplate>
+
+
+
+
+	<snippetTemplate id="elementInit" name="普通组件初始化">
+		<![CDATA[
+	<script type="text/javascript">
+		jQuery(function(){
+			<%
+			if(requireInfo.containsTag('date')){
+				%>
+				jQuery("#${containerId}").find(".j_date_picker").calendar({
+							//frondose : true,
+							disabled: false
+						});
+				<%
+			}
+
+			if(requireInfo.containsTag('datetime')){
+				%>
+				jQuery("#${containerId}").find(".j_datetime_picker").calendar({
+						frondose : true,
+						disabled: false
+					});
+				<%
+			}
+
+
+			if(requireInfo.containsTag('editor')){
+				%>
+				jQuery("#${containerId}").find(".j_editor").xheditor();
+				<%
+			}
+			%>
+		});
+
+	</script>
+	]]>
+	</snippetTemplate>
+
+
+	<snippetTemplate id="copyrightInfo" name="版权信息"><![CDATA[/**
+ * Copyright(c) 2004-${config.year} www.shareyi.com
+ */
+]]></snippetTemplate>
+
+
+
+	<snippetTemplate id="form_rule_item" name="表单验证规则"><![CDATA[<%
+
+		def isMust=(column.canBeNull==false);
+
+		print """		${column.dataName}:  {must: ${isMust}, maxlength:${column.length}, ftip:'${column.cnname},最多${column.length}个字符'"""
+
+		  def handler="";
+		  if("INT".equalsIgnoreCase(column.columnType) ||"INTEGER".equalsIgnoreCase(column.columnType) ||"BIGINT".equalsIgnoreCase(column.columnType)||
+		  "TINYINT".equalsIgnoreCase(column.columnType)||"SMALLINT".equalsIgnoreCase(column.columnType)){
+		    handler="int";
+		  }else if("DOUBLE".equalsIgnoreCase(column.columnType) ||"DECIMAL".equalsIgnoreCase(column.columnType)  ||"FLOAT".equalsIgnoreCase(column.columnType)){
+			handler="float";
+		  }
+
+		  if(handler!=""){
+		  	print " ,handler:'int' ";
+		  }
+
+		  print "}";
+		%>]]></snippetTemplate>
+
+
+    <snippetTemplate id="form_rule_item_vue" name="表单验证规则vue"><![CDATA[<%
+		def isMust=(column.canBeNull==false);
+		  def handler="string";
+		  if("INT".equalsIgnoreCase(column.columnType) ||"INTEGER".equalsIgnoreCase(column.columnType) ||"BIGINT".equalsIgnoreCase(column.columnType)||
+		  "TINYINT".equalsIgnoreCase(column.columnType)||"SMALLINT".equalsIgnoreCase(column.columnType)){
+		    handler="integer";
+		  }else if("DOUBLE".equalsIgnoreCase(column.columnType) ||"DECIMAL".equalsIgnoreCase(column.columnType)  ||"FLOAT".equalsIgnoreCase(column.columnType)){
+			handler="float";
+		  }
+
+         print """		${column.dataName}: [{type: '${handler}', required: ${isMust}, message: '${column.cnname}不能为空', trigger: 'blur'}]"""
+
+		%>]]></snippetTemplate>
+
+</snippetTemplates>
