@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.printer.PrettyPrinterConfiguration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,6 +54,10 @@ public class JavaSourceCodeDto extends ExtAttrDto implements Serializable {
      * 注解声明
      */
     private List<AnnotationDeclaration> annotationDeclarationList;
+    /**
+     * 包名
+     */
+    private String packageName;
 
     public String getClassName() {
         return className;
@@ -109,5 +114,13 @@ public class JavaSourceCodeDto extends ExtAttrDto implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

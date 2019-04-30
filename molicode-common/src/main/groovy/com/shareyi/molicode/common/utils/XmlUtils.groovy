@@ -1,26 +1,15 @@
 package com.shareyi.molicode.common.utils
 
 import com.alibaba.fastjson.JSON
+import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.enums.EngineType
 import com.shareyi.molicode.common.enums.ResultCodeEnum
 import com.shareyi.molicode.common.exception.AutoCodeException
-import com.shareyi.molicode.common.vo.code.AutoMakeVo
-import com.shareyi.molicode.common.vo.code.ColumnVo
-import com.shareyi.molicode.common.vo.code.DictVo
-import com.shareyi.molicode.common.vo.code.OptionVo
-import com.shareyi.molicode.common.vo.code.OrderColumnVo
-import com.shareyi.molicode.common.vo.code.RequireConfigVo
-import com.shareyi.molicode.common.vo.code.SnippetTemplateVo
-import com.shareyi.molicode.common.vo.code.TableDefineVo
-import com.shareyi.molicode.common.vo.code.TableModelVo
-import com.shareyi.molicode.common.vo.code.TemplateVo
+import com.shareyi.molicode.common.vo.code.*
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
 import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.StringUtils;
-
-
-import com.shareyi.fileutil.FileUtil;
+import org.apache.commons.lang3.StringUtils
 
 class XmlUtils {
 

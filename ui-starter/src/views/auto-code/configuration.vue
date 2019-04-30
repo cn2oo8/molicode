@@ -59,7 +59,6 @@
     import databaseConfig from './configs/databaseConfig';
     import pathConfig from './configs/pathConfig';
     import codeConfig from './configs/codeConfig';
-    import requestUtils from '@/request/requestUtils.js'
     import autoCodeProjectList from '@/views/conf/acProject/autoCodeProjectList';
     import constants from '@/constants/constants';
 

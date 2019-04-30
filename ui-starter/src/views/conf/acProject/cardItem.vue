@@ -1,5 +1,5 @@
 <template>
-    <Col span="4">
+    <Col span="6">
         <div style="padding-right: 10px;">
             <Card>
                 <p slot="title">#{{dataItem.id}}&nbsp; {{dataItem.name}} </p>

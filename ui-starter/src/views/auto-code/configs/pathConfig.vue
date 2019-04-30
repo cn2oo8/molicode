@@ -5,7 +5,8 @@
             <Row>
                 <Col span="24">
                     <Form-item label="tableModel存放目录" prop="tableModelDir" style="width: 80%">
-                        <file-chooser v-model="formItems.tableModelDir" :disabled="disableInput" dialogType="directory" changeCurPath="1"></file-chooser>
+                        <file-chooser v-model="formItems.tableModelDir" :disabled="disableInput" dialogType="directory"
+                                      changeCurPath="1"></file-chooser>
                     </Form-item>
                 </Col>
             </Row>
@@ -13,7 +14,8 @@
             <Row>
                 <Col span="24">
                     <Form-item label="代码输出根目录" prop="projectOutputDir" style="width: 80%">
-                        <file-chooser v-model="formItems.projectOutputDir" :disabled="disableInput" dialogType="directory" changeCurPath="1"></file-chooser>
+                        <file-chooser v-model="formItems.projectOutputDir" :disabled="disableInput"
+                                      dialogType="directory" changeCurPath="1"></file-chooser>
                     </Form-item>
                 </Col>
             </Row>
@@ -27,7 +29,7 @@
                 </Col>
             </Row>
 
-            <div  v-show="formItems.templateType=='maven'">
+            <div v-show="formItems.templateType=='maven'">
                 <Form-item label="groupId (maven)" prop="groupId" style="width: 80%">
                     <Input v-model="formItems.groupId" :maxlength="200" :disabled="disableInput"></Input>
                 </Form-item>
@@ -45,7 +47,8 @@
                 <Row>
                     <Col span="24">
                         <Form-item label="模板根目录" prop="templateBaseDir" style="width: 80%">
-                            <file-chooser v-model="formItems.templateBaseDir" :disabled="disableInput" changeCurPath="1" dialogType="directory"></file-chooser>
+                            <file-chooser v-model="formItems.templateBaseDir" :disabled="disableInput" changeCurPath="1"
+                                          dialogType="directory"></file-chooser>
                         </Form-item>
                     </Col>
                 </Row>
@@ -70,15 +73,6 @@
     import dictRadio from '@/views/common/dict/DictRadio';
 
     var _ = require('underscore')
-
-    var validateSet = {
-        templateBaseDir: [{type: 'string', required: true, message: '模板根目录不能为空', trigger: 'blur'}],
-        groupId: [{type: 'string', required: true, message: 'groupId不能为空', trigger: 'blur'}],
-        artifactId: [{type: 'string', required: true, message: 'artifactId不能为空', trigger: 'blur'}],
-        version: [{type: 'string', required: true, message: 'version不能为空', trigger: 'blur'}],
-        tableModelDir: [{type: 'string', required: true, message: '表模型输出目录不能为空', trigger: 'blur'}],
-        projectOutputDir: [{type: 'string', required: true, message: '代码输出目录不能为空', trigger: 'blur'}]
-    };
 
     var defConfig = {
         templateBaseDir: '',
@@ -107,7 +101,14 @@
             return {
                 projectKey: this.defaultProjectKey,
                 formItems: _.clone(this.configInfo),
-                formRules: validateSet,
+                formRules: {
+                    templateBaseDir: [{type: 'string', required: true, message: '模板根目录不能为空', trigger: 'blur'}],
+                    groupId: [{type: 'string', required: false, message: 'groupId不能为空', trigger: 'blur'}],
+                    artifactId: [{type: 'string', required: false, message: 'artifactId不能为空', trigger: 'blur'}],
+                    version: [{type: 'string', required: false, message: 'version不能为空', trigger: 'blur'}],
+                    tableModelDir: [{type: 'string', required: true, message: '表模型输出目录不能为空', trigger: 'blur'}],
+                    projectOutputDir: [{type: 'string', required: true, message: '代码输出目录不能为空', trigger: 'blur'}]
+                },
                 constants,
                 disableInput: false,
                 loading: false
@@ -117,10 +118,7 @@
             'formItems.templateType': function (newVal) {
                 var isMaven = (newVal === 'maven');
                 var isLocal = (newVal === 'local' || newVal === null);
-                validateSet.templateBaseDir[0].required = isLocal;
-                validateSet.groupId[0].required = isMaven;
-                validateSet.artifactId[0].required = isMaven;
-                validateSet.version[0].required = isMaven;
+                this._templateTypeChange(isMaven);
             }
         },
         methods: {
@@ -134,6 +132,10 @@
                 }
                 this.$refs['formItems'].validate((valid) => {
                     if (!valid) {
+                        this.$Message.error({
+                            content: '参数验证失败，请检验参数',
+                            duration: 3
+                        });
                         return false;
                     }
                     requestUtils.postSubmit(this, constants.urls.conf.acConfig.save, this.getConfigData(), function (data) {
@@ -144,7 +146,7 @@
                     }, null, true);
                 });
             },
-            getConfigData () {
+            getConfigData() {
                 return {
                     projectKey: this.projectKey,
                     configKey: this.configKey,
@@ -163,6 +165,13 @@
                     }
                     this.formItems = configInfo;
                 }
+                this._templateTypeChange(this.formItems.templateType === 'maven');
+            },
+            _templateTypeChange: function (isMaven) {
+                this.formRules.templateBaseDir[0].required = !isMaven;
+                this.formRules.groupId[0].required = isMaven;
+                this.formRules.artifactId[0].required = isMaven;
+                this.formRules.version[0].required = isMaven;
             }
         },
         components: {
