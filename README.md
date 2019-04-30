@@ -11,6 +11,20 @@ MoliCode  is a code generator for java and other language. It's a standalone too
 模板中心请访问：
 [https://github.com/cn2oo8/molicode_template_awesome](https://github.com/cn2oo8/molicode_template_awesome)
 
+## 下载使用
+已提供二进制编译版本可供下载使用：
+[https://github.com/cn2oo8/molicode/releases](https://github.com/cn2oo8/molicode/releases)
+
+## 示例教程
+molicode生成工程代码实战: [https://my.oschina.net/davidzhang/blog/3036548](https://my.oschina.net/davidzhang/blog/3036548)
+
+使用molicode进行json数据处理 [https://my.oschina.net/davidzhang/blog/3034658](https://my.oschina.net/davidzhang/blog/3034658) 
+
+使用molicode处理Java源代码 [https://my.oschina.net/davidzhang/blog/3036589](https://my.oschina.net/davidzhang/blog/3036589) 
+
+使用molicode生成excel [https://my.oschina.net/davidzhang/blog/3036540](https://my.oschina.net/davidzhang/blog/3036540) 
+
+
 ## Disclaimer
 This project is depends on JXBrowser's Open-Source Licence. The JXBrowser product is a proprietary software owned by temdev company, It can't be used for comercial business. 
 And the JXBrowser is based on chromium embeded . It's easy to embeded chromium into java application just need few line codes.  
