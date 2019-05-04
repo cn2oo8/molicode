@@ -100,6 +100,10 @@ class AutoCodeParams extends ExtAttrDto {
      * 从模板ID列表转换而来的ID set
      */
     private HashSet<String> templateIdSet;
+    /**
+     * json配置信息
+     */
+    Map<String,Object> jsonConfig
 
     /**
      * 是否包含该模板ID
@@ -233,6 +237,13 @@ class AutoCodeParams extends ExtAttrDto {
         this.dataModelType = dataModelType
     }
 
+    Map<String, Object> getJsonConfig() {
+        return jsonConfig
+    }
+
+    void setJsonConfig(Map<String, Object> jsonConfig) {
+        this.jsonConfig = jsonConfig
+    }
 
     @Override
     String toString() {

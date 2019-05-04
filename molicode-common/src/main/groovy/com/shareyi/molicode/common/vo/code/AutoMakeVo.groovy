@@ -2,6 +2,11 @@ package com.shareyi.molicode.common.vo.code
 
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo;
 
+/**
+ * autoMake vo 对象
+ * @author david
+ * @since 2019-05-02
+ */
 class AutoMakeVo {
     /**
      * 文件输出目录

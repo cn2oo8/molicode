@@ -4,16 +4,15 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.comments.Comment;
-import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.shareyi.molicode.common.chain.handler.SimpleHandler;
 import com.shareyi.molicode.common.chain.handler.awares.DataProcessHandlerAware;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
 import com.shareyi.molicode.common.context.MoliCodeContext;
 import com.shareyi.molicode.common.enums.DataModelTypeEnum;
-import com.shareyi.molicode.common.vo.code.AutoCodeParams;
 import com.shareyi.molicode.sdk.dto.FieldInfoDto;
 import com.shareyi.molicode.sdk.dto.JavaSourceCodeDto;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +45,6 @@ public class SourceCodeProcessHandler extends SimpleHandler<MoliCodeContext> imp
     @Override
     public void doHandle(MoliCodeContext context) {
         String content = context.getDataString(MoliCodeConstant.CTX_KEY_SRC_CONTENT);
-        //AutoCodeParams autoCodeParams = context.getAutoCodeParams();
         if (StringUtils.isEmpty(content)) {
             return;
         }
@@ -134,6 +132,12 @@ public class SourceCodeProcessHandler extends SimpleHandler<MoliCodeContext> imp
             } else {
                 sourceCodeDto.setComment(sourceCodeDto.getClassName());
             }
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(PackageDeclaration n, Void arg) {
+            sourceCodeDto.setPackageName(n.getNameAsString());
             super.visit(n, arg);
         }
     }

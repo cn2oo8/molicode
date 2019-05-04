@@ -141,5 +141,16 @@ public class ConfigKeyConstant {
 
     }
 
+    /**
+     * 额外的配置信息
+     */
+    public class ExtConfig {
 
+        public static final String CONFIG_KEY ="extConfig";
+        /**
+         * json扩展配置信息
+         */
+        public static final String JSON_KEY ="jsonConfig";
+
+    }
 }

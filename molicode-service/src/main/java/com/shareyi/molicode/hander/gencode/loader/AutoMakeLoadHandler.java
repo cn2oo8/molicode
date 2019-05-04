@@ -3,8 +3,10 @@ package com.shareyi.molicode.hander.gencode.loader;
 import com.shareyi.fileutil.FileUtil;
 import com.shareyi.molicode.common.chain.handler.SimpleHandler;
 import com.shareyi.molicode.common.chain.handler.awares.DataLoadHandlerAware;
+import com.shareyi.molicode.common.constants.AutoCodeConstant;
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
+import com.shareyi.molicode.common.context.MoliCodeContext;
 import com.shareyi.molicode.common.enums.EnumCode;
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
 import com.shareyi.molicode.common.enums.TemplateTypeEnum;
@@ -13,10 +15,7 @@ import com.shareyi.molicode.common.exception.AutoCodeException;
 import com.shareyi.molicode.common.utils.*;
 import com.shareyi.molicode.common.vo.code.AutoCodeParams;
 import com.shareyi.molicode.common.vo.code.AutoMakeVo;
-import com.shareyi.molicode.common.vo.maven.MavenResourceVo;
 import com.shareyi.molicode.common.web.CommonResult;
-import com.shareyi.molicode.common.context.MoliCodeContext;
-import com.shareyi.molicode.common.utils.ThreadLocalHolder;
 import com.shareyi.molicode.service.gencode.AutoMakeService;
 import com.shareyi.molicode.service.maven.MavenService;
 import org.apache.commons.io.IOUtils;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -90,6 +90,13 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
                     String autoXmlPath = SystemFileUtils.parseFilePath(autoCodeParams.getAutoXmlPath());
                     String templateBaseDir = SystemFileUtils.parseFilePath(autoCodeParams.getTemplateBaseDir());
                     autoMake = XmlUtils.getAutoMake(autoXmlPath, templateBaseDir);
+                    /**
+                     * 用户自定义工具，用户自定义数据处理
+                     */
+                    String customToolContent = this.getContentFromFile(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_TOOL, autoCodeParams.getTemplateBaseDir());
+                    String customDataProcessContent = this.getContentFromFile(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_DATA_PROCESS, autoCodeParams.getTemplateBaseDir());
+                    autoMake.putMoliTemplate(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_TOOL, customToolContent);
+                    autoMake.putMoliTemplate(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_DATA_PROCESS, customDataProcessContent);
                 }
             } else if (Objects.equals(typeEnum, TemplateTypeEnum.MAVEN)) {
                 CommonResult<File> mavenFileResult = mavenService.getMavenTemplateFile(autoCodeParams.getMavenResourceVo(),
@@ -107,6 +114,27 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
         } catch (Exception e) {
             LogHelper.EXCEPTION.error("加载AutoMake.xml配置文件失败", e);
             throw new AutoCodeException("加载AutoMake.xml配置文件失败，原因是：" + e.getMessage(), ResultCodeEnum.EXCEPTION);
+        }
+    }
+
+    /**
+     * 获取文件内容
+     *
+     * @param moliTemplateCustomTool
+     * @param templateBaseDir
+     * @return
+     * @throws Exception
+     */
+    private String getContentFromFile(String moliTemplateCustomTool, String templateBaseDir) throws Exception {
+        File file = new File(templateBaseDir, moliTemplateCustomTool);
+        if (!file.isFile() || !file.exists()) {
+            return null;
+        }
+        InputStream inputStream = new FileInputStream(file);
+        try {
+            return IOUtils.toString(inputStream, Profiles.getInstance().getFileEncoding());
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
     }
 

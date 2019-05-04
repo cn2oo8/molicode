@@ -6,11 +6,11 @@ import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.ToolLoadHandlerAware
 import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.MoliCodeConstant
+import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
 import com.shareyi.molicode.common.vo.code.TableModelVo
-import com.shareyi.molicode.common.context.MoliCodeContext
 import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.collections4.MapUtils
 import org.apache.commons.lang3.StringUtils
@@ -95,7 +95,7 @@ class DefaultToolLoadHandler extends SimpleHandler<MoliCodeContext> implements T
 
         //构造模板需要的MAP，模板直接从本map中获取数据
         def templateBinding = [
-                "snippetTemplateUtil": snippetTemplateUtil, "dictUtil": snippetTemplateUtil, "dataProcessUtil": DataProcessUtil, "customTool": Maps.newHashMap(), "customData": Maps.newHashMap()];
+                "snippetTemplateUtil": snippetTemplateUtil, "dictUtil": snippetTemplateUtil, "dataProcessUtil": DataProcessUtil, "customTool": Maps.newHashMap(), "customData": Maps.newHashMap(), "jsonConfig": autoCodeParams.jsonConfig];
         templateBinding.putAll(context.getDataMap())
         templateBinding.putAll(commonBinding)
         context.templateBinding = templateBinding;

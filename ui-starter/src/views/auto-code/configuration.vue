@@ -49,6 +49,13 @@
                             <code-config ref="codeConfig"></code-config>
                         </p>
                     </Panel>
+
+                    <Panel name="4">
+                        json扩展设置(非必填)
+                        <p slot="content">
+                            <json-config ref="jsonConfig"></json-config>
+                        </p>
+                    </Panel>
                 </Collapse>
             </Card>
         </div>
@@ -59,12 +66,13 @@
     import databaseConfig from './configs/databaseConfig';
     import pathConfig from './configs/pathConfig';
     import codeConfig from './configs/codeConfig';
+    import jsonConfig from './configs/jsonConfig';
     import autoCodeProjectList from '@/views/conf/acProject/autoCodeProjectList';
     import constants from '@/constants/constants';
 
     var _ = require('underscore')
 
-    const configRefNames = ['databaseConfig', 'pathConfig', 'codeConfig']
+    const configRefNames = ['databaseConfig', 'pathConfig', 'codeConfig', 'jsonConfig']
 
     /**
      * 从list 中查询配置信息并返回结果
@@ -96,10 +104,11 @@
             databaseConfig,
             autoCodeProjectList,
             pathConfig,
-            codeConfig
+            codeConfig,
+            jsonConfig
         },
         computed: {
-            defaultProjectId () {
+            defaultProjectId() {
                 return this.defaultProject ? this.defaultProject.id : '未设置';
             },
             defaultProject: function () {

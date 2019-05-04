@@ -1,5 +1,6 @@
 package com.shareyi.molicode.service.gencode.impl
 
+import com.alibaba.fastjson.JSON
 import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.CommonConstant
@@ -12,7 +13,6 @@ import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
 import com.shareyi.molicode.common.vo.code.ConfigVo
-import com.shareyi.molicode.common.vo.code.TemplateVo
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
 import com.shareyi.molicode.service.conf.AcConfigService
 import com.shareyi.molicode.service.conf.CommonExtInfoService
@@ -54,8 +54,14 @@ class AutoMakeServiceImpl implements AutoMakeService {
         Map<String, Map<String, String>> configMap = acConfigService.getConfigMapByProjectKey(codeParams.projectKey, DataTypeEnum.JSON);
         Map<String, String> pathConfigMap = configMap.get(ConfigKeyConstant.PathConfig.CONFIG_KEY);
         Map<String, String> codeConfigMap = configMap.get(ConfigKeyConstant.CodeConfig.CONFIG_KEY);
+        Map<String, String> extConfigMap = configMap.get(ConfigKeyConstant.ExtConfig.CONFIG_KEY);
 
-
+        if (extConfigMap != null) {
+            String jsonConfig = MapUtils.getString(extConfigMap, ConfigKeyConstant.ExtConfig.JSON_KEY)
+            if (StringUtils.isNotEmpty(jsonConfig)) {
+                codeParams.jsonConfig = JSON.parseObject(jsonConfig);
+            }
+        }
         Map<String, Map<String, String>> globalConfigMap = commonExtInfoService.getConfigMapByOwner(OwnerTypeEnum.SYSTEM.getCode(), CommonConstant.DEFAULT_SYS_OWNER, DataTypeEnum.JSON);
 
         Map<String, String> mavenConfigMap = globalConfigMap.get(ConfigKeyConstant.GlobalMavenConfig.CONFIG_KEY)
