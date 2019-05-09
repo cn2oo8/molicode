@@ -24,6 +24,10 @@ molicode生成工程代码实战: [https://my.oschina.net/davidzhang/blog/303654
 
 使用molicode生成excel [https://my.oschina.net/davidzhang/blog/3036540](https://my.oschina.net/davidzhang/blog/3036540) 
 
+## 社交
+QQ群名称：molicode技术交流群   群号：753207541
+
+欢迎加入沟通交流答疑群；
 
 ## Disclaimer
 This project is depends on JXBrowser's Open-Source Licence. The JXBrowser product is a proprietary software owned by temdev company, It can't be used for comercial business. 
