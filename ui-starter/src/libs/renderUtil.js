@@ -72,7 +72,7 @@ export function transferNumber (v) {
             return Number.isNaN(Number(i)) ? i : Number(i)
         })
     } else {
-        v = Number.isNaN(Number(this.model)) ? v : Number(v)
+        v = Number.isNaN(v) ? v : Number(v)
     }
     return v
 }

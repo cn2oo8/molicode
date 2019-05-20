@@ -116,7 +116,16 @@ export const appRouter = [
                 name: 'coding',
                 title: '代码生成',
                 component: () => import('@//views/auto-code/autoCode.vue')
-            },
+            }
+        ]
+    },
+    {
+        path: '/project-process',
+        icon: 'android-desktop',
+        name: 'project-process',
+        title: '工程处理',
+        component: Main,
+        children: [
             {
                 path: 'replace',
                 icon: 'ios-copy',
@@ -124,6 +133,13 @@ export const appRouter = [
                 title: '全文替换工具',
                 component: () => import('@//views/auto-code/replace.vue')
             },
+            {
+                path: 'smartSegment',
+                icon: 'ios-copy',
+                name: 'smartSegment',
+                title: 'smartSegment',
+                component: () => import('@//views/auto-code/smartSegment.vue')
+            }
         ]
     },
     {

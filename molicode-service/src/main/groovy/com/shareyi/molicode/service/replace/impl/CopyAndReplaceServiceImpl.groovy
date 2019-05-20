@@ -1,13 +1,13 @@
 package com.shareyi.molicode.service.replace.impl
 
 import com.shareyi.molicode.common.enums.TouchFileType
+import com.shareyi.molicode.common.filter.FileNameExpressionFilter
+import com.shareyi.molicode.common.filter.FileNameFilter
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.common.vo.page.ReplaceParams
 import com.shareyi.molicode.common.vo.replace.TouchFileDir
 import com.shareyi.molicode.common.web.CommonResult
 import com.shareyi.molicode.service.replace.CopyAndReplaceService
-import com.shareyi.molicode.service.replace.FileNameExpressionFilter
-import com.shareyi.molicode.service.replace.FileNameFilter
 import com.shareyi.molicode.service.replace.FileNameReplaceUtil
 import com.shareyi.molicode.service.replace.FileReplace
 import com.shareyi.fileutil.FileIo
@@ -97,8 +97,8 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
     }
 
     static void copyAndReplaceFile(FileReplace fileReplace, TouchFileDir touchFileDir, FileNameReplaceUtil fileNameReplaceUtil,
-                            FileNameFilter ignoreFilter, FileNameFilter throwFilter,
-                            String replaceType) {
+                                   FileNameFilter ignoreFilter, FileNameFilter throwFilter,
+                                   String replaceType) {
 
         if (fileReplace.isDirectory()) {
             FileUtil.makeDir(fileReplace.destFile);

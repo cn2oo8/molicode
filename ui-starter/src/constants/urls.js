@@ -10,6 +10,9 @@ export default {
         },
         replace: {
             execute: 'autoCode/replace/doReplace'
+        },
+        smartSegment: {
+            execute: '/autoCode/smartSegment/execute'
         }
     },
     common: {

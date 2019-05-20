@@ -230,7 +230,7 @@
                     var datas = requestUtils.serializeObject(_.clone(this.formItems), true, true);
                     requestUtils.postSubmit(this, constants.urls.autoCode.replace.execute, datas, function (data) {
                         this.$Message.success({
-                            content: '生成tableModel成功',
+                            content: '执行成功',
                             duration: 5
                         });
                         this.message = data['message']
