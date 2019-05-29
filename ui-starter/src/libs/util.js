@@ -3,9 +3,7 @@ import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
 
-let util = {
-
-};
+let util = {};
 util.title = function (title) {
     title = title || 'MoliCode自动代码生成';
     window.document.title = title;
@@ -252,17 +250,12 @@ util.fullscreenEvent = function (vm) {
 };
 
 util.checkUpdate = function (vm) {
-    axios.get('https://api.github.com/repos/iview/iview-admin/releases/latest').then(res => {
-        let version = res.data.tag_name;
-        vm.$Notice.config({
-            duration: 0
-        });
-        if (semver.lt(packjson.version, version)) {
-            vm.$Notice.info({
-                title: 'iview-admin更新啦',
-                desc: '<p>iView-admin更新到了' + version + '了，去看看有哪些变化吧</p><a style="font-size:13px;" href="https://github.com/iview/iview-admin/releases" target="_blank">前往github查看</a>'
-            });
-        }
+    vm.$Notice.info({
+        title: '友情提示',
+        duration: 300,
+        desc: '<p>如果您正在使用moliCode，请到以下地址进行支持或者star!</p>' +
+        '<p>您的鼓励与支持是我们前进的动力！</p>' +
+        '<a style="font-size:13px;" href="https://github.com/cn2oo8/molicode/issues/1" target="_blank">https://github.com/cn2oo8/molicode/issues/1</a>' + '<p>QQ群号：753207541</p> '
     });
 };
 

@@ -1,5 +1,6 @@
 package com.shareyi.molicode.service.replace.impl
 
+import com.alibaba.fastjson.JSON
 import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
 import com.shareyi.molicode.common.chain.handler.awares.SmartSegmentHandlerAware
 import com.shareyi.molicode.common.context.SmartSegmentContext
@@ -27,7 +28,7 @@ class SmartSegmentServiceImpl implements SmartSegmentService {
             HandlerChainFactoryImpl.executeByHandlerAware(SmartSegmentHandlerAware.class, context)
             result.succeed();
         } catch (Exception e) {
-            LogHelper.EXCEPTION.error("执行失败，param={}", smartSegmentPageVo, e)
+            LogHelper.FRONT_CONSOLE.error("执行失败，param={}", JSON.toJSONString(smartSegmentPageVo), e)
             result.failed("执行失败，原因是" + e.getMessage())
         }
         return result;

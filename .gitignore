@@ -24,3 +24,4 @@ build/env.js
 maven_temp/
 temp_output/
 *.db
+.DS_Store
