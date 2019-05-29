@@ -28,6 +28,9 @@ molicode生成工程代码实战: [https://my.oschina.net/davidzhang/blog/303654
 QQ群名称：molicode技术交流群   群号：753207541
 
 欢迎加入沟通交流答疑群；
+![qqGroup](https://cn2oo8.github.io/molicode_doc/assets/img/qqgroup.0504d5b5.png)
+
+
 
 ## Disclaimer
 This project is depends on JXBrowser's Open-Source Licence. The JXBrowser product is a proprietary software owned by temdev company, It can't be used for comercial business. 
