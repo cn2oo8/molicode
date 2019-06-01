@@ -17,7 +17,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="作者(author)" prop="author" style="width: 80%">
+                    <Form-item label="作者(author)" prop="author" style="width: 95%">
                         <Input v-model="formItems.author" :maxlength="50" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>
@@ -25,7 +25,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="基础包路径(basePackage)" prop="basePackage" style="width: 80%">
+                    <Form-item label="基础包路径(basePackage)" prop="basePackage" style="width: 95%">
                         <Input v-model="formItems.basePackage" :maxlength="200" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>
@@ -33,7 +33,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="artifactId(前置)" prop="artifactId" style="width: 80%">
+                    <Form-item label="artifactId(前置)" prop="artifactId" style="width: 95%">
                         <Input v-model="formItems.artifactId" :maxlength="200" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>
@@ -41,7 +41,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="应用子包名" prop="category" style="width: 80%">
+                    <Form-item label="应用子包名" prop="category" style="width: 95%">
                         <Input v-model="formItems.category" :maxlength="200" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>

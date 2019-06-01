@@ -4,7 +4,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="tableModel存放目录" prop="tableModelDir" style="width: 80%">
+                    <Form-item label="tableModel存放目录" prop="tableModelDir" style="width: 95%">
                         <file-chooser v-model="formItems.tableModelDir" :disabled="disableInput" dialogType="directory"
                                       changeCurPath="1"></file-chooser>
                     </Form-item>
@@ -13,7 +13,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="代码输出根目录" prop="projectOutputDir" style="width: 80%">
+                    <Form-item label="代码输出根目录" prop="projectOutputDir" style="width: 95%">
                         <file-chooser v-model="formItems.projectOutputDir" :disabled="disableInput"
                                       dialogType="directory" changeCurPath="1"></file-chooser>
                     </Form-item>
@@ -22,7 +22,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="模板类型" prop="templateType" style="width: 80%">
+                    <Form-item label="模板类型" prop="templateType" style="width: 95%">
                         <dict-radio v-model="formItems.templateType" :disabled="disableInput"
                                     :kind="this.constants.dicts.dictKinds.TEMPLATE_TYPE_DICT"></dict-radio>
                     </Form-item>
@@ -30,15 +30,15 @@
             </Row>
 
             <div v-show="formItems.templateType=='maven'">
-                <Form-item label="groupId (maven)" prop="groupId" style="width: 80%">
+                <Form-item label="groupId (maven)" prop="groupId" style="width: 95%">
                     <Input v-model="formItems.groupId" :maxlength="200" :disabled="disableInput"></Input>
                 </Form-item>
 
-                <Form-item label="artifactId (maven)" prop="artifactId" style="width: 80%">
+                <Form-item label="artifactId (maven)" prop="artifactId" style="width: 95%">
                     <Input v-model="formItems.artifactId" :maxlength="200" :disabled="disableInput"></Input>
                 </Form-item>
 
-                <Form-item label="version (maven)" prop="version" style="width: 80%">
+                <Form-item label="version (maven)" prop="version" style="width: 95%">
                     <Input v-model="formItems.version" :maxlength="200" :disabled="disableInput"></Input>
                 </Form-item>
             </div>
@@ -46,7 +46,7 @@
             <div v-show="formItems.templateType=='local' || formItems.templateType==null ">
                 <Row>
                     <Col span="24">
-                        <Form-item label="模板根目录" prop="templateBaseDir" style="width: 80%">
+                        <Form-item label="模板根目录" prop="templateBaseDir" style="width: 95%">
                             <file-chooser v-model="formItems.templateBaseDir" :disabled="disableInput" changeCurPath="1"
                                           dialogType="directory"></file-chooser>
                         </Form-item>

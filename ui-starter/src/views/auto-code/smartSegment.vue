@@ -10,7 +10,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="说明" style="width: 80%">
+                        <Form-item label="说明" style="width: 95%">
                             用于进行智能化工程内文件处理；
                         </Form-item>
                     </Col>
@@ -19,7 +19,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="源文件路径" prop="srcPath" style="width: 80%">
+                        <Form-item label="源文件路径" prop="srcPath" style="width: 95%">
                             <file-chooser v-model="formItems.srcPath" :disabled="disableInput"
                                           dialogType="directory"></file-chooser>
                         </Form-item>
@@ -29,7 +29,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="groovy接口脚本" prop="segmentScriptPath" style="width: 80%">
+                        <Form-item label="groovy接口脚本" prop="segmentScriptPath" style="width: 95%">
                             <file-chooser v-model="formItems.segmentScriptPath" :disabled="disableInput"
                                           dialogType="open" fileExt="*.gsp"></file-chooser>
                         </Form-item>
@@ -38,7 +38,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="处理白名单" prop="whiteListExp" style="width: 80%">
+                        <Form-item label="处理白名单" prop="whiteListExp" style="width: 95%">
                             <Input v-model="formItems.whiteListExp" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                    :disabled="disableInput"></Input>
                         </Form-item>
@@ -47,7 +47,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="忽略处理表达式（不处理）" prop="ignoreExp" style="width: 80%">
+                        <Form-item label="忽略处理表达式（不处理）" prop="ignoreExp" style="width: 95%">
                             <Input v-model="formItems.ignoreExp" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                    :disabled="disableInput"></Input>
                         </Form-item>
@@ -56,7 +56,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="json扩展配置" prop="jsonConfig" style="width: 80%">
+                        <Form-item label="json扩展配置" prop="jsonConfig" style="width: 95%">
                             <Input v-model="formItems.jsonConfig" type="textarea"
                                    :autosize="{minRows:3,maxRows: 5}"></Input>
                         </Form-item>
@@ -79,7 +79,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="执行结果" style="width: 80%">
+                        <Form-item label="执行结果" style="width: 95%">
                             <log-console :sid="sid" ref="logConsole"></log-console>
                         </Form-item>
                     </Col>

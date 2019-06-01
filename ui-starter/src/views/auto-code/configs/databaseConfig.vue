@@ -13,7 +13,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="数据库名称" prop="databaseName" style="width: 80%">
+                    <Form-item label="数据库名称" prop="databaseName" style="width: 95%">
                         <dict-select v-model="formItems.databaseName"
                                      :kind="this.constants.dicts.dictKinds.DATABASE_NAME_DICT"
                                      :clearable="false"></dict-select>
@@ -23,7 +23,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="驱动名称" prop="driverClass" style="width: 80%">
+                    <Form-item label="驱动名称" prop="driverClass" style="width: 95%">
                         <Input v-model="formItems.driverClass" :maxlength="50" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>
@@ -31,7 +31,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="链接地址" prop="url" style="width: 80%">
+                    <Form-item label="链接地址" prop="url" style="width: 95%">
                         <Input v-model="formItems.url" :maxlength="200" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>
@@ -39,7 +39,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="用户名" prop="username" style="width: 80%">
+                    <Form-item label="用户名" prop="username" style="width: 95%">
                         <Input v-model="formItems.username" :maxlength="50" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>
@@ -47,7 +47,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="密码" prop="password" style="width: 80%">
+                    <Form-item label="密码" prop="password" style="width: 95%">
                         <Input v-model="formItems.password" :maxlength="50" :disabled="disableInput"></Input>
                     </Form-item>
                 </Col>

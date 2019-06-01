@@ -5,7 +5,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="模板类型" style="width: 80%">
+                    <Form-item label="模板类型" style="width: 96%">
                         <dict-radio v-model="pathConfig.templateType" :disabled="true"
                                     :kind="this.constants.dicts.dictKinds.TEMPLATE_TYPE_DICT"></dict-radio>
                         <auto-make-info v-show="pathConfig.templateType == 'maven'"></auto-make-info>
@@ -15,7 +15,7 @@
 
             <Row v-show="pathConfig.templateType == 'local'">
                 <Col span="24">
-                    <Form-item label="模板根目录" prop="templateBaseDir" style="width: 80%">
+                    <Form-item label="模板根目录" prop="templateBaseDir" style="width: 96%">
                         <file-chooser v-model="formItems.templateBaseDir" :disabled="true" changeCurPath="1" dialogType="directory"></file-chooser>
                     </Form-item>
                 </Col>
@@ -24,7 +24,7 @@
 
             <Row v-show="pathConfig.templateType == 'maven'">
                 <Col span="24">
-                    <Form-item label="强制刷新maven资源" prop="flushMaven" style="width: 80%">
+                    <Form-item label="强制刷新maven资源" prop="flushMaven" style="width: 96%">
                         <dict-radio v-model="formItems.flushMaven" :disabled="disableInput"
                                     :kind="this.constants.dicts.dictKinds.STD_YESNO_DICT"></dict-radio>
                         请配合maven setting.xml 里面的 &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;使用。
@@ -35,7 +35,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="数据模型类型" style="width: 80%">
+                    <Form-item label="数据模型类型" style="width: 96%">
                         <dict-radio v-model="formItems.dataModelType" :disabled="false"
                                     :kind="this.constants.dicts.dictKinds.DATA_MODEL_TYPE_DICT"></dict-radio>
                     </Form-item>
@@ -44,7 +44,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="输入源类型" style="width: 80%">
+                    <Form-item label="输入源类型" style="width: 96%">
                         <dict-radio v-model="formItems.resourceType" :disabled="false"
                                     :kind="this.constants.dicts.dictKinds.RESOURCE_TYPE_DICT"></dict-radio>
                     </Form-item>
@@ -54,7 +54,7 @@
 
             <Row v-show="resourceType == 'file'">
                 <Col span="24">
-                    <Form-item label="数据源文件路径" prop="tableModelPath" style="width: 80%">
+                    <Form-item label="数据源文件路径" prop="tableModelPath" style="width: 96%">
                         <file-chooser v-model="formItems.tableModelPath" :disabled="disableInput"
                                       dialogType="open" fileExt="*.xml"
                                       :parentPath="formItems.tableModelDir"></file-chooser>
@@ -64,7 +64,7 @@
 
             <Row v-show="resourceType == 'front'">
                 <Col span="24">
-                    <Form-item label="前台源内容（用于数据处理）" prop="frontContent" style="width: 80%">
+                    <Form-item label="前台源内容（用于数据处理）" prop="frontContent" style="width: 96%">
                         <Input v-model="formItems.frontContent" type="textarea"
                                :autosize="{minRows:10,maxRows: 10}"></Input>
                     </Form-item>
@@ -73,7 +73,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="代码输出目录" prop="projectOutputDir" style="width: 80%">
+                    <Form-item label="代码输出目录" prop="projectOutputDir" style="width: 96%">
                         <file-chooser v-model="formItems.projectOutputDir" :disabled="true"
                                       dialogType="directory"></file-chooser>
                     </Form-item>
@@ -82,7 +82,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="是否覆盖文件" prop="overrideFlag" style="width: 80%">
+                    <Form-item label="是否覆盖文件" prop="overrideFlag" style="width: 96%">
                         <dict-radio v-model="formItems.overrideFlag" :disabled="disableInput"
                                     :kind="this.constants.dicts.dictKinds.STD_BOOLEAN_DICT"></dict-radio>
                     </Form-item>
@@ -91,7 +91,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="是否直接输出到前台" style="width: 80%">
+                    <Form-item label="是否直接输出到前台" style="width: 96%">
                         <dict-radio v-model="formItems.outputFrontType" :disabled="disableInput"
                                     :kind="this.constants.dicts.dictKinds.STD_YESNO_DICT"></dict-radio>
                     </Form-item>

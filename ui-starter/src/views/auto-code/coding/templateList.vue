@@ -14,7 +14,7 @@
         <CheckboxGroup v-model="templateCheckboxList">
             <template v-for="item in templateList">
                 <Col span="6">
-                    <Checkbox :label="item.desc"></Checkbox>
+                    <Checkbox :label="item.name"></Checkbox>
                     <Button size="small" type="default" @click="about(item)">?</Button>
                 </Col>
             </template>

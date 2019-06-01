@@ -16,7 +16,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="本地仓库目录" prop="localRepository" style="width: 80%">
+                    <Form-item label="本地仓库目录" prop="localRepository" style="width: 95%">
                         <file-chooser v-model="formItems.localRepository" :disabled="disableInput"
                                       dialogType="directory"></file-chooser>
                     </Form-item>
@@ -25,7 +25,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="MAVEN_HOME(可选)" prop="mavenHome" style="width: 80%">
+                    <Form-item label="MAVEN_HOME(可选)" prop="mavenHome" style="width: 95%">
                         <file-chooser v-model="formItems.mavenHome" :disabled="disableInput"
                                       dialogType="directory"></file-chooser>
                     </Form-item>
@@ -34,7 +34,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="自定义setting(可选)" prop="mavenSetting" style="width: 80%">
+                    <Form-item label="自定义setting(可选)" prop="mavenSetting" style="width: 95%">
                         <file-chooser v-model="formItems.mavenSetting" :disabled="disableInput" dialogType="open"
                                       fileType="other" fileExt="*.xml"></file-chooser>
                     </Form-item>

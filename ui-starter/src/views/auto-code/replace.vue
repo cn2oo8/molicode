@@ -10,7 +10,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="说明" style="width: 80%">
+                        <Form-item label="说明" style="width: 95%">
                             用于进行基础工程全路径替换，可同时替换内容和文件目录。
                             可以称为盗版神器，如将 apache官方工具包转换为自己公司工程：
                             <br/>
@@ -26,7 +26,7 @@
                             如：<br/>
                             忽略表达式：只复制，不替换，但是只针对当前文件名和内容，不针对子文件。
                             <br/>
-                            丢弃表达式： target, .iml, .svn, node_modules, .git 建议使用以上值，将工作目录内容丢弃；
+                            丢弃表达式： target, *.iml, .svn, node_modules, .git 建议使用以上值，将工作目录内容丢弃；
                         </Form-item>
                     </Col>
                 </Row>
@@ -34,7 +34,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="源文件路径" prop="srcPath" style="width: 80%">
+                        <Form-item label="源文件路径" prop="srcPath" style="width: 95%">
                             <file-chooser v-model="formItems.srcPath" :disabled="disableInput"
                                           dialogType="directory"></file-chooser>
                         </Form-item>
@@ -43,7 +43,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="输出路径" prop="destPath" style="width: 80%">
+                        <Form-item label="输出路径" prop="destPath" style="width: 95%">
                             <file-chooser v-model="formItems.destPath" :disabled="disableInput"
                                           dialogType="directory"></file-chooser>
                         </Form-item>
@@ -52,7 +52,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="忽略处理表达式，只复制不替换" prop="ignoreExp" style="width: 80%">
+                        <Form-item label="忽略处理表达式，只复制不替换" prop="ignoreExp" style="width: 95%">
                             <Input v-model="formItems.ignoreExp" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                    :disabled="disableInput"></Input>
                         </Form-item>
@@ -61,7 +61,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="丢弃表达式，不复制丢弃" prop="throwExp" style="width: 80%">
+                        <Form-item label="丢弃表达式，不复制丢弃" prop="throwExp" style="width: 95%">
                             <Input v-model="formItems.throwExp" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                    :disabled="disableInput"></Input>
                         </Form-item>
@@ -81,7 +81,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="说明" style="width: 80%">
+                        <Form-item label="说明" style="width: 95%">
                             功能说明：因为目前文件统一使用UTF-8格式，如果非UTF-8文件可能出现乱码，请注意！<br/>
                             替换表达式: 可以对目录名称和文本内容进行替换，如 oldName=newName 将会将所有包含oldName字符串的文件夹名称和文本内容全部替换为newName; <br/>
                             目录转换表达式：
@@ -94,7 +94,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="替换表达式" prop="replaceExp" style="width: 80%">
+                        <Form-item label="替换表达式" prop="replaceExp" style="width: 95%">
                             <Input v-model="formItems.replaceExp" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                    :disabled="disableInput"></Input>
                         </Form-item>
@@ -103,7 +103,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="目录转换表达式" prop="dirReplaceExp" style="width: 80%">
+                        <Form-item label="目录转换表达式" prop="dirReplaceExp" style="width: 95%">
                             <Input v-model="formItems.dirReplaceExp" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                    :disabled="disableInput"></Input>
                         </Form-item>
@@ -112,7 +112,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="替换类型" prop="replaceType" style="width: 80%">
+                        <Form-item label="替换类型" prop="replaceType" style="width: 95%">
                             <dict-radio v-model="formItems.replaceType" :disabled="disableInput"
                                         :kind="this.constants.dicts.dictKinds.REPLACE_TYPE_DICT"></dict-radio>
                         </Form-item>
@@ -135,7 +135,7 @@
 
                 <Row>
                     <Col span="24">
-                        <Form-item label="执行结果" style="width: 80%">
+                        <Form-item label="执行结果" style="width: 95%">
                             <Input v-model="message" type="textarea" :autosize="{minRows: 4,maxRows: 6}"
                                    :disabled="true"></Input>
                         </Form-item>

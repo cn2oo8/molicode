@@ -4,7 +4,7 @@
 
             <Row>
                 <Col span="24">
-                    <Form-item label="json扩展配置" prop="jsonConfig" style="width: 80%">
+                    <Form-item label="json扩展配置" prop="jsonConfig" style="width: 95%">
                         <Input v-model="formItems.jsonConfig" type="textarea"
                                :autosize="{minRows:10,maxRows: 10}"></Input>
                     </Form-item>

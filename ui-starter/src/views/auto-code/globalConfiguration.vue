@@ -6,7 +6,7 @@
                 全局配置信息
             </p>
 
-            <Collapse :value="[1]">
+            <Collapse :value="[]">
                 <Panel name="1">
                     MAVEN仓库配置(不使用maven仓库可以不配置)
                     <p slot="content">

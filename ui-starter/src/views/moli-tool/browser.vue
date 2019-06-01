@@ -10,7 +10,7 @@
             <p>
                 <Form :model="formItem" :label-width="80">
                     <FormItem label="jump URL">
-                        <Input v-model="formItem.url" placeholder="please input http url" @keyup.enter="jump">
+                        <Input v-model="formItem.url" placeholder="please input http url" @keyup.enter.native="jump">
                         <Button slot="append" icon="ios-search" @click="jump">JUMP</Button>
                         </Input>
                     </FormItem>

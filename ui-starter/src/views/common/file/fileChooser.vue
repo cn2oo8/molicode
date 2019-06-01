@@ -2,7 +2,7 @@
     <div>
         <Input v-model="model" @on-change="updateValue" :disabled="disabled">
         <Button slot="append" icon="ios-search" type="primary" @click="fileChooser" :disabled="disabled">选择</Button>
-        <Button slot="append" icon="document" @click="openFile" :disabled="disabled">open</Button>
+        <Button slot="append" icon="document" @click="openFile">open</Button>
         </Input>
 
     </div>
