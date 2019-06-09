@@ -1,5 +1,6 @@
 package com.shareyi.molicode.common.filter
 
+import com.shareyi.molicode.common.utils.LogHelper
 import org.apache.commons.collections.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 
@@ -62,22 +63,27 @@ class FileNameExpressionFilter implements FileNameFilter {
     }
 
 
-    public void initNameFilter() {
+    void initNameFilter() {
         if (StringUtils.isEmpty(nameExpression) || initialed) {
             return;
         }
-        if (nameExpression.charAt(0) == '^') {
-            nameExpression = nameExpression.substring(1).trim();
-            if (nameExpression.charAt(0) == '(' || nameExpression.charAt(0) == '（') {
+
+        try {
+            if (nameExpression.charAt(0) == '^') {
                 nameExpression = nameExpression.substring(1).trim();
+                if (nameExpression.charAt(0) == '(' || nameExpression.charAt(0) == '（') {
+                    nameExpression = nameExpression.substring(1).trim();
+                }
+                if (nameExpression.endsWith(")") || nameExpression.endsWith("）")) {
+                    nameExpression = nameExpression.substring(0, nameExpression.length() - 1).trim();
+                }
+                not = true;
             }
-            if (nameExpression.endsWith(")") || nameExpression.endsWith("）")) {
-                nameExpression = nameExpression.substring(0, nameExpression.length() - 1).trim();
-            }
-            not = true;
+            String[] filters = nameExpression.split("[,，\n]+");
+            filterTypes = NameFilterType.getNameFilterType(filters);
+        } catch (Exception e) {
+            LogHelper.EXCEPTION.error("文件名称表达式过滤器失败,exp={}", nameExpression, e)
         }
-        String[] filters = nameExpression.split("[,，\n]+");
-        filterTypes = NameFilterType.getNameFilterType(filters);
         initialed = true;
     }
 

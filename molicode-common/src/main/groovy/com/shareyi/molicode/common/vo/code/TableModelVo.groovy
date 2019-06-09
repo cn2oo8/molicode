@@ -1,5 +1,6 @@
 package com.shareyi.molicode.common.vo.code
 
+import com.alibaba.fastjson.annotation.JSONField
 import com.shareyi.molicode.common.constants.MoliCodeConstant
 import org.apache.commons.collections.CollectionUtils
 import org.apache.commons.lang3.StringUtils
@@ -27,6 +28,7 @@ class TableModelVo {
     /**
      * 字段List, 转换为List，方便获取
      */
+    @JSONField(serialize = false)
     Map<String, List<String>> fieldListMap = new HashMap<String, List<String>>();
 
     /**
@@ -142,6 +144,7 @@ class TableModelVo {
      * @return
      */
     @Deprecated
+    @JSONField(serialize = false)
     List<String> getSearchKeyList() {
         return getColumnNameList(MoliCodeConstant.BIZ_FIELDS_KEY_SEARCHKEY);
     }
@@ -166,12 +169,14 @@ class TableModelVo {
     /**
      * 获取创建时间字段
      */
+    @JSONField(serialize = false)
     String getCreateTime() {
         return bizFieldsMap.get(MoliCodeConstant.BIZ_FIELDS_KEY_CREATETIME)
     }
     /**
      * 获取更新时间字段
      */
+    @JSONField(serialize = false)
     String getUpdateTime() {
         return bizFieldsMap.get(MoliCodeConstant.BIZ_FIELDS_KEY_UPDATETIME)
     }

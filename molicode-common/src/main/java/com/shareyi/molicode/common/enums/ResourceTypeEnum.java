@@ -9,7 +9,8 @@ package com.shareyi.molicode.common.enums;
 public enum ResourceTypeEnum implements EnumCode<String> {
     FILE("file", "文件"),
     FRONT("front", "前台"),
-    HTTP("http", "http");
+    HTTP("http", "http"),
+    DATABASE("database", "数据库");
 
     private String code;
     private String desc;

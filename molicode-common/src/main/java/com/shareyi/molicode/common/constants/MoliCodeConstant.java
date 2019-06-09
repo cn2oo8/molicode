@@ -22,6 +22,10 @@ public class MoliCodeConstant {
      * autoCode.xml的解析模型
      */
     public static final String CTX_KEY_AUTO_MAKE = "autoMake";
+    /**
+     * zip输出目录
+     */
+    public static final String CODE_OUTPUT_ZIP_NAME = "code_output/zip/";
 
     /**
      * 原始数据
@@ -33,16 +37,15 @@ public class MoliCodeConstant {
      */
     public static String CTX_KEY_DEF_DATA = "data";
 
+    /**
+     * 保存的压缩文件目录
+     */
+    public static String CTX_KEY_ZIP_FILE_NAME = "zipFileName";
 
     /**
      * 参数key 是否trim
      */
     public static String PARAM_KEY_TRIM_TYPE = "trimType";
-
-
-
-
-
 
 
     /**
@@ -122,8 +125,21 @@ public class MoliCodeConstant {
          */
         BIZ_FIELDS_DEF_EXP_MAP.put(BIZ_FIELDS_KEY_ALLCOLUMN, "");
 
-
     }
 
+
+    /**
+     * 结果信息
+     */
+    public class ResultInfo {
+        /**
+         * 起始时间
+         */
+        public static final String START_TIME_KEY = "startTime";
+        /**
+         * 耗时
+         */
+        public static final String COST_TIME_KEY = "costTime";
+    }
 
 }

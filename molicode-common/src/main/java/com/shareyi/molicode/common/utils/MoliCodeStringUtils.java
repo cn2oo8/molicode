@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,7 +74,7 @@ public class MoliCodeStringUtils {
             if (StringUtils.isNumeric(segmentOne)) {
                 if (StringUtils.isNumeric(segmentTwo)) {
                     int segResult = Integer.valueOf(segmentOne).compareTo(Integer.valueOf(segmentTwo));
-                    if(segResult == 0){
+                    if (segResult == 0) {
                         continue;
                     }
                     return segResult;
@@ -88,10 +90,24 @@ public class MoliCodeStringUtils {
         return 0;
     }
 
+
+    /**
+     * 获取基于时间的字符串
+     *
+     * @return
+     */
+    public static String getTimeBasedStr() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+        Date now = new Date();
+        return dateFormat.format(now);
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(compareVersion("1.0.0","1.0.1"));
-        System.out.println(compareVersion("1.0.a","1.0.1"));
-        System.out.println(compareVersion("1.0.2","1.0.1"));
-        System.out.println(compareVersion("1.0.1","1.0.1"));
+        System.out.println(compareVersion("1.0.0", "1.0.1"));
+        System.out.println(compareVersion("1.0.a", "1.0.1"));
+        System.out.println(compareVersion("1.0.2", "1.0.1"));
+        System.out.println(compareVersion("1.0.1", "1.0.1"));
+        System.out.println(getTimeBasedStr());
     }
 }

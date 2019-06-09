@@ -3,13 +3,13 @@ package com.shareyi.molicode.hander.gencode.loader;
 import com.shareyi.molicode.common.chain.handler.SimpleHandler;
 import com.shareyi.molicode.common.chain.handler.awares.DataLoadHandlerAware;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
+import com.shareyi.molicode.common.context.MoliCodeContext;
 import com.shareyi.molicode.common.enums.ResourceTypeEnum;
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
 import com.shareyi.molicode.common.exception.AutoCodeException;
 import com.shareyi.molicode.common.utils.LogHelper;
 import com.shareyi.molicode.common.utils.Profiles;
 import com.shareyi.molicode.common.vo.code.AutoCodeParams;
-import com.shareyi.molicode.common.context.MoliCodeContext;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +43,7 @@ public class FileLoadHandler extends SimpleHandler<MoliCodeContext> implements D
         ResourceTypeEnum resourceTypeEnum = ResourceTypeEnum.Parser.parseToNullSafe(ResourceTypeEnum.class, autoCodeParams.getResourceType(), ResourceTypeEnum.FILE);
         switch (resourceTypeEnum) {
             case FILE:
+            case DATABASE:
                 this.loadFileContent(context, autoCodeParams);
                 break;
             case FRONT:
@@ -55,6 +56,7 @@ public class FileLoadHandler extends SimpleHandler<MoliCodeContext> implements D
 
     /**
      * 从前台窗口中获取数据
+     *
      * @param context
      * @param autoCodeParams
      */

@@ -2,6 +2,14 @@
     <div>
         <Form ref="formItems" :model="formItems" :rules="formRules" :label-width="120" inline>
 
+            <Row v-show="windowName!='headless'">
+                <Col span="24">
+                    <Form-item label="代码输出目录" prop="projectOutputDir" style="width: 96%">
+                        <file-chooser v-model="formItems.projectOutputDir" :disabled="true"
+                                      dialogType="directory"></file-chooser>
+                    </Form-item>
+                </Col>
+            </Row>
 
             <Row>
                 <Col span="24">
@@ -16,7 +24,17 @@
             <Row v-show="pathConfig.templateType == 'local'">
                 <Col span="24">
                     <Form-item label="模板根目录" prop="templateBaseDir" style="width: 96%">
-                        <file-chooser v-model="formItems.templateBaseDir" :disabled="true" changeCurPath="1" dialogType="directory"></file-chooser>
+                        <file-chooser v-model="formItems.templateBaseDir" :disabled="true" changeCurPath="1"
+                                      dialogType="directory"></file-chooser>
+                    </Form-item>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col span="24">
+                    <Form-item label="模板列表" style="width: 100%">
+                        <template-list ref="templateList" :flush-maven="formItems.flushMaven" :sid="formItems.sid"
+                                       v-on:fetchTemplateList="connectLogServer"></template-list>
                     </Form-item>
                 </Col>
             </Row>
@@ -71,14 +89,6 @@
                 </Col>
             </Row>
 
-            <Row>
-                <Col span="24">
-                    <Form-item label="代码输出目录" prop="projectOutputDir" style="width: 96%">
-                        <file-chooser v-model="formItems.projectOutputDir" :disabled="true"
-                                      dialogType="directory"></file-chooser>
-                    </Form-item>
-                </Col>
-            </Row>
 
             <Row>
                 <Col span="24">
@@ -97,22 +107,31 @@
                     </Form-item>
                 </Col>
             </Row>
-            <Row>
-                <Col span="24">
-                    <Form-item label="模板列表" style="width: 100%">
-                        <template-list ref="templateList" :flush-maven="formItems.flushMaven" :sid="formItems.sid"
-                                       v-on:fetchTemplateList="connectLogServer"></template-list>
-                    </Form-item>
-                </Col>
-            </Row>
 
 
-            <FormItem>
+            <FormItem v-show="resourceType !== 'database'">
                 <Button type="primary" @click="execute" :loading="loading">
                     <Icon type="ios-play"></Icon>
                     生成代码
                 </Button>
             </FormItem>
+
+
+            <Row v-show="resourceType == 'database'">
+                <Col span="24">
+                    <tableModelJson v-on:genCode="genCode"></tableModelJson>
+                </Col>
+            </Row>
+
+
+            <Row v-show="windowName == 'headless'">
+                <Col span="24">
+                    <Form-item label="执行结果文件" style="width: 100%">
+                        <result-info ref="resultInfo"></result-info>
+                    </Form-item>
+                </Col>
+            </Row>
+
 
             <Row>
                 <Col span="22">
@@ -133,6 +152,8 @@
     import fileChooser from '@/views/common/file/fileChooser';
     import logConsole from '@/views/common/log/log-console';
     import autoMakeInfo from './autoMakeInfo';
+    import tableModelJson from '@/views/auto-code/coding/tableModelJson';
+    import resultInfo from './resultInfo';
 
     var _ = require('underscore')
 
@@ -157,7 +178,7 @@
                     templateIds: '',
                     flushMaven: '2',
                     dataModelType: 'tableModel',
-                    resourceType: 'file',
+                    resourceType: 'database',
                     frontContent: '',
                     outputFrontType: '2',
                     sid: 'sid_' + new Date().getTime()
@@ -165,11 +186,15 @@
                 formRules: validateSet,
                 disableInput: false,
                 loading: false,
-                constants
+                constants,
+                windowName: this.$store.state.autoCode.profile['browserWindowName']
             };
             if (configType === 'ump') {
                 myData.formItems.dataModelType = 'json';
                 myData.formItems.resourceType = 'front';
+            }
+            if (myData.windowName === 'headless') {
+                validateSet.projectOutputDir[0].required = false;
             }
             return myData;
         },
@@ -178,7 +203,9 @@
             dictRadio,
             templateList,
             logConsole,
-            autoMakeInfo
+            autoMakeInfo,
+            tableModelJson,
+            resultInfo
         },
         mounted: function () {
             var configList = this.$store.state.autoCode.defaultProjectConfig;
@@ -231,7 +258,7 @@
             }
         },
         methods: {
-            execute() {
+            execute(callback) {
                 var _this = this;
                 if (!this.$store.state.autoCode.defaultProjectKey) {
                     this.$Message.error({
@@ -265,17 +292,38 @@
                     _this.$refs.logConsole.connectServer();
                     requestUtils.postSubmit(this, constants.urls.autoCode.coder.execute, datas, function (data) {
                         this.$Message.success({
-                            content: '生成tableModel成功',
+                            content: '生成代码成功，请查看相关目录查看',
                             duration: 3
                         });
+                        this.appendResultInfo(data);
+                        if (callback) {
+                            callback.call(this, true);
+                        }
                     }, function (data) {
                         var message = data['message'];
                         if (message === null || message === '') {
                             message = '执行失败，原因未知，请查看运行日志';
                         }
                         _this.$refs.logConsole.appendMessage(message);
+                        if (callback) {
+                            callback.call(this, false);
+                        }
                     }, true);
                 });
+            },
+            appendResultInfo(data) {
+                let zipFileName = data['zipFileName'];
+                if (zipFileName === null || zipFileName === '') {
+                    return;
+                }
+                let projectKey = this.$store.state.autoCode.defaultProjectKey;
+                let zipUrl = '/zip/' + projectKey + '/' + zipFileName;
+                let resultInfo = {
+                    zipUrl,
+                    'startTime': data['startTime'],
+                    'costTime': data['costTime']
+                }
+                this.$refs.resultInfo.appendResultInfo(resultInfo);
             },
             loadBrowserPassContent() {
                 requestUtils.postSubmit(this, constants.urls.sys.system.getProfileCache, {cacheKey: 'browserPassKey'}, function (data) {
@@ -295,11 +343,19 @@
                     this.formRules.frontContent[0].required = true;
                 }
             },
-            connectLogServer () {
+            connectLogServer() {
                 this.$refs.logConsole.connectServer();
             },
-            aboutTemplateGroup(){
-                alert('haha');
+            genCode(value) {
+                if (value === null || value === '') {
+                    this.$Message.error({
+                        content: '请先选中表模型进行生成！',
+                        duration: 5
+                    })
+                    return;
+                }
+                this.formItems.tableModelPath = value;
+                this.execute();
             }
         }
     };

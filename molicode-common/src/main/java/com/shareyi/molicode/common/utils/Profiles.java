@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -120,5 +121,13 @@ public class Profiles {
         map.put("fileEncoding", fileEncoding);
         map.put("browserWindowName", browserWindowName);
         return map;
+    }
+
+    /**
+     * 是否为headless状态
+     * @return
+     */
+    public boolean isHeadLess() {
+        return Objects.equals(browserWindowName, BrowserWindowEnum.HEADLESS.getCode());
     }
 }

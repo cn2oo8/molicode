@@ -252,7 +252,7 @@ util.fullscreenEvent = function (vm) {
 util.checkUpdate = function (vm) {
     vm.$Notice.info({
         title: '友情提示',
-        duration: 300,
+        duration: 10,
         desc: '<p>如果您正在使用moliCode，请到以下地址进行支持或者star!</p>' +
         '<p>您的鼓励与支持是我们前进的动力！</p>' +
         '<a style="font-size:13px;" href="https://github.com/cn2oo8/molicode/issues/1" target="_blank">https://github.com/cn2oo8/molicode/issues/1</a>' + '<p>QQ群号：753207541</p> '

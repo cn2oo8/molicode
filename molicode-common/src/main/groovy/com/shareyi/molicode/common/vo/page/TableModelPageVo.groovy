@@ -27,6 +27,10 @@ class TableModelPageVo {
      * 智能标识
      */
     int smartFlag = 1
+    /**
+     * 模型类型
+     */
+    String modelType
 
 
     @Override

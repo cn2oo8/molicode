@@ -5,16 +5,16 @@
         全选
 
         &nbsp;&nbsp;
-        <Button @click="fetchTemplateList" :loading="loading">
+        <Button @click="fetchTemplateList" :loading="loading" size="small">
             <Icon type="refresh"></Icon>
             刷新模板列表
         </Button> &nbsp;
 
 
-        <CheckboxGroup v-model="templateCheckboxList">
+        <CheckboxGroup v-model="templateCheckedIdList">
             <template v-for="item in templateList">
                 <Col span="6">
-                    <Checkbox :label="item.name"></Checkbox>
+                    <Checkbox :label="item.id">{{item.name}}</Checkbox>
                     <Button size="small" type="default" @click="about(item)">?</Button>
                 </Col>
             </template>
@@ -27,7 +27,6 @@
 
 <script>
     import constants from '@/constants/constants';
-    import requestUtils from '@/request/requestUtils.js'
     import * as configUtil from '@/libs/configUtil.js';
     import templateInfo from './TemplateInfo';
 
@@ -47,7 +46,7 @@
         data() {
             return {
                 templateList: [],
-                templateCheckboxList: [],
+                templateCheckedIdList: [],
                 chooserAll: true,
                 loading: false
             };
@@ -73,11 +72,11 @@
                 if (choose) {
                     var allList = [];
                     for (var i = 0; i < this.templateList.length; i++) {
-                        allList.push(this.templateList[i].desc);
+                        allList.push(this.templateList[i].id);
                     }
-                    this.templateCheckboxList = allList;
+                    this.templateCheckedIdList = allList;
                 } else {
-                    this.templateCheckboxList = [];
+                    this.templateCheckedIdList = [];
                 }
             },
             fetchTemplateList() {
@@ -128,16 +127,7 @@
                 this.$emit('fetchTemplateList');
             },
             getChoosedTemplateIds() {
-                var map = {};
-                _.each(this.templateList, function (item) {
-                    map[item['desc']] = item;
-                })
-
-                var templateIds = [];
-                _.each(this.templateCheckboxList, function (item) {
-                    templateIds.push(map[item].id);
-                });
-                return templateIds;
+                return this.templateCheckedIdList;
             },
             about(item) {
                 this.$refs['templateInfo'].show(item);

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Button @click="fetchTableList" type="info">
+        <Button @click="fetchTableList" type="info" size="small">
             <Icon type="arrow-down-a"></Icon>
             获取Table列表
         </Button> &nbsp;

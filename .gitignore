@@ -25,3 +25,5 @@ maven_temp/
 temp_output/
 *.db
 .DS_Store
+code_output/
+tableModel/

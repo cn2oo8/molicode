@@ -175,6 +175,7 @@
     };
 
     export default {
+        name: 'replace',
         props: {
             bindId: {
                 type: String,

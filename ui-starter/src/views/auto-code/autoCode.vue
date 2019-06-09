@@ -15,33 +15,6 @@
             <Card>
                 <p slot="title">
                     <Icon type="ios-list"></Icon>
-                    数据库配置信息
-                </p>
-                待完善
-            </Card>
-
-
-            <Card>
-                <p slot="title">
-                    <Icon type="ios-list"></Icon>
-                    表模型（TableModel.xml）生成
-                </p>
-                <table-model></table-model>
-            </Card>
-
-
-            <Card>
-                <p slot="title">
-                    <Icon type="ios-list"></Icon>
-                    业务代码配置
-                </p>
-                待完善
-            </Card>
-
-
-            <Card>
-                <p slot="title">
-                    <Icon type="ios-list"></Icon>
                     代码生成
                 </p>
                 <coder></coder>
@@ -51,10 +24,6 @@
 </template>
 
 <script>
-    import databaseConfig from './configs/databaseConfig';
-    import pathConfig from './configs/pathConfig';
-    import codeConfig from './configs/codeConfig';
-    import requestUtils from '@/request/requestUtils.js';
     import constants from '@/constants/constants';
     import tableModel from './coding/tableModel';
     import coder from './coding/coder';

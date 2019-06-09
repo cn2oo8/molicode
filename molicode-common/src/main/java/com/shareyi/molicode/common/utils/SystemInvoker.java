@@ -10,6 +10,9 @@ import java.io.InputStreamReader;
 public class SystemInvoker {
 
     public static void executeWithOutReturn(String command) {
+        if (Profiles.instance.isHeadLess()) {
+            return;
+        }
         try {
             Runtime.getRuntime().exec(command);
         } catch (IOException e) {
@@ -25,6 +28,9 @@ public class SystemInvoker {
      * @throws IOException
      */
     public static String executeWithReturn(String command) throws IOException {
+        if (Profiles.instance.isHeadLess()) {
+            return "headless下，不允许执行本地命令！";
+        }
         StringBuilder output = new StringBuilder();
         Runtime run = Runtime.getRuntime();
         Process process = run.exec(command);

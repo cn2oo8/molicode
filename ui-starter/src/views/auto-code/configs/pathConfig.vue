@@ -2,16 +2,7 @@
     <div>
         <Form ref="formItems" :model="formItems" :rules="formRules" :label-width="120" inline>
 
-            <Row>
-                <Col span="24">
-                    <Form-item label="tableModel存放目录" prop="tableModelDir" style="width: 95%">
-                        <file-chooser v-model="formItems.tableModelDir" :disabled="disableInput" dialogType="directory"
-                                      changeCurPath="1"></file-chooser>
-                    </Form-item>
-                </Col>
-            </Row>
-
-            <Row>
+            <Row v-show="windowName != 'headless'">
                 <Col span="24">
                     <Form-item label="代码输出根目录" prop="projectOutputDir" style="width: 95%">
                         <file-chooser v-model="formItems.projectOutputDir" :disabled="disableInput"
@@ -76,7 +67,6 @@
 
     var defConfig = {
         templateBaseDir: '',
-        tableModelDir: '',
         projectOutputDir: '',
         templateType: 'local'
     };
@@ -98,26 +88,30 @@
             }
         },
         data: function () {
+            let formRules = {
+                templateBaseDir: [{type: 'string', required: true, message: '模板根目录不能为空', trigger: 'blur'}],
+                groupId: [{type: 'string', required: false, message: 'groupId不能为空', trigger: 'blur'}],
+                artifactId: [{type: 'string', required: false, message: 'artifactId不能为空', trigger: 'blur'}],
+                version: [{type: 'string', required: false, message: 'version不能为空', trigger: 'blur'}],
+                projectOutputDir: [{type: 'string', required: true, message: '代码输出目录不能为空', trigger: 'blur'}]
+            };
+            let windowName = this.$store.state.autoCode.profile['browserWindowName']
+            if (windowName === 'headless') {
+                formRules.projectOutputDir[0].required = false;
+            }
             return {
                 projectKey: this.defaultProjectKey,
                 formItems: _.clone(this.configInfo),
-                formRules: {
-                    templateBaseDir: [{type: 'string', required: true, message: '模板根目录不能为空', trigger: 'blur'}],
-                    groupId: [{type: 'string', required: false, message: 'groupId不能为空', trigger: 'blur'}],
-                    artifactId: [{type: 'string', required: false, message: 'artifactId不能为空', trigger: 'blur'}],
-                    version: [{type: 'string', required: false, message: 'version不能为空', trigger: 'blur'}],
-                    tableModelDir: [{type: 'string', required: true, message: '表模型输出目录不能为空', trigger: 'blur'}],
-                    projectOutputDir: [{type: 'string', required: true, message: '代码输出目录不能为空', trigger: 'blur'}]
-                },
+                formRules: formRules,
                 constants,
                 disableInput: false,
-                loading: false
+                loading: false,
+                windowName
             };
         },
         watch: {
             'formItems.templateType': function (newVal) {
                 var isMaven = (newVal === 'maven');
-                var isLocal = (newVal === 'local' || newVal === null);
                 this._templateTypeChange(isMaven);
             }
         },

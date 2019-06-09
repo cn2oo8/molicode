@@ -1,7 +1,8 @@
 package com.shareyi.molicode.common.utils;
 
-import com.shareyi.molicode.common.vo.FileInfoVo;
 import com.shareyi.fileutil.FileUtil;
+import com.shareyi.molicode.common.constants.MoliCodeConstant;
+import com.shareyi.molicode.common.vo.FileInfoVo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -112,4 +113,34 @@ public class SystemFileUtils {
         return filePath;
     }
 
+
+    /**
+     * 获取项目下的tableModel存储路径
+     *
+     * @param projectKey
+     * @return
+     */
+    public static String getTableModelDir(String projectKey) {
+        return FileUtil.getRuntimeFilePath("tableModel/project_" + projectKey);
+    }
+
+    /**
+     * 构建默认的项目输出目录
+     *
+     * @param projectKey
+     * @return
+     */
+    public static String buildDefaultProjectOutputDir(String projectKey) {
+        return FileUtil.getRuntimeFilePath("code_output/project_" + projectKey);
+    }
+
+    /**
+     * 构建默认的zip输出目录
+     *
+     * @param projectKey
+     * @return
+     */
+    public static String buildZipOutputDir(String projectKey) {
+        return FileUtil.getRuntimeFilePath(MoliCodeConstant.CODE_OUTPUT_ZIP_NAME + projectKey);
+    }
 }

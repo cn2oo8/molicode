@@ -1,12 +1,9 @@
 package com.shareyi.molicode.common.vo.code
 
+import com.alibaba.fastjson.annotation.JSONField
 import com.shareyi.molicode.common.filter.impl.PKFilter
-import com.shareyi.molicode.common.utils.TableNameUtil;
-import org.apache.commons.collections.CollectionUtils;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.shareyi.molicode.common.utils.TableNameUtil
+import org.apache.commons.collections.CollectionUtils
 
 /**
  * 表定义信息
@@ -37,6 +34,7 @@ class TableDefineVo {
     /**
      * 列map，方便通过key获取
      */
+    @JSONField(serialize = false)
     Map<String, ColumnVo> columnMap;
     /**
      * 所有列
@@ -45,6 +43,7 @@ class TableDefineVo {
     /**
      * 主键列
      */
+    @JSONField(serialize = false)
     private List<ColumnVo> pkColumns;
 
 

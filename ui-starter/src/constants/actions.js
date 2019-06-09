@@ -5,5 +5,9 @@ export default {
     },
     conf: {
         setDefaultProject: 'setDefaultProject'
+    },
+    autoCode: {
+        'genCode': 'genCode',
+        'tableModelNotify': 'tableModelNotify'
     }
 };

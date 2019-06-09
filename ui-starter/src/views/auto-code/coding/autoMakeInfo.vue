@@ -108,7 +108,11 @@
         watch: {
             defAutoMake: function (newVal) {
                 this.autoMake = newVal;
-                this.mavenResource = newVal.mavenResourceVo;
+                if (newVal['mavenResourceVo'] === null) {
+                    this.mavenResource = {};
+                } else {
+                    this.mavenResource = newVal.mavenResourceVo;
+                }
             }
         },
         methods: {

@@ -1,5 +1,5 @@
 <template>
-    <Select v-model="model" @on-change="updateValue" :clearable="clearable" :multiple="multiple" :disabled="disabled"
+    <Select v-model="model" @on-change="updateValue" :clearable="clearable" :multiple="multiple" :disabled="disabled" :size="size"
             :filterable="filterable" :transfer="transfer">
         <Option :value="item.itemKey" :key="item.itemKey" v-for="item in dictItems">{{ item.itemName }}</Option>
     </Select>
@@ -58,6 +58,10 @@
             localDictItems: {
                 type: Array,
                 default: null
+            },
+            size: {
+                type: String,
+                default: 'default'
             }
         },
         data() {

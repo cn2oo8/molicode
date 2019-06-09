@@ -1,19 +1,18 @@
-package com.shareyi.molicode.handler.model;
+package com.shareyi.molicode.handler.model
 
-import com.shareyi.molicode.common.chain.handler.SimpleHandler;
-import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware;
-import com.shareyi.molicode.common.constants.ConfigKeyConstant;
-import com.shareyi.molicode.common.enums.DataTypeEnum;
-import com.shareyi.molicode.common.utils.ValidateUtils;
-import com.shareyi.molicode.common.valid.Validate;
-import com.shareyi.molicode.common.vo.page.TableModelPageVo;
-import com.shareyi.molicode.context.TableModelContext;
-import com.shareyi.molicode.service.conf.AcConfigService;
-import org.apache.commons.collections4.MapUtils;
-import org.springframework.stereotype.Service;
+import com.shareyi.molicode.common.chain.handler.SimpleHandler
+import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
+import com.shareyi.molicode.common.constants.ConfigKeyConstant
+import com.shareyi.molicode.common.enums.DataTypeEnum
+import com.shareyi.molicode.common.utils.ValidateUtils
+import com.shareyi.molicode.common.valid.Validate
+import com.shareyi.molicode.common.vo.page.TableModelPageVo
+import com.shareyi.molicode.context.TableModelContext
+import com.shareyi.molicode.service.conf.AcConfigService
+import org.apache.commons.collections4.MapUtils
+import org.springframework.stereotype.Service
 
-import javax.annotation.Resource;
-import java.util.Map;
+import javax.annotation.Resource
 
 /**
  * tableModel生成的前置参数验证器

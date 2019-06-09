@@ -2,7 +2,9 @@ export default {
     autoCode: {
         tableModel: {
             makeTableModel: 'autoCode/tableModel/makeTableModel',
-            getTableList: 'autoCode/tableModel/getTableList'
+            getTableList: 'autoCode/tableModel/getTableList',
+            getTableInfo: 'autoCode/tableModel/getTableInfo',
+            saveTableModel: 'autoCode/tableModel/saveTableModel'
         },
         coder: {
             execute: 'autoCode/coder/execute',

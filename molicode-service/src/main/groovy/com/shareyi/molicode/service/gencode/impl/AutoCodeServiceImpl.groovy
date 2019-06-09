@@ -1,19 +1,19 @@
 package com.shareyi.molicode.service.gencode.impl
 
 import com.google.common.collect.Lists
+import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.HandlerChainExecutor
 import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
 import com.shareyi.molicode.common.chain.handler.awares.CodeGenMainHandlerAware
 import com.shareyi.molicode.common.constants.MoliCodeConstant
+import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.EnumCode
 import com.shareyi.molicode.common.enums.ResourceTypeEnum
-import com.shareyi.molicode.common.utils.LogHelper
+import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
 import com.shareyi.molicode.common.web.CommonResult
-import com.shareyi.molicode.common.context.MoliCodeContext
-import com.shareyi.molicode.common.utils.ThreadLocalHolder
 import com.shareyi.molicode.hander.gencode.loader.AutoMakeLoadHandler
 import com.shareyi.molicode.service.conf.AcConfigService
 import com.shareyi.molicode.service.conf.CommonExtInfoService
@@ -46,26 +46,38 @@ class AutoCodeServiceImpl implements AutoCodeService {
     @Override
     CommonResult<String> generateCode(AutoCodeParams autoMakeParams) {
         CommonResult result = CommonResult.create();
+        long startTime = System.currentTimeMillis();
         try {
             autoMakeParams.setLoadTemplateContent(true)
             ResourceTypeEnum resourceTypeEnum = EnumCode.Parser.parseToNullSafe(ResourceTypeEnum.class, autoMakeParams.resourceType, ResourceTypeEnum.FILE);
-            if(resourceTypeEnum == ResourceTypeEnum.FILE){
+            if (resourceTypeEnum == ResourceTypeEnum.FILE || resourceTypeEnum == ResourceTypeEnum.DATABASE) {
                 Validate.notEmpty(autoMakeParams.getTableModelPath(), "tableModelPath不能为空")
-            }else{
+            } else {
                 Validate.notEmpty(autoMakeParams.getFrontContent(), "frontContent不能为空")
+            }
+            //如果是headless模式，输出目录设置为默认值，前台传入的无效
+            if (Profiles.getInstance().isHeadLess()) {
+                String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(autoMakeParams.getProjectKey());
+                projectOutputDir = FileUtil.contactPath(projectOutputDir, MoliCodeStringUtils.getTimeBasedStr());
+                autoMakeParams.setProjectOutputDir(projectOutputDir);
             }
             Validate.notEmpty(autoMakeParams.getProjectOutputDir(), "代码输出目录不能为空")
             MoliCodeContext moliCodeContext = MoliCodeContext.create(autoMakeParams)
             ThreadLocalHolder.setMoliCodeContext(moliCodeContext)
             HandlerChainFactoryImpl.executeByHandlerAware(CodeGenMainHandlerAware.class, moliCodeContext)
-            // String message = generateCodeInner(autoMakeParams);
+
+            result.addModel(MoliCodeConstant.CTX_KEY_ZIP_FILE_NAME, moliCodeContext.get(MoliCodeConstant.CTX_KEY_ZIP_FILE_NAME));
             result.setResultInfo(true, moliCodeContext.getMessage().toString());
         } catch (Exception e) {
             LogHelper.FRONT_CONSOLE.error("生成代码失败，data={}", autoMakeParams, e);
             result.failed("生成代码失败，原因是：" + e.getMessage());
-        }finally{
+        } finally {
             ThreadLocalHolder.removeMoliCodeContext();
         }
+        long endTime = System.currentTimeMillis();
+        def costTime = endTime - startTime;
+        result.addModel(MoliCodeConstant.ResultInfo.START_TIME_KEY, startTime);
+        result.addModel(MoliCodeConstant.ResultInfo.COST_TIME_KEY, costTime);
         return result
     }
 /**

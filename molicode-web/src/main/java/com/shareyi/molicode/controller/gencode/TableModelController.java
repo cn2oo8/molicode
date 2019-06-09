@@ -1,26 +1,16 @@
 package com.shareyi.molicode.controller.gencode;
 
-import com.shareyi.molicode.common.constants.AutoCodeConstant;
-import com.shareyi.molicode.common.constants.ConfigKeyConstant;
-import com.shareyi.molicode.common.enums.DataTypeEnum;
-import com.shareyi.molicode.common.utils.BindResourceUtil;
-import com.shareyi.molicode.common.utils.LogHelper;
-import com.shareyi.molicode.common.vo.code.SimpleTableInfoVo;
 import com.shareyi.molicode.common.vo.page.TableModelPageVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.conf.AcConfigService;
 import com.shareyi.molicode.service.gencode.DatabaseTableService;
 import com.shareyi.molicode.web.base.BaseController;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 @Controller
 @RequestMapping("/autoCode/tableModel")
@@ -41,6 +31,25 @@ public class TableModelController extends BaseController {
         return databaseTableService.getTableList(projectKey).getReturnMap();
     }
 
+
+    /**
+     * 通过表名，获取表结构
+     */
+    @RequestMapping("/getTableInfo")
+    @ResponseBody
+    public Map getTableInfo(String projectKey, String tableName) {
+        return databaseTableService.getTableInfo(projectKey, tableName).getReturnMap();
+    }
+
+
+    /**
+     * 保存表模型
+     */
+    @RequestMapping("/saveTableModel")
+    @ResponseBody
+    public Map saveTableModel(String projectKey, String tableModelJson) {
+        return databaseTableService.saveTableModel(projectKey, tableModelJson).getReturnMap();
+    }
 
     /**
      * 生成tableModel

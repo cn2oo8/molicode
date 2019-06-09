@@ -1,8 +1,8 @@
 <template>
     <div>
         <Input v-model="model" @on-change="updateValue" :disabled="disabled">
-        <Button slot="append" icon="ios-search" type="primary" @click="fileChooser" :disabled="disabled">选择</Button>
-        <Button slot="append" icon="document" @click="openFile">open</Button>
+        <Button slot="append" icon="ios-search" type="primary" @click="fileChooser" :disabled="disabled" v-show="windowName!='headless'">选择</Button>
+        <Button slot="append" icon="document" @click="openFile" v-show="windowName!='headless'">open</Button>
         </Input>
 
     </div>
@@ -46,16 +46,14 @@
         },
         data() {
             return {
-                model: this.value
+                model: this.value,
+                windowName: this.$store.state.autoCode.profile['browserWindowName']
             };
         },
         watch: {
             value(newVal, oldVal) {
                 this.model = newVal;
             }
-        },
-        beforeMount: function () {
-            this.$store.dispatch(constants.types.LOAD_SYSTEM_PROFILE, {'_vue': this});
         },
         methods: {
             updateValue() {

@@ -104,16 +104,16 @@ export const appRouter = [
                 component: () => import('@//views/auto-code/globalConfiguration.vue')
             },
             {
-                path: 'config',
+                path: 'configuration',
                 icon: 'ios-list',
-                name: 'config',
+                name: 'configuration',
                 title: '项目配置',
                 component: () => import('@//views/auto-code/configuration.vue')
             },
             {
-                path: 'coding',
+                path: 'autoCode',
                 icon: 'android-bicycle',
-                name: 'coding',
+                name: 'autoCode',
                 title: '代码生成',
                 component: () => import('@//views/auto-code/autoCode.vue')
             }

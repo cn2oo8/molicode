@@ -9,6 +9,7 @@ import VueI18n from 'vue-i18n';
 import axiosInstance from '@/request/axiosInstance'
 import '../my-theme/index.less';
 import util from '@/libs/util';
+import constants from '@/constants/constants';
 
 Vue.use(VueI18n);
 Vue.use(iView);
@@ -30,6 +31,9 @@ new Vue({
         this.$store.commit('initCachepage');
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
+        // load system profile
+        this.$store.dispatch(constants.types.LOAD_SYSTEM_PROFILE, {'_vue': this});
+
         // iview-admin检查更新
         util.checkUpdate(this);
     },

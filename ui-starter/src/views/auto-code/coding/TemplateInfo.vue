@@ -72,7 +72,7 @@
         data() {
             return {
                 showModal: false,
-                template: null
+                template: {}
             };
         },
         methods: {

@@ -13,7 +13,8 @@ import java.util.Objects;
 public enum BrowserWindowEnum implements EnumCode<String>{
 
     SWING("swing","swing窗口"),
-    JX_BROWSER("jxBrowser","JXBrowser");
+    JX_BROWSER("jxBrowser","JXBrowser"),
+    HEADLESS("headless","无窗口");
 
     String code,desc;
 

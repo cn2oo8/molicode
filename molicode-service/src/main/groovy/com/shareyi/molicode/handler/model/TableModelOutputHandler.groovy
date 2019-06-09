@@ -1,16 +1,18 @@
 package com.shareyi.molicode.handler.model
 
-import com.shareyi.fileutil.FileUtil;
-import com.shareyi.molicode.common.chain.handler.SimpleHandler;
+import com.shareyi.fileutil.FileUtil
+import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
+import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.filter.ColumnFilter
 import com.shareyi.molicode.common.filter.impl.PKFilter
 import com.shareyi.molicode.common.vo.code.OptionVo
 import com.shareyi.molicode.common.vo.code.TableDefineVo
 import com.shareyi.molicode.common.vo.code.TableModelVo
-import com.shareyi.molicode.common.vo.page.TableModelPageVo;
-import com.shareyi.molicode.context.TableModelContext;
-import org.springframework.stereotype.Service;
+import com.shareyi.molicode.common.vo.page.TableModelPageVo
+import com.shareyi.molicode.context.TableModelContext
+import org.apache.commons.lang3.StringUtils
+import org.springframework.stereotype.Service
 
 /**
  * tableModel 数据库处理器
@@ -27,7 +29,7 @@ class TableModelOutputHandler extends SimpleHandler<TableModelContext> implement
 
     @Override
     boolean shouldHandle(TableModelContext tableModelContext) {
-        return true;
+        return !Objects.equals(tableModelContext.tableModelPageVo.modelType, CommonConstant.MODEL_TYPE_JSON);
     }
 
     @Override
@@ -71,6 +73,9 @@ class TableModelOutputHandler extends SimpleHandler<TableModelContext> implement
 
                 }
             }
+        }
+        if (StringUtils.isBlank(tableModelPageVo.tableModelDir)) {
+            tableModelPageVo.setTableModelDir(FileUtil.getRuntimeFilePath("tableModel/project_" + tableModelPageVo.projectKey))
         }
         File f = new File(FileUtil.contactPath(tableModelPageVo.tableModelDir, tableDefineVo.id?.trim() + ".xml"));
         FileUtil.makeSureFileExsit(f);

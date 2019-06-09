@@ -9,6 +9,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import java.util.Objects;
+
 /**
  * springboot启动入口类
  *
@@ -23,13 +25,14 @@ public class SpringbootApplication {
 
         SpringApplicationBuilder builder = new SpringApplicationBuilder(SpringbootApplication.class);
         ConfigurableApplicationContext configurableApplicationContext = builder.headless(false).web(true).run(args);
-
-        // ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(SpringbootApplication.class, args);
         ConfigurableEnvironment configurableEnvironment = configurableApplicationContext.getEnvironment();
         final String port = configurableEnvironment.getProperty("server.port", "8086");
         final String windowName = configurableEnvironment.getProperty("browser.windowName", BrowserWindowEnum.SWING.getCode());
-        final String url = "http://127.0.0.1:" + port + "/index.html?t=" + System.currentTimeMillis();
-        GuiWindowFactory.getInstance().createWindow(windowName).initAndOpen(url);
 
+        //headless状态下，无开启窗口
+        if(!Objects.equals(windowName, BrowserWindowEnum.HEADLESS.getCode())){
+            final String url = "http://127.0.0.1:" + port + "/index.html?t=" + System.currentTimeMillis();
+            GuiWindowFactory.getInstance().createWindow(windowName).initAndOpen(url);
+        }
     }
 }

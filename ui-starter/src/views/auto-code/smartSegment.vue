@@ -119,6 +119,7 @@
     };
 
     export default {
+        name: 'smartSegment',
         props: {
             bindId: {
                 type: String,
