@@ -5,14 +5,13 @@ import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
-import com.shareyi.molicode.common.enums.DataTypeEnum
-import com.shareyi.molicode.common.enums.EngineType
-import com.shareyi.molicode.common.enums.OwnerTypeEnum
+import com.shareyi.molicode.common.enums.*
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
 import com.shareyi.molicode.common.vo.code.ConfigVo
+import com.shareyi.molicode.common.vo.git.GitRepoVo
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
 import com.shareyi.molicode.service.conf.AcConfigService
 import com.shareyi.molicode.service.conf.CommonExtInfoService
@@ -64,9 +63,19 @@ class AutoMakeServiceImpl implements AutoMakeService {
         }
         Map<String, Map<String, String>> globalConfigMap = commonExtInfoService.getConfigMapByOwner(OwnerTypeEnum.SYSTEM.getCode(), CommonConstant.DEFAULT_SYS_OWNER, DataTypeEnum.JSON);
 
+        this.parsePathConfigInfo(globalConfigMap, codeParams, pathConfigMap)
+        this.parseConfigVoInfo(codeConfigMap, codeParams)
+    }
+
+    /**
+     * 转换路径相关的参数
+     *
+     * @param globalConfigMap
+     * @param codeParams
+     * @param pathConfigMap
+     */
+    private void parsePathConfigInfo(Map<String, Map<String, String>> globalConfigMap, AutoCodeParams codeParams, Map<String, String> pathConfigMap) {
         Map<String, String> mavenConfigMap = globalConfigMap.get(ConfigKeyConstant.GlobalMavenConfig.CONFIG_KEY)
-
-
         if (StringUtils.isEmpty(codeParams.getAutoXmlPath())) {
             codeParams.setAutoXmlPath(MapUtils.getString(pathConfigMap, ConfigKeyConstant.PathConfig.AUTO_XML_PATH));
         }
@@ -74,19 +83,40 @@ class AutoMakeServiceImpl implements AutoMakeService {
             codeParams.setTemplateBaseDir(MapUtils.getString(pathConfigMap, ConfigKeyConstant.PathConfig.TEMPLATE_BASE_PATH));
         }
 
-        codeParams.setTemplateType(MapUtils.getString(pathConfigMap, ConfigKeyConstant.PathConfig.TEMPLATE_TYPE))
-        MavenResourceVo resourceVo = new MavenResourceVo();
-        codeParams.setMavenResourceVo(resourceVo)
-        if (pathConfigMap != null) {
-            BeanUtils.populate(resourceVo, pathConfigMap);
+        def templateType = MapUtils.getString(pathConfigMap, ConfigKeyConstant.PathConfig.TEMPLATE_TYPE);
+        codeParams.setTemplateType(templateType)
+        TemplateTypeEnum templateTypeEnum = EnumCode.Parser.parseTo(TemplateTypeEnum.class, templateType);
+        switch (templateTypeEnum) {
+            case TemplateTypeEnum.GIT:
+                GitRepoVo gitRepoVo = new GitRepoVo();
+                BeanUtils.populate(gitRepoVo, pathConfigMap);
+                codeParams.gitRepoInfo = gitRepoVo;
+                break;
+            case TemplateTypeEnum.MAVEN:
+                MavenResourceVo resourceVo = new MavenResourceVo();
+                codeParams.setMavenResourceVo(resourceVo)
+                if (pathConfigMap != null) {
+                    BeanUtils.populate(resourceVo, pathConfigMap);
+                }
+                if (mavenConfigMap != null) {
+                    BeanUtils.populate(resourceVo, mavenConfigMap);
+                }
+                if (StringUtils.isEmpty(resourceVo.mavenTempDir)) {
+                    resourceVo.setMavenTempDir(FileUtil.getRuntimeFilePath("maven_temp"));
+                }
+                break;
+            case TemplateTypeEnum.LOCAL:
+                break;
         }
-        if (mavenConfigMap != null) {
-            BeanUtils.populate(resourceVo, mavenConfigMap);
-        }
-        if (StringUtils.isEmpty(resourceVo.mavenTempDir)) {
-            resourceVo.setMavenTempDir(FileUtil.getRuntimeFilePath("maven_temp"));
-        }
+    }
 
+    /**
+     * 转换老的configVo的参数数据
+     *
+     * @param codeConfigMap
+     * @param codeParams
+     */
+    private void parseConfigVoInfo(Map<String, String> codeConfigMap, AutoCodeParams codeParams) {
         ConfigVo config = new ConfigVo();
         BeanUtils.populate(config, codeConfigMap);
 

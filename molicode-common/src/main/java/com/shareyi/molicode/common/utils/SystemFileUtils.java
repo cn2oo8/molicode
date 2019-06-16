@@ -143,4 +143,35 @@ public class SystemFileUtils {
     public static String buildZipOutputDir(String projectKey) {
         return FileUtil.getRuntimeFilePath(MoliCodeConstant.CODE_OUTPUT_ZIP_NAME + projectKey);
     }
+
+    /**
+     * 获取示例工程输出路径
+     *
+     * @return
+     */
+    public static String getSampleProjectOutDir() {
+        return FileUtil.getRuntimeFilePath("code_output/sampleProject");
+    }
+
+    /**
+     * 获取仓库路径
+     *
+     * @param repoName
+     * @return
+     */
+    public static String buildRepoPath(String repoName) {
+        return FileUtil.getRuntimeFilePath("molicode_repos/" + repoName);
+    }
+
+    /**
+     * 获取仓库地址path
+     *
+     * @param remoteUrl
+     * @param branchName
+     * @return
+     */
+    public static String buildGitRepoDir(String remoteUrl, String branchName) {
+        String repoDirName = MoliCodeStringUtils.md5(remoteUrl) + "_" + branchName;
+        return FileUtil.getRuntimeFilePath("molicode_repos/git/" + repoDirName);
+    }
 }

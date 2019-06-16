@@ -8,6 +8,7 @@ import com.shareyi.molicode.common.chain.handler.awares.CodeGenMainHandlerAware
 import com.shareyi.molicode.common.constants.MoliCodeConstant
 import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.EnumCode
+import com.shareyi.molicode.common.enums.OutputTypeEnum
 import com.shareyi.molicode.common.enums.ResourceTypeEnum
 import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.valid.Validate
@@ -55,8 +56,12 @@ class AutoCodeServiceImpl implements AutoCodeService {
             } else {
                 Validate.notEmpty(autoMakeParams.getFrontContent(), "frontContent不能为空")
             }
-            //如果是headless模式，输出目录设置为默认值，前台传入的无效
+            //headless模式只能输出到zip文件
             if (Profiles.getInstance().isHeadLess()) {
+                autoMakeParams.setOutputType(OutputTypeEnum.ZIP_FILE.getCode());
+            }
+            //如果是headless模式，输出目录设置为默认值，前台传入的无效
+            if (Objects.equals(autoMakeParams.outputType, OutputTypeEnum.ZIP_FILE.getCode())) {
                 String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(autoMakeParams.getProjectKey());
                 projectOutputDir = FileUtil.contactPath(projectOutputDir, MoliCodeStringUtils.getTimeBasedStr());
                 autoMakeParams.setProjectOutputDir(projectOutputDir);

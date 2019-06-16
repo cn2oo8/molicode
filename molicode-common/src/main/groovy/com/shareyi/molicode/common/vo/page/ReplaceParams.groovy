@@ -1,11 +1,13 @@
 package com.shareyi.molicode.common.vo.page
 
+import com.shareyi.molicode.common.vo.git.GitRepoVo
+
 /**
  * 替换参数
  * @author david
  * @since 2018/9/2
  */
-class ReplaceParams {
+class ReplaceParams extends GitRepoVo {
 
     /**
      * 原路径
@@ -35,4 +37,9 @@ class ReplaceParams {
      * 文件目录转换表达式
      */
     String dirReplaceExp;
+
+    /**
+     * 模板类型
+     */
+    String templateType;
 }

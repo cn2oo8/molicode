@@ -1,6 +1,7 @@
 package com.shareyi.molicode.common.utils;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -103,11 +104,24 @@ public class MoliCodeStringUtils {
     }
 
 
+    /**
+     * 执行md5
+     *
+     * @param str
+     * @return
+     */
+    public static String md5(String str) {
+        return DigestUtils.md5Hex(str);
+    }
+
+
     public static void main(String[] args) {
         System.out.println(compareVersion("1.0.0", "1.0.1"));
         System.out.println(compareVersion("1.0.a", "1.0.1"));
         System.out.println(compareVersion("1.0.2", "1.0.1"));
         System.out.println(compareVersion("1.0.1", "1.0.1"));
         System.out.println(getTimeBasedStr());
+
+        System.out.println(md5("hahaha"));
     }
 }

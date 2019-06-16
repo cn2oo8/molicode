@@ -97,13 +97,6 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'global-config',
-                icon: 'ios-world',
-                name: 'global-config',
-                title: '全局配置',
-                component: () => import('@//views/auto-code/globalConfiguration.vue')
-            },
-            {
                 path: 'configuration',
                 icon: 'ios-list',
                 name: 'configuration',

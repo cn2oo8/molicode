@@ -34,7 +34,6 @@
         methods: {
             connectServer: function () {
                 var _this = this;
-                var host = window.location.host;
                 var webSocket = this.webSocket;
                 if (webSocket === null || webSocket.readyState === 2 || webSocket.readyState === 3) {
                     if (this.sid === null || this.sid === '') {

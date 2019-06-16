@@ -5,6 +5,7 @@ import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
 import com.shareyi.molicode.common.chain.handler.awares.SmartSegmentHandlerAware
 import com.shareyi.molicode.common.context.SmartSegmentContext
 import com.shareyi.molicode.common.utils.LogHelper
+import com.shareyi.molicode.common.utils.Profiles
 import com.shareyi.molicode.common.vo.page.SmartSegmentPageVo
 import com.shareyi.molicode.common.web.CommonResult
 import com.shareyi.molicode.service.replace.SmartSegmentService
@@ -19,11 +20,13 @@ import org.springframework.stereotype.Service
 @Service
 class SmartSegmentServiceImpl implements SmartSegmentService {
 
-
     @Override
     CommonResult<String> execute(SmartSegmentPageVo smartSegmentPageVo) {
         CommonResult<String> result = new CommonResult<String>();
         try {
+            if(Profiles.instance.isHeadLess()){
+                return result.failed("headless模式下无法使用本功能！");
+            }
             SmartSegmentContext context = SmartSegmentContext.create(smartSegmentPageVo);
             HandlerChainFactoryImpl.executeByHandlerAware(SmartSegmentHandlerAware.class, context)
             result.succeed();

@@ -51,6 +51,17 @@ public class Profiles {
      */
     private Map<String, Object> cacheMap = new ConcurrentHashMap<>();
 
+    /**
+     * 基础工程仓库
+     */
+    @Value("${repo.url.baseProjectRepos}")
+    private String baseProjectReposUrl;
+    /**
+     * 模板仓库
+     */
+    @Value("${repo.url.templateRepos}")
+    private String templateReposUrl;
+
 
     public String getFileEncoding() {
         return fileEncoding;
@@ -82,6 +93,22 @@ public class Profiles {
 
     public void setBrowserCallbackCenter(BrowserCallbackCenter browserCallbackCenter) {
         this.browserCallbackCenter = browserCallbackCenter;
+    }
+
+    public String getBaseProjectReposUrl() {
+        return baseProjectReposUrl;
+    }
+
+    public void setBaseProjectReposUrl(String baseProjectReposUrl) {
+        this.baseProjectReposUrl = baseProjectReposUrl;
+    }
+
+    public String getTemplateReposUrl() {
+        return templateReposUrl;
+    }
+
+    public void setTemplateReposUrl(String templateReposUrl) {
+        this.templateReposUrl = templateReposUrl;
     }
 
     /**
@@ -120,11 +147,14 @@ public class Profiles {
         map.put("moliCodeVersion", moliCodeVersion);
         map.put("fileEncoding", fileEncoding);
         map.put("browserWindowName", browserWindowName);
+        map.put("baseProjectReposUrl", baseProjectReposUrl);
+        map.put("templateReposUrl", templateReposUrl);
         return map;
     }
 
     /**
      * 是否为headless状态
+     *
      * @return
      */
     public boolean isHeadLess() {

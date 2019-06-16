@@ -9,7 +9,8 @@ package com.shareyi.molicode.common.enums;
 public enum TemplateTypeEnum implements EnumCode<String> {
 
     LOCAL("local", "本地"),
-    MAVEN("maven", "maven");
+    MAVEN("maven", "maven"),
+    GIT("git", "git");
 
     private final String code;
     private final String desc;

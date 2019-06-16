@@ -3,7 +3,29 @@ import axiosInstance from '@/request/axiosInstance'
 var _ = require('underscore')
 
 var requestUtils = {
-     postSubmit: function (_vue, url, param, successHandler, errorHandler, loading) {
+    getSubmit: function (_vue, url, param, successHandler, errorHandler, loading) {
+        let loadingKey = 'loading'
+        if (loading == null || loading === false) {
+            loadingKey = null
+        } else if (loading && _.isString(loading)) {
+            loadingKey = loading
+        }
+        if (loading && _vue[loadingKey] != null) {
+            _vue[loadingKey] = true
+        }
+        axiosInstance.get(url, param).then(response => {
+            if (loadingKey && loadingKey !== '') {
+                _vue[loadingKey] = false
+            }
+            var _this = _vue == null ? this : _vue
+            successHandler.call(_this, response.data);
+        }, error => {
+            console.log(error)
+            var data = {'success': false, 'message': '服务器异常，请联系管理员或重试！'}
+            requestUtils.fProcessResult(_vue, data, successHandler, errorHandler, loadingKey)
+        })
+    },
+    postSubmit: function (_vue, url, param, successHandler, errorHandler, loading) {
         let loadingKey = 'loading'
         if (loading == null || loading === false) {
             loadingKey = null

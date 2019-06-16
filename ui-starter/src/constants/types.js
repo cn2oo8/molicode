@@ -55,3 +55,8 @@ export const LOAD_AUTOMAKE_DEF_PRJ = 'loadAutoMakeDefPrj';
  * 获取系统配置信息
  */
 export const LOAD_SYSTEM_PROFILE = 'loadSystemProfile';
+/**
+ * 获取仓库信息
+ */
+export const LOAD_REPO_BASE_PROJECT = 'loadRepoBaseProject';
+export const LOAD_REPO_TEMPLATE = 'loadRepoTemplate';

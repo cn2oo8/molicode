@@ -120,7 +120,7 @@
                     }
                     requestUtils.postSubmit(this, constants.urls.conf.acConfig.save, this.getConfigData(), function (data) {
                         this.$Message.success({
-                            content: '保存数据库配置成功',
+                            content: '保存配置成功',
                             duration: 3
                         });
                     }, null, true);

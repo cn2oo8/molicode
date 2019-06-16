@@ -83,7 +83,7 @@ public class SwingBrowserWindow implements BrowserWindow, HyperlinkListener {
         LOGGER.info("set swing browser url={}", url);
         final StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("<html><h1>说明</h1> 本窗口仅仅提供文件选择器功能！");
-        stringBuilder.append("<p>服务已经启动，请用浏览器打开地址访问：</p>");
+        stringBuilder.append("<p>服务已经启动，请用chrome或者Firefox（低版本IE无法正常运行）浏览器打开地址访问：</p>");
         stringBuilder.append("<a href=\"");
         stringBuilder.append(url).append("\">");
         stringBuilder.append(url).append("</a>");

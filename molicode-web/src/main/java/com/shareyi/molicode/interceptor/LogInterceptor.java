@@ -1,6 +1,7 @@
 package com.shareyi.molicode.interceptor;
 
 import com.shareyi.molicode.common.constants.CommonConstant;
+import com.shareyi.molicode.common.utils.Profiles;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
         //判断是否为本地ip访问，否则抛异常，避免出现严重问题
         String remoteHost = httpServletRequest.getRemoteHost();
-        if (!Objects.equals(remoteHost, CommonConstant.LOCAL_HOST_IP)) {
+        if (!Objects.equals(remoteHost, CommonConstant.LOCAL_HOST_IP) && !Profiles.getInstance().isHeadLess()) {
             return false;
         }
         return true;

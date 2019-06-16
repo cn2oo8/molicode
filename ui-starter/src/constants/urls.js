@@ -58,5 +58,14 @@ export default {
             getProfileCache: 'sys/system/getProfileCache',
             getProfileInfo: 'sys/system/getProfileInfo'
         }
+    },
+    repo: {
+        git: {
+            fetchRepo: 'repo/git/fetchRepo'
+        },
+        github: {
+            'baseProjectRepos': 'https://raw.githubusercontent.com/cn2oo8/molicode_template_awesome/master/api/molicode_repo/base-project-repos.json',
+            'templateRepos': 'https://raw.githubusercontent.com/cn2oo8/molicode_template_awesome/master/api/molicode_repo/template-repos.json'
+        }
     }
 };

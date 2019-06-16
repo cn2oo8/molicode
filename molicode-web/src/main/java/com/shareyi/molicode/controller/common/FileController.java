@@ -1,28 +1,28 @@
 package com.shareyi.molicode.controller.common;
 
-import com.shareyi.molicode.common.constants.CommonConstant;
-import com.shareyi.molicode.common.gui.GuiWindowFactory;
-import com.shareyi.molicode.common.utils.LogHelper;
-import com.shareyi.molicode.common.utils.SystemFileUtils;
-import com.shareyi.molicode.common.utils.SystemInvoker;
-import com.shareyi.molicode.common.vo.FileInfoVo;
-import com.shareyi.molicode.common.vo.FileVo;
-import com.shareyi.molicode.common.web.CommonResult;
-import com.shareyi.molicode.web.base.BaseController;
 import com.shareyi.fileutil.FileIo;
 import com.shareyi.fileutil.FileUtil;
 import com.shareyi.joywindow.window.FileChooserHelper;
+import com.shareyi.molicode.common.constants.CommonConstant;
+import com.shareyi.molicode.common.gui.GuiWindowFactory;
+import com.shareyi.molicode.common.utils.LogHelper;
+import com.shareyi.molicode.common.utils.Profiles;
+import com.shareyi.molicode.common.utils.SystemFileUtils;
+import com.shareyi.molicode.common.utils.SystemInvoker;
+import com.shareyi.molicode.common.vo.FileVo;
+import com.shareyi.molicode.common.web.CommonResult;
+import com.shareyi.molicode.service.common.FileService;
+import com.shareyi.molicode.web.base.BaseController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.awt.*;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,10 +41,16 @@ public class FileController extends BaseController {
 
     protected FileChooserHelper fileChooserHelper = null;
 
+    @Resource
+    private FileService fileService;
+
     @ResponseBody
     @RequestMapping(value = "fileChooser", method = {RequestMethod.GET, RequestMethod.POST})
     public Map fileChooser(FileVo fileVo) {
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
         String filePath = null;
         //转换文件路径为正确路径
         String parentPath = SystemFileUtils.parseFilePath(fileVo.getParentPath());
@@ -105,6 +111,9 @@ public class FileController extends BaseController {
     @RequestMapping(value = "openFile", method = {RequestMethod.GET, RequestMethod.POST})
     public Map startFile(FileVo fileVo) {
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
         if (StringUtils.isEmpty(fileVo.getEditFilePath())) {
             return result.failed("文件路径为空！").getReturnMap();
         } else {
@@ -130,6 +139,9 @@ public class FileController extends BaseController {
     public Map editFile(FileVo fileVo) {
         String editFilePath = fileVo.getEditFilePath();
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
         if (StringUtils.isEmpty(editFilePath)) {
             result.setSuccess(false);
             result.setMessage("文件路径为空！");
@@ -163,6 +175,9 @@ public class FileController extends BaseController {
     public Map saveFile(FileVo fileVo) {
         String editFilePath = fileVo.getEditFilePath();
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
         if (StringUtils.isEmpty(editFilePath) || "null".equals(editFilePath)) {
             result.setSuccess(false);
             result.setMessage("文件路径为空！");
@@ -189,6 +204,10 @@ public class FileController extends BaseController {
     @RequestMapping(value = "getFileContent", method = {RequestMethod.GET, RequestMethod.POST})
     public Map getFileContent(FileVo fileVo) {
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
+
         String editFilePath = fileVo.getEditFilePath();
         if (StringUtils.isEmpty(editFilePath)) {
             result.failed("文件路径为空！");
@@ -238,6 +257,10 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/openDirectory", method = {RequestMethod.GET, RequestMethod.POST})
     public Map openDirectory(FileVo fileVo) {
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
+
         String parentPath = fileVo.getParentPath();
         if (StringUtils.isEmpty(parentPath)) {
             result.setMessage("directory path is null");
@@ -262,30 +285,18 @@ public class FileController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "listFiles", method = {RequestMethod.GET, RequestMethod.POST})
     public Map listFiles(final FileVo fileVo) {
-        CommonResult result = CommonResult.create();
-        if (StringUtils.isEmpty(fileVo.getParentPath())) {
-            result.setMessage("directory path is null");
-        } else {
-            String path = SystemFileUtils.parseFilePath(fileVo.getParentPath());
-            final File file = new File(path);
-            if (file.exists() && file.isDirectory()) {
-                File[] files = file.listFiles(new FileFilter() {
-                    public boolean accept(File pathname) {
-                        if (StringUtils.isNotEmpty(fileVo.getFileExt()) &&
-                                pathname.getName().endsWith(fileVo.getFileExt())) {
-                            return true;
-                        }
-                        return false;
-                    }
-                });
+        CommonResult result = fileService.listFiles(fileVo);
+        return result.getReturnMap();
+    }
 
-                List<FileInfoVo> fileList = SystemFileUtils.getFileInfo(files);
-                result.addModel("fileList", fileList);
-                result.setSuccess(true);
-            } else {
-                result.failed("dirctory [" + path + "] is not exists");
-            }
-        }
+
+    /**
+     * 列举仓库列表
+     */
+    @ResponseBody
+    @RequestMapping(value = "listRepo", method = {RequestMethod.GET, RequestMethod.POST})
+    public Map listRepo(String repoName) {
+        CommonResult result = fileService.listRepo(repoName);
         return result.getReturnMap();
     }
 

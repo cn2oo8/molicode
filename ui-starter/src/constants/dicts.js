@@ -8,7 +8,8 @@ const dictKinds = {
     REPLACE_TYPE_DICT: 'replace_type_dict',
     DATA_MODEL_TYPE_DICT: 'data_model_type_dict',
     RESOURCE_TYPE_DICT: 'resource_type_dict',
-    STD_JSP_TAG: 'std_jsp_tag'
+    STD_JSP_TAG: 'std_jsp_tag',
+    OUTPUT_TYPE_DICT: 'output_type_dict'
 }
 
 export default {
@@ -117,10 +118,11 @@ export default {
                 'parentKey': '',
                 'sortNum': 1,
                 'cssType': 'blue'
-            }, {
+            },
+            {
                 kind: dictKinds.TEMPLATE_TYPE_DICT,
-                itemKey: 'maven',
-                'itemName': 'maven',
+                itemKey: 'git',
+                'itemName': 'git',
                 'parentKind': '',
                 'parentKey': '',
                 'sortNum': 1,
@@ -298,6 +300,35 @@ export default {
                 'parentKey': '',
                 'sortNum': 8
             }
+        ],
+        [dictKinds.OUTPUT_TYPE_DICT]: [
+            {
+                kind: dictKinds.OUTPUT_TYPE_DICT,
+                itemKey: '1',
+                'itemName': '本地工程目录',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 1,
+                'cssType': 'blue'
+            }, {
+                kind: dictKinds.OUTPUT_TYPE_DICT,
+                itemKey: '2',
+                'itemName': 'zip压缩包',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 2,
+                'cssType': 'green'
+            },
+            {
+                kind: dictKinds.OUTPUT_TYPE_DICT,
+                itemKey: '3',
+                'itemName': '输出到前台',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 3,
+                'cssType': 'green'
+            }
         ]
+
     }
 };

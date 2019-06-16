@@ -8,7 +8,8 @@ export default {
             tableModelDir: 'tableModelDir',
             autoXmlPath: 'autoXmlPath',
             templateBaseDir: 'templateBaseDir',
-            projectOutputDir: 'projectOutputDir'
+            projectOutputDir: 'projectOutputDir',
+            outputType: 'outputType'
         }
     }
 };

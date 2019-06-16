@@ -120,6 +120,9 @@
                 this.setDefaultProject(newVal);
             }
         },
+        mounted() {
+            this.$store.dispatch(constants.types.LOAD_SYSTEM_PROFILE, {_vue: this});
+        },
         methods: {
             setDefaultProject(project) {
                 if (this.$store) {

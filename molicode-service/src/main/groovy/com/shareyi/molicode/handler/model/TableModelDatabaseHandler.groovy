@@ -122,8 +122,9 @@ class TableModelDatabaseHandler extends SimpleHandler<TableModelContext> impleme
             GroovyRowResult firstRow = sql.firstRow("Select table_name,table_comment from INFORMATION_SCHEMA.TABLES Where table_schema = ? AND table_name =? ", [meta['database'], tableModelPageVo.getTableName()])
             if (firstRow != null) {
                 def comment = firstRow.getAt(1);
-                if(StringUtils.isNotEmpty(comment)){
-                    tableDefine.cnname = comment;
+                String commentStr = comment == null ? null : comment.toString();
+                if (StringUtils.isNotEmpty(commentStr)) {
+                    tableDefine.setCnname(commentStr);
                 }
             }
         } catch (Exception e) {

@@ -13,8 +13,10 @@ import com.shareyi.molicode.common.enums.TemplateTypeEnum;
 import com.shareyi.molicode.common.enums.columns.AcProjectColumn;
 import com.shareyi.molicode.common.exception.AutoCodeException;
 import com.shareyi.molicode.common.utils.*;
+import com.shareyi.molicode.common.valid.Validate;
 import com.shareyi.molicode.common.vo.code.AutoCodeParams;
 import com.shareyi.molicode.common.vo.code.AutoMakeVo;
+import com.shareyi.molicode.common.vo.git.GitRepoVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.gencode.AutoMakeService;
 import com.shareyi.molicode.service.maven.MavenService;
@@ -74,40 +76,19 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
             if (typeEnum == null) {
                 typeEnum = TemplateTypeEnum.LOCAL;
             }
-            if (Objects.equals(typeEnum, TemplateTypeEnum.LOCAL)) {
-                ValidateUtils.notEmptyField(autoCodeParams, "templateBaseDir");
-                File templateBaseFile = new File(autoCodeParams.getTemplateBaseDir());
-                if (!templateBaseFile.exists()) {
-                    throw new AutoCodeException("文件目录不存在，templateBaseDir=" + autoCodeParams.getTemplateBaseDir(), ResultCodeEnum.PARAM_ERROR);
-                }
-                if (templateBaseFile.isFile()) {
-                    if (!isJarFile(templateBaseFile.getName())) {
-                        throw new AutoCodeException("文件不是jar file，templateBaseDir=" + autoCodeParams.getTemplateBaseDir(), ResultCodeEnum.PARAM_ERROR);
-                    }
-                    autoMake = loadAutoMakeFromJarFile(autoCodeParams, templateBaseFile);
-                } else {
-                    autoCodeParams.setAutoXmlPath(FileUtil.contactPath(autoCodeParams.getTemplateBaseDir(), AUTO_CODE_XML_FILE_NAME));
-                    String autoXmlPath = SystemFileUtils.parseFilePath(autoCodeParams.getAutoXmlPath());
-                    String templateBaseDir = SystemFileUtils.parseFilePath(autoCodeParams.getTemplateBaseDir());
-                    autoMake = XmlUtils.getAutoMake(autoXmlPath, templateBaseDir);
-                    /**
-                     * 用户自定义工具，用户自定义数据处理
-                     */
-                    String customToolContent = this.getContentFromFile(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_TOOL, autoCodeParams.getTemplateBaseDir());
-                    String customDataProcessContent = this.getContentFromFile(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_DATA_PROCESS, autoCodeParams.getTemplateBaseDir());
-                    autoMake.putMoliTemplate(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_TOOL, customToolContent);
-                    autoMake.putMoliTemplate(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_DATA_PROCESS, customDataProcessContent);
-                }
-            } else if (Objects.equals(typeEnum, TemplateTypeEnum.MAVEN)) {
-                CommonResult<File> mavenFileResult = mavenService.getMavenTemplateFile(autoCodeParams.getMavenResourceVo(),
-                        Objects.equals(CommonConstant.STD_YN_YES_STR, autoCodeParams.getFlushMaven()));
-                if (!mavenFileResult.isSuccess()) {
-                    throw new AutoCodeException(mavenFileResult.getMessage(), ResultCodeEnum.FAILURE);
-                }
-                File jarFilePath = mavenFileResult.getDefaultModel();
-                autoMake = loadAutoMakeFromJarFile(autoCodeParams, jarFilePath);
+            switch (typeEnum) {
+                case LOCAL:
+                    autoMake = loadFromLocal(autoCodeParams);
 
+                    break;
+                case MAVEN:
+                    autoMake = loadFromMaven(autoCodeParams);
+                    break;
+                case GIT:
+                    autoMake = loadFromGit(autoCodeParams);
+                    break;
             }
+
             context.put(MoliCodeConstant.CTX_KEY_AUTO_MAKE, autoMake);
         } catch (AutoCodeException ee) {
             throw ee;
@@ -115,6 +96,81 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
             LogHelper.EXCEPTION.error("加载AutoMake.xml配置文件失败", e);
             throw new AutoCodeException("加载AutoMake.xml配置文件失败，原因是：" + e.getMessage(), ResultCodeEnum.EXCEPTION);
         }
+    }
+
+    /**
+     * 从git仓库中获取
+     *
+     * @param autoCodeParams
+     * @return
+     * @throws Exception
+     */
+    private AutoMakeVo loadFromGit(AutoCodeParams autoCodeParams) throws Exception {
+        GitRepoVo gitRepoVo = autoCodeParams.getGitRepoInfo();
+        ValidateUtils.notEmptyField(gitRepoVo, "gitUrl");
+        ValidateUtils.notEmptyField(gitRepoVo, "branchName");
+        String filePath = SystemFileUtils.buildGitRepoDir(gitRepoVo.getGitUrl(), gitRepoVo.getBranchName());
+        if (StringUtils.isNotBlank(gitRepoVo.getTemplateRelativePath())) {
+            filePath = FileUtil.contactPath(filePath, gitRepoVo.getTemplateRelativePath());
+        }
+        File file = new File(filePath);
+        Validate.assertTrue(file.exists() && file.isDirectory(), "仓库尚未拉取或者不存在，请检查！gitUrl=" + gitRepoVo.getGitUrl());
+        autoCodeParams.setTemplateBaseDir(filePath);
+        return loadFromLocal(autoCodeParams);
+    }
+
+    /**
+     * 从maven仓库获取
+     *
+     * @param autoCodeParams
+     * @return
+     * @throws IOException
+     */
+    private AutoMakeVo loadFromMaven(AutoCodeParams autoCodeParams) throws IOException {
+        AutoMakeVo autoMake;
+        CommonResult<File> mavenFileResult = mavenService.getMavenTemplateFile(autoCodeParams.getMavenResourceVo(),
+                Objects.equals(CommonConstant.STD_YN_YES_STR, autoCodeParams.getFlushMaven()));
+        if (!mavenFileResult.isSuccess()) {
+            throw new AutoCodeException(mavenFileResult.getMessage(), ResultCodeEnum.FAILURE);
+        }
+        File jarFilePath = mavenFileResult.getDefaultModel();
+        autoMake = loadAutoMakeFromJarFile(autoCodeParams, jarFilePath);
+        return autoMake;
+    }
+
+    /**
+     * 从本地文件目录获取
+     *
+     * @param autoCodeParams
+     * @return
+     * @throws Exception
+     */
+    private AutoMakeVo loadFromLocal(AutoCodeParams autoCodeParams) throws Exception {
+        AutoMakeVo autoMake;
+        ValidateUtils.notEmptyField(autoCodeParams, "templateBaseDir");
+        File templateBaseFile = new File(autoCodeParams.getTemplateBaseDir());
+        if (!templateBaseFile.exists()) {
+            throw new AutoCodeException("文件目录不存在，templateBaseDir=" + autoCodeParams.getTemplateBaseDir(), ResultCodeEnum.PARAM_ERROR);
+        }
+        if (templateBaseFile.isFile()) {
+            if (!isJarFile(templateBaseFile.getName())) {
+                throw new AutoCodeException("文件不是jar file，templateBaseDir=" + autoCodeParams.getTemplateBaseDir(), ResultCodeEnum.PARAM_ERROR);
+            }
+            autoMake = loadAutoMakeFromJarFile(autoCodeParams, templateBaseFile);
+        } else {
+            autoCodeParams.setAutoXmlPath(FileUtil.contactPath(autoCodeParams.getTemplateBaseDir(), AUTO_CODE_XML_FILE_NAME));
+            String autoXmlPath = SystemFileUtils.parseFilePath(autoCodeParams.getAutoXmlPath());
+            String templateBaseDir = SystemFileUtils.parseFilePath(autoCodeParams.getTemplateBaseDir());
+            autoMake = XmlUtils.getAutoMake(autoXmlPath, templateBaseDir);
+            /**
+             * 用户自定义工具，用户自定义数据处理
+             */
+            String customToolContent = this.getContentFromFile(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_TOOL, autoCodeParams.getTemplateBaseDir());
+            String customDataProcessContent = this.getContentFromFile(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_DATA_PROCESS, autoCodeParams.getTemplateBaseDir());
+            autoMake.putMoliTemplate(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_TOOL, customToolContent);
+            autoMake.putMoliTemplate(AutoCodeConstant.MOLI_TEMPLATE_CUSTOM_DATA_PROCESS, customDataProcessContent);
+        }
+        return autoMake;
     }
 
     /**

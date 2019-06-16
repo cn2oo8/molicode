@@ -1,8 +1,9 @@
 package com.shareyi.molicode.common.vo.code
 
-import com.shareyi.molicode.sdk.dto.ExtAttrDto
 import com.shareyi.molicode.common.utils.PubUtils
+import com.shareyi.molicode.common.vo.git.GitRepoVo
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
+import com.shareyi.molicode.sdk.dto.ExtAttrDto
 import org.apache.commons.lang3.StringUtils
 
 /**
@@ -71,10 +72,6 @@ class AutoCodeParams extends ExtAttrDto {
     String frontContent;
 
     /**
-     * 是否直接输出到前台
-     */
-    String outputFrontType;
-    /**
      * 和页面会话ID，日志输出使用
      */
     String sid;
@@ -103,7 +100,16 @@ class AutoCodeParams extends ExtAttrDto {
     /**
      * json配置信息
      */
-    Map<String,Object> jsonConfig
+    Map<String, Object> jsonConfig
+    /**
+     * git仓库的配置
+     */
+    GitRepoVo gitRepoInfo
+
+    /**
+     * 输出路径
+     */
+    String outputType;
 
     /**
      * 是否包含该模板ID
@@ -245,6 +251,7 @@ class AutoCodeParams extends ExtAttrDto {
         this.jsonConfig = jsonConfig
     }
 
+
     @Override
     String toString() {
         return "AutoCodeParams{" +
@@ -260,7 +267,6 @@ class AutoCodeParams extends ExtAttrDto {
                 ", dataModelType='" + dataModelType + '\'' +
                 ", resourceType='" + resourceType + '\'' +
                 ", frontContent='" + frontContent + '\'' +
-                ", outputFrontType='" + outputFrontType + '\'' +
                 ", sid='" + sid + '\'' +
                 ", mavenResourceVo=" + mavenResourceVo +
                 ", loadTemplateContent=" + loadTemplateContent +

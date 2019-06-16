@@ -1,21 +1,20 @@
 package com.shareyi.molicode.handler.gencode.generate
 
-import com.shareyi.fileutil.FileUtil;
-import com.shareyi.molicode.common.chain.handler.SimpleHandler;
+import com.shareyi.fileutil.FileUtil
+import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TemplateGenerateHandlerAware
-import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.constants.MoliCodeConstant
+import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.EngineType
+import com.shareyi.molicode.common.enums.OutputTypeEnum
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
-import com.shareyi.molicode.common.vo.code.TemplateVo;
-import com.shareyi.molicode.common.context.MoliCodeContext
-import com.shareyi.molicode.service.websocket.WebSocketServer
+import com.shareyi.molicode.common.vo.code.TemplateVo
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Service;
+import org.apache.poi.ss.usermodel.Workbook
+import org.springframework.stereotype.Service
 
 /**
  * 输出处理器
@@ -53,7 +52,7 @@ class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
 
                 if (!Objects.equals(template.engine, EngineType.JXLS.type) && (
                         Objects.equals(template.getDestFile(), "moli_code_front.out") ||
-                                Objects.equals(CommonConstant.STD_YN_YES_STR, autoCodeParams.outputFrontType)
+                                Objects.equals(OutputTypeEnum.FRONT_CONSOLE.getCode(), autoCodeParams.outputType)
                 )) {
                     this.outputFront(context, template);
                     continue;
@@ -64,7 +63,7 @@ class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
                 if (file.exists()) {
                     //如果不允许覆盖，直接略过
                     if (!autoCodeParams.overrideFlag) {
-                        LogHelper.FRONT_CONSOLE.warn "文件已存在，不允许覆盖，略过:" + file.absolutePath ;
+                        LogHelper.FRONT_CONSOLE.warn "文件已存在，不允许覆盖，略过:" + file.absolutePath;
                         continue;
                     }
                 }
@@ -89,13 +88,13 @@ class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
 
                         f.withWriter("UTF-8") { writer -> writer.write template.renderedContent }
                     }
-                    LogHelper.FRONT_CONSOLE.info "[" + template.desc + "]模板执行成功，生成文件在：" + f.absolutePath ;
-                }else{
-                    LogHelper.FRONT_CONSOLE.error "[" + template.desc + "]模板执行失败，创建文件失败，路径：" + file.absolutePath ;
+                    LogHelper.FRONT_CONSOLE.info "[" + template.desc + "]模板执行成功，生成文件在：" + f.absolutePath;
+                } else {
+                    LogHelper.FRONT_CONSOLE.error "[" + template.desc + "]模板执行失败，创建文件失败，路径：" + file.absolutePath;
                 }
             } catch (Exception e) {
                 LogHelper.FRONT_CONSOLE.error("输出文件失败， template={}", template, e)
-               // message.append "[" + template.desc + "]模板输出失败，原因是：" + e.message ;
+                // message.append "[" + template.desc + "]模板输出失败，原因是：" + e.message ;
             }
         }
     }

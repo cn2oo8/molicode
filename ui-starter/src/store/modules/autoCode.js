@@ -11,7 +11,7 @@ const autoCode = {
             mavenConfig: null
         },
         autoMake: null,
-        profile: null
+        profile: {}
     },
     mutations: {
         setDefaultProjectKey(state, projectKey) {
@@ -168,11 +168,12 @@ const autoCode = {
          */
         [constants.types.COPY_PROJECT]: ({state, commit}, payload) => {
             let project = payload['project'];
-            if (!project) {
-                return;
-            }
             var _this = payload['_vue'] ? payload['_vue'] : this;
             return new Promise((resolve, reject) => {
+                if (!project) {
+                    resolve(project);
+                    return;
+                }
                 requestUtils.postSubmit(_this, constants.urls.conf.acProject.copyProject, project, function (data) {
                     // commit(constants.types.SET_DEFAULT_PROJECT_CONFIG, data.value);
                     if (payload['setDefault'] === '1') {
@@ -269,11 +270,12 @@ const autoCode = {
          * @returns {*}
          */
         [constants.types.LOAD_SYSTEM_PROFILE]: ({state, commit, dispatch}, payload) => {
-            if (state.profile !== null) {
-                return;
-            }
             var _this = payload['_vue'] ? payload['_vue'] : this;
             return new Promise((resolve, reject) => {
+                if (state.profile['browserWindowName'] !== null) {
+                    resolve(state.profile);
+                    return;
+                }
                 requestUtils.postSubmit(_this, constants.urls.sys.system.getProfileInfo, {}, function (data) {
                     var profile = data['value'];
                     state.profile = profile;

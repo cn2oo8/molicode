@@ -2,6 +2,7 @@ package com.shareyi.molicode;
 
 import com.shareyi.molicode.common.enums.BrowserWindowEnum;
 import com.shareyi.molicode.common.gui.GuiWindowFactory;
+import com.shareyi.molicode.common.utils.LogHelper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -29,10 +30,13 @@ public class SpringbootApplication {
         final String port = configurableEnvironment.getProperty("server.port", "8086");
         final String windowName = configurableEnvironment.getProperty("browser.windowName", BrowserWindowEnum.SWING.getCode());
 
+        final String url = "http://127.0.0.1:" + port + "/index.html?t=" + System.currentTimeMillis();
+        LogHelper.DEFAULT.info("server started success! windowName={}, url is: {}", windowName, url);
+
         //headless状态下，无开启窗口
-        if(!Objects.equals(windowName, BrowserWindowEnum.HEADLESS.getCode())){
-            final String url = "http://127.0.0.1:" + port + "/index.html?t=" + System.currentTimeMillis();
+        if (!Objects.equals(windowName, BrowserWindowEnum.HEADLESS.getCode())) {
             GuiWindowFactory.getInstance().createWindow(windowName).initAndOpen(url);
+
         }
     }
 }

@@ -1,7 +1,8 @@
 export default {
     common: {
         refreshList: 'refreshList',
-        updateItem: 'updateItem'
+        updateItem: 'updateItem',
+        'itemChoose': 'itemChoose'
     },
     conf: {
         setDefaultProject: 'setDefaultProject'

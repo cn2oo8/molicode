@@ -4,6 +4,14 @@
 
             <Row v-show="windowName!='headless'">
                 <Col span="24">
+                    <Form-item label="代码输出方式" prop="outputType" style="width: 95%">
+                        <dict-radio v-model="formItems.outputType" :disabled="disableInput"
+                                    :kind="this.constants.dicts.dictKinds.OUTPUT_TYPE_DICT"></dict-radio>
+                    </Form-item>
+                </Col>
+
+
+                <Col span="24" v-show="formItems.outputType ==='1'">
                     <Form-item label="代码输出目录" prop="projectOutputDir" style="width: 96%">
                         <file-chooser v-model="formItems.projectOutputDir" :disabled="true"
                                       dialogType="directory"></file-chooser>
@@ -33,19 +41,8 @@
             <Row>
                 <Col span="24">
                     <Form-item label="模板列表" style="width: 100%">
-                        <template-list ref="templateList" :flush-maven="formItems.flushMaven" :sid="formItems.sid"
+                        <template-list ref="templateList" :sid="formItems.sid"
                                        v-on:fetchTemplateList="connectLogServer"></template-list>
-                    </Form-item>
-                </Col>
-            </Row>
-
-
-            <Row v-show="pathConfig.templateType == 'maven'">
-                <Col span="24">
-                    <Form-item label="强制刷新maven资源" prop="flushMaven" style="width: 96%">
-                        <dict-radio v-model="formItems.flushMaven" :disabled="disableInput"
-                                    :kind="this.constants.dicts.dictKinds.STD_YESNO_DICT"></dict-radio>
-                        请配合maven setting.xml 里面的 &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;使用。
                     </Form-item>
                 </Col>
             </Row>
@@ -90,20 +87,11 @@
             </Row>
 
 
-            <Row>
+            <Row v-show="windowName != 'headless' && formItems.outputType ==='1'">
                 <Col span="24">
                     <Form-item label="是否覆盖文件" prop="overrideFlag" style="width: 96%">
                         <dict-radio v-model="formItems.overrideFlag" :disabled="disableInput"
                                     :kind="this.constants.dicts.dictKinds.STD_BOOLEAN_DICT"></dict-radio>
-                    </Form-item>
-                </Col>
-            </Row>
-
-            <Row>
-                <Col span="24">
-                    <Form-item label="是否直接输出到前台" style="width: 96%">
-                        <dict-radio v-model="formItems.outputFrontType" :disabled="disableInput"
-                                    :kind="this.constants.dicts.dictKinds.STD_YESNO_DICT"></dict-radio>
                     </Form-item>
                 </Col>
             </Row>
@@ -124,7 +112,7 @@
             </Row>
 
 
-            <Row v-show="windowName == 'headless'">
+            <Row v-show="windowName == 'headless' || formItems.outputType ==='2'">
                 <Col span="24">
                     <Form-item label="执行结果文件" style="width: 100%">
                         <result-info ref="resultInfo"></result-info>
@@ -153,7 +141,7 @@
     import logConsole from '@/views/common/log/log-console';
     import autoMakeInfo from './autoMakeInfo';
     import tableModelJson from '@/views/auto-code/coding/tableModelJson';
-    import resultInfo from './resultInfo';
+    import resultInfo from '@/views/common/log/resultInfo';
 
     var _ = require('underscore')
 
@@ -170,24 +158,22 @@
             var configType = this.$route.query['configType'];
             var myData = {
                 formItems: {
+                    outputType: '1',
                     templateBaseDir: '',
                     tableModelPath: '',
                     projectOutputDir: '',
                     overrideFlag: 'false',
                     tableModelDir: '',
                     templateIds: '',
-                    flushMaven: '2',
                     dataModelType: 'tableModel',
                     resourceType: 'database',
                     frontContent: '',
-                    outputFrontType: '2',
                     sid: 'sid_' + new Date().getTime()
                 },
                 formRules: validateSet,
                 disableInput: false,
                 loading: false,
-                constants,
-                windowName: this.$store.state.autoCode.profile['browserWindowName']
+                constants
             };
             if (configType === 'ump') {
                 myData.formItems.dataModelType = 'json';
@@ -195,6 +181,7 @@
             }
             if (myData.windowName === 'headless') {
                 validateSet.projectOutputDir[0].required = false;
+                myData.formItem.outputType = '2';
             }
             return myData;
         },
@@ -213,8 +200,15 @@
             this.formItems.templateBaseDir = configObject[constants.bizKeys.configs.pathConfig.templateBaseDir];
             this.formItems.projectOutputDir = configObject[constants.bizKeys.configs.pathConfig.projectOutputDir];
             this.formItems.tableModelDir = configObject[constants.bizKeys.configs.pathConfig.tableModelDir];
+            this.formItems.outputType = configObject[constants.bizKeys.configs.pathConfig.outputType];
+            if (!this.formItems.outputType) {
+                this.formItems.outputType = '1';
+            }
             this.formValidateChange();
             this.loadBrowserPassContent();
+            let promise = this.$store.dispatch(constants.types.LOAD_SYSTEM_PROFILE, {_vue: this});
+            promise.then(function (profile) {
+            });
         },
         computed: {
             storeTemplateBaseDir: function () {
@@ -230,11 +224,18 @@
                 return this.$store.getters.getConfigObjectVal(constants.bizKeys.configs.pathConfig.configKey,
                     constants.bizKeys.configs.pathConfig.tableModelDir);
             },
+            storeOutputType: function () {
+                return this.$store.getters.getConfigObjectVal(constants.bizKeys.configs.pathConfig.configKey,
+                    constants.bizKeys.configs.pathConfig.outputType);
+            },
             pathConfig: function () {
                 return this.$store.getters.getConfigObject(constants.bizKeys.configs.pathConfig.configKey);
             },
             resourceType: function () {
                 return this.formItems.resourceType;
+            },
+            windowName: function () {
+                return this.$store.state.autoCode.profile['browserWindowName'];
             }
         },
         watch: {
@@ -247,6 +248,12 @@
             storeTableModelDir: function (newVal) {
                 this.formItems.tableModelDir = newVal;
             },
+            storeOutputType: function (newVal) {
+                if (!newVal) {
+                    newVal = '1';
+                }
+                this.formItems.outputType = newVal;
+            },
             resourceType: function (newVal) {
                 if (newVal === 'file') {
                     this.formRules.tableModelPath[0].required = true;
@@ -255,6 +262,9 @@
                     this.formRules.tableModelPath[0].required = false;
                     this.formRules.frontContent[0].required = true;
                 }
+            },
+            'formItems.outputType': function (newVal) {
+                this.formRules.projectOutputDir[0].required = newVal === '1';
             }
         },
         methods: {
@@ -317,7 +327,8 @@
                     return;
                 }
                 let projectKey = this.$store.state.autoCode.defaultProjectKey;
-                let zipUrl = '/zip/' + projectKey + '/' + zipFileName;
+                var host = window.location.host;
+                let zipUrl = window.location.protocol + '//' + host + '/zip/' + projectKey + '/' + zipFileName;
                 let resultInfo = {
                     zipUrl,
                     'startTime': data['startTime'],

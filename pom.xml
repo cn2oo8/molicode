@@ -174,6 +174,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.eclipse.jgit</groupId>
+                <artifactId>org.eclipse.jgit</artifactId>
+                <version>5.3.2.201906051522-r</version>
+            </dependency>
+
+
+            <dependency>
                 <groupId>com.google.googlejavaformat</groupId>
                 <artifactId>google-java-format</artifactId>
                 <version>1.1</version>

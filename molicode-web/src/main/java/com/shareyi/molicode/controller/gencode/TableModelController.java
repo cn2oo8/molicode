@@ -2,7 +2,6 @@ package com.shareyi.molicode.controller.gencode;
 
 import com.shareyi.molicode.common.vo.page.TableModelPageVo;
 import com.shareyi.molicode.common.web.CommonResult;
-import com.shareyi.molicode.service.conf.AcConfigService;
 import com.shareyi.molicode.service.gencode.DatabaseTableService;
 import com.shareyi.molicode.web.base.BaseController;
 import org.springframework.stereotype.Controller;
@@ -18,9 +17,6 @@ public class TableModelController extends BaseController {
 
     @Resource
     DatabaseTableService databaseTableService;
-
-    @Resource
-    AcConfigService acConfigService;
 
     /**
      * 生成tableModel

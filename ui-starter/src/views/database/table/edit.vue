@@ -26,6 +26,10 @@
         <Table :columns="columns" :data="tableDefine.columns" size="small" :border="true"></Table>
 
         <div slot="footer">
+            <Button type="default" :loading="loading" @click="cancel">
+                取消
+            </Button>
+
             <Button type="info" :loading="loading" @click="saveModelAndGenCode(false)">
                 <Icon type="checkmark"></Icon>
                 保存表模型
