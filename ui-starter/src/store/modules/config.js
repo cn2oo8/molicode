@@ -1,6 +1,5 @@
 import constants from '@/constants/constants';
 import requestUtils from '@/request/requestUtils.js';
-import * as configUtil from '@/libs/configUtil.js'
 
 const autoCode = {
     state: {
@@ -9,19 +8,6 @@ const autoCode = {
         }
     },
     mutations: {},
-    getters: {
-        getConfigObject: (state, getters) => {
-            return function (configKey) {
-                return configUtil.getConfigObject(state.defaultProjectConfig, configKey);
-            };
-        },
-        getConfigObjectVal: (state, getters) => {
-            return function (configKey, bizKey) {
-                return configUtil.getConfigObjectVal(state.defaultProjectConfig,
-                    configKey, bizKey);
-            };
-        }
-    },
     actions: {
         /**
          * 加载bindResource

@@ -106,8 +106,8 @@
                 });
             },
             itemChoose(value) {
-                this.$emit(constants.actions.common.itemChoose, value);
                 this.showModal = false;
+                this.$emit(constants.actions.common.itemChoose, value);
             }
         },
         components: {

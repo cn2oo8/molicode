@@ -126,6 +126,7 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
      * @return
      * @throws IOException
      */
+    @Deprecated
     private AutoMakeVo loadFromMaven(AutoCodeParams autoCodeParams) throws IOException {
         AutoMakeVo autoMake;
         CommonResult<File> mavenFileResult = mavenService.getMavenTemplateFile(autoCodeParams.getMavenResourceVo(),

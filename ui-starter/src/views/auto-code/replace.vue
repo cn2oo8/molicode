@@ -247,17 +247,21 @@
         },
         watch: {
             'formItems.templateType': function (newVal) {
-                this._templateTypeChange();
+                this._templateTypeChange(newVal);
             }
         },
         mounted() {
             var _this = this;
             let promise = this.$store.dispatch(constants.types.GET_BIND_RESOURCE, {bindId: this.bindId});
             promise.then((data) => {
-                if (data['branchName'] === null || data['branchName'] === '') {
+                if (!data['branchName']) {
                     data['branchName'] = 'master';
                 }
+                if (!data['templateType']) {
+                    data['templateType'] = 'git';
+                }
                 _this.formItems = data;
+                this._templateTypeChange();
             });
         },
         methods: {
@@ -292,6 +296,7 @@
                     let params = _.clone(this.formItems);
                     params['sid'] = this.sid;
                     var datas = requestUtils.serializeObject(params, true, true);
+                    this.connectLogServer();
                     requestUtils.postSubmit(this, constants.urls.autoCode.replace.execute, datas, function (data) {
                         this.$Message.success({
                             content: '执行成功',
@@ -324,8 +329,11 @@
                     }, null, true);
                 });
             },
-            _templateTypeChange: function () {
-                let isGit = this.formItems.templateType === 'git';
+            _templateTypeChange: function (newVal) {
+                if (!newVal) {
+                    newVal = this.formItems.templateType;
+                }
+                let isGit = newVal === 'git';
                 this.formRules.gitUrl[0].required = isGit;
                 this.formRules.branchName[0].required = isGit;
                 this.formRules.srcPath[0].required = !isGit;
@@ -352,6 +360,9 @@
                     if (extConfig['ignoreExp']) {
                         this.formItems.ignoreExp = extConfig['ignoreExp'];
                     }
+                    if (extConfig['throwExp']) {
+                        this.formItems.throwExp = extConfig['throwExp'];
+                    }
                     if (extConfig['replaceExp']) {
                         this.formItems.replaceExp = extConfig['replaceExp'];
                     }
@@ -362,6 +373,9 @@
             },
             repoChoose() {
                 this.$refs.gitRepoList.open();
+            },
+            connectLogServer() {
+                this.$refs.logConsole.connectServer();
             }
         },
         components: {

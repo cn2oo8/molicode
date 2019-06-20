@@ -5,13 +5,9 @@ import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
 import com.shareyi.molicode.common.web.CommonResult
 import com.shareyi.molicode.service.maven.MavenService
-import com.shareyi.molicode.service.websocket.WebSocketServer
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream
 import groovy.io.FileType
 import org.apache.commons.beanutils.PropertyUtils
 import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.StringUtils
-import org.apache.maven.shared.invoker.*
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 
@@ -63,43 +59,7 @@ class MavenServiceImpl implements MavenService {
     CommonResult<String> fetchMavenResource(MavenResourceVo resourceVo) {
         CommonResult result = CommonResult.create();
         try {
-            InvocationRequest request = new DefaultInvocationRequest();
-            request.setPomFile(new File(resourceVo.getMavenTempDir(), "pom.xml"));
-            String goal = "install";
-            //--settings F:\Maven\settings.xml mvn命令指定setting
-            if (StringUtils.isNotEmpty(resourceVo.mavenSetting)) {
-                goal += " --settings " + resourceVo.mavenSetting;
-            }
-            if (StringUtils.isNotEmpty(resourceVo.javaHome)) {
-                File javaHome = new File(resourceVo.javaHome)
-                if (javaHome.isDirectory() && javaHome.exists()) {
-                    request.setJavaHome(new File(resourceVo.javaHome))
-                }
-            }
-            request.setGoals(Collections.singletonList(goal));
-            Invoker invoker = new DefaultInvoker();
-            ByteOutputStream outputStream = new ByteOutputStream(1024 * 1024);
-            PrintStream printStream = new PrintStream(outputStream);
-            invoker.setOutputHandler(new PrintStreamHandler(printStream, false));
-            if (StringUtils.isNotEmpty(resourceVo.getMavenHome())) {
-                File mavenHome = new File(resourceVo.getMavenHome())
-                if (mavenHome.isDirectory() && mavenHome.exists()) {
-                    invoker.setMavenHome(mavenHome)
-                }else{
-                    LogHelper.DEFAULT.info("maven home not exist，mavenHome={}", resourceVo.getMavenHome())
-                }
-            }
-
-            invoker.setLocalRepositoryDirectory(new File(resourceVo.localRepository));
-            InvocationResult invocationResult = invoker.execute(request);
-            String output = outputStream.toString();
-            LogHelper.DEFAULT.info("maven execute code={}, output={}", invocationResult.exitCode, output)
-            LogHelper.FRONT_CONSOLE.info("maven execute result:\n{}" , output);
-            if (Objects.equals(invocationResult.exitCode, 0)) {
-                result.succeed()
-            } else {
-                result.failed(output).setReturnCode(String.valueOf(invocationResult.exitCode))
-            }
+            result.failed("maven功能已经下线");
         } catch (Exception e) {
             LogHelper.EXCEPTION.error("拉取maven资源失败, resourceVo={}", resourceVo, e)
             result.failed("拉取maven资源失败，原因是" + e.message)

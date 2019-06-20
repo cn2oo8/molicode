@@ -28,7 +28,7 @@
             </Row>
 
 
-            <div v-show="formItems.templateType=='git'" STYLE="margin-bottom: 20px">
+            <div v-show="formItems.templateType=='git'" style="margin-bottom: 20px">
                 <Form-item label="git url" prop="gitUrl" style="width: 95%">
                     <Input v-model="formItems.gitUrl" :maxlength="200" :disabled="disableInput">
                     <Button slot="append" icon="ios-search" @click="repoChoose">选择</Button>
@@ -42,14 +42,16 @@
                     <Input v-model="formItems.branchName" :maxlength="200" :disabled="disableInput"></Input>
                 </Form-item>
 
+                <Form-item label="模板相对路径" prop="templateRelativePath" style="width: 95%">
+                    <Input v-model="formItems.templateRelativePath" :maxlength="200"
+                           :disabled="disableInput"></Input>
+                </Form-item>
+
+
                 <Collapse simple>
                     <Panel name="1">
                         git鉴权&other
                         <p slot="content">
-                            <Form-item label="模板相对路径" prop="templateRelativePath" style="width: 95%">
-                                <Input v-model="formItems.templateRelativePath" :maxlength="200"
-                                       :disabled="disableInput"></Input>
-                            </Form-item>
 
 
                             <Form-item label="用户名" prop="userName" style="width: 95%">
@@ -124,10 +126,7 @@
                 default: 'pathConfig'
             },
             configInfo: {
-                type: Object,
-                default: function () {
-                    return defConfig;
-                }
+                type: Object
             }
         },
         data: function () {
@@ -137,9 +136,13 @@
                 gitUrl: [{type: 'string', required: false, message: 'gitUrl不能为空', trigger: 'blur'}],
                 branchName: [{type: 'string', required: false, message: 'branchName不能为空', trigger: 'blur'}]
             };
+            let formItems = this.configInfo;
+            if (_.isEmpty(formItems)) {
+                formItems = _.clone(defConfig)
+            }
             return {
                 projectKey: this.defaultProjectKey,
-                formItems: _.clone(this.configInfo),
+                formItems,
                 formRules: formRules,
                 constants,
                 disableInput: false,
@@ -245,9 +248,12 @@
                 this.formRules.projectOutputDir[0].required = (this.formItems.outputType === '1');
             },
             chooseGitRepo(gitRepo) {
-                this.formItems.gitUrl = gitRepo.gitUrl;
-                this.formItems.branchName = gitRepo.branchName;
-                this.formItems.templateRelativePath = gitRepo.templateRelativePath;
+                let _this = this;
+                this.$nextTick(() => {
+                    _this.formItems.gitUrl = gitRepo.gitUrl;
+                    _this.formItems.branchName = gitRepo.branchName;
+                    _this.formItems.templateRelativePath = gitRepo.templateRelativePath;
+                });
             },
             repoChoose() {
                 this.$refs.gitRepoList.open();

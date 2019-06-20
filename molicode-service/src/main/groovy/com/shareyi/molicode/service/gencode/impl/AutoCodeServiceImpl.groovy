@@ -66,7 +66,9 @@ class AutoCodeServiceImpl implements AutoCodeService {
                 projectOutputDir = FileUtil.contactPath(projectOutputDir, MoliCodeStringUtils.getTimeBasedStr());
                 autoMakeParams.setProjectOutputDir(projectOutputDir);
             }
-            Validate.notEmpty(autoMakeParams.getProjectOutputDir(), "代码输出目录不能为空")
+            if (!Objects.equals(autoMakeParams.outputType, OutputTypeEnum.FRONT_CONSOLE.code)) {
+                Validate.notEmpty(autoMakeParams.getProjectOutputDir(), "代码输出目录不能为空")
+            }
             MoliCodeContext moliCodeContext = MoliCodeContext.create(autoMakeParams)
             ThreadLocalHolder.setMoliCodeContext(moliCodeContext)
             HandlerChainFactoryImpl.executeByHandlerAware(CodeGenMainHandlerAware.class, moliCodeContext)

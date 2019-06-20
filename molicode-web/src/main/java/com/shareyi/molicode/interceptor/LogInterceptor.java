@@ -26,7 +26,7 @@ public class LogInterceptor implements HandlerInterceptor {
                              HttpServletResponse httpServletResponse, Object o) throws Exception {
         System.out.println("当前线程：" + Thread.currentThread().getName());
         String sid = httpServletRequest.getParameter(CommonConstant.SID);
-        if (StringUtils.isEmpty(sid)) {
+        if (StringUtils.isNotEmpty(sid)) {
             MDC.put(CommonConstant.SID, sid);
         }
 

@@ -177,6 +177,7 @@
                     }
                     var datas = requestUtils.serializeObject(_.clone(_this.formItems), true, true);
                     datas['sid'] = _this.sid;
+                    this.connectLogServer();
                     requestUtils.postSubmit(this, constants.urls.autoCode.smartSegment.execute, datas, function (data) {
                         this.$Message.success({
                             content: '执行智能片段处理成功',
@@ -187,6 +188,9 @@
                         this.message = data['message']
                     }, true);
                 });
+            },
+            connectLogServer() {
+                this.$refs.logConsole.connectServer();
             }
         },
         components: {
