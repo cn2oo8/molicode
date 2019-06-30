@@ -26,6 +26,9 @@ export default {
         bindResource: {
             getBindResource: 'common/bindResource/getBindResource',
             saveBindResource: 'common/bindResource/saveBindResource'
+        },
+        database: {
+            testConnection: 'common/database/testConnection'
         }
     },
     conf: {

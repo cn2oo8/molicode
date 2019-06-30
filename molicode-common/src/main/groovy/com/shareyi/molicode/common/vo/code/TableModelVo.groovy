@@ -37,6 +37,11 @@ class TableModelVo {
     Map<String, DictVo> dictMap;
 
     /**
+     * 自定义配置
+     */
+    Map customProps;
+
+    /**
      * 是否不在List中
      * @param listName
      * @param columnName

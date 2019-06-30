@@ -53,6 +53,11 @@ class ColumnVo implements Serializable {
      */
     Integer length;
 
+    /**
+     * 自定义配置
+     */
+    Map customProps;
+
     void setLength(String length) {
         if (length != null) {
             try {

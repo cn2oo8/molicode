@@ -8,6 +8,7 @@
                 </Col>
                 <Col span="20" style="font-size: smaller">
                     使用数据库表生成代码时候，需要进行配置，目前仅支持MySQL数据库，其它数据库后期进行支持,如果有需要请联系。
+                    暂不支持高版本MySQL.
                 </Col>
             </Row>
 
@@ -57,6 +58,10 @@
                 <Button type="primary" @click="save" :loading="loading">
                     <Icon type="android-done"></Icon>
                     Save
+                </Button>
+
+                <Button type="info" @click="testConnection" :loading="loading">
+                    Test Connection
                 </Button>
             </FormItem>
         </Form>
@@ -133,7 +138,27 @@
                     }, null, true);
                 });
             },
-            getConfigData () {
+            testConnection: function () {
+                if (!this.projectKey) {
+                    this.$Message.error({
+                        content: '您还没有选择项目',
+                        duration: 3
+                    });
+                    return;
+                }
+                this.$refs['formItems'].validate((valid) => {
+                    if (!valid) {
+                        return false;
+                    }
+                    requestUtils.postSubmit(this, constants.urls.common.database.testConnection, this.getConfigData(), function (data) {
+                        this.$Message.success({
+                            content: '链接数据库成功',
+                            duration: 5
+                        });
+                    }, null, true);
+                });
+            },
+            getConfigData() {
                 return {
                     projectKey: this.projectKey,
                     configKey: this.configKey,

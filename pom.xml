@@ -168,12 +168,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.maven.shared</groupId>
-                <artifactId>maven-invoker</artifactId>
-                <version>3.0.1</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.eclipse.jgit</groupId>
                 <artifactId>org.eclipse.jgit</artifactId>
                 <version>5.3.2.201906051522-r</version>

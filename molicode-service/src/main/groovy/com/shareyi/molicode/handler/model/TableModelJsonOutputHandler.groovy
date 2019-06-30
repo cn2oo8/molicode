@@ -2,11 +2,14 @@ package com.shareyi.molicode.handler.model
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.serializer.SerializerFeature
+import com.google.common.collect.Lists
+import com.google.common.collect.Sets
 import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.utils.Profiles
+import com.shareyi.molicode.common.utils.PubUtils
 import com.shareyi.molicode.common.vo.code.ColumnVo
 import com.shareyi.molicode.common.vo.code.TableDefineVo
 import com.shareyi.molicode.common.vo.code.TableModelVo
@@ -76,28 +79,59 @@ class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> imple
             return;
         }
 
+        List<String> allColumnList = Lists.newArrayList();
+        Set<String> columnSet = Sets.newHashSet()
+        tableModelVo.tableDefine.columns.each {
+            column ->
+                columnSet.add(column.getColumnName())
+                allColumnList.add(column.getColumnName())
+        }
         TableModelVo preTableModelVo = JSON.parseObject(preConfig, TableModelVo.class);
-        //TODO 可以确认一下column是否还存在
         tableModelVo.orderColumns = preTableModelVo.orderColumns;
         tableModelVo.bizFieldsMap = preTableModelVo.bizFieldsMap;
         tableModelVo.dictMap = preTableModelVo.dictMap;
-
+        for (Map.Entry<String, String> entry : tableModelVo.bizFieldsMap) {
+            String key = entry.getKey();
+            if (Objects.equals(key, "allColumn")) {
+                entry.setValue(StringUtils.join(allColumnList, ","));
+            } else {
+                entry.setValue(this.filterColumn(entry.getValue(), columnSet));
+            }
+        }
 
         tableModelVo.tableDefine.id = preTableModelVo.tableDefine.id;
         tableModelVo.tableDefine.cnname = preTableModelVo.tableDefine.cnname;
         tableModelVo.tableDefine.pageSize = preTableModelVo.tableDefine.pageSize;
         tableModelVo.tableDefine.isPaged = preTableModelVo.tableDefine.isPaged;
+        tableModelVo.customProps = preTableModelVo.customProps;
 
-
-        preTableModelVo.tableDefine.columns.each{preColumn ->
+        preTableModelVo.tableDefine.columns.each { preColumn ->
             ColumnVo columnVo = tableModelVo.tableDefine.getColumnByColumnName(preColumn.columnName);
-            if(columnVo!=null){
+            if (columnVo != null) {
                 columnVo.setCnname(preColumn.cnname)
                 columnVo.setCanBeNull(preColumn.canBeNull)
                 columnVo.setJspTag(preColumn.jspTag)
                 columnVo.setReadonly(preColumn.readonly)
                 columnVo.setCanBeNull(preColumn.canBeNull)
+                columnVo.setCustomProps(preColumn.customProps)
             }
         }
+    }
+
+    /**
+     * 过滤字段，必须在新的数据库也存在
+     * @param columnNames
+     * @param allColumnSet
+     * @return
+     */
+    String filterColumn(String columnNames, HashSet<String> allColumnSet) {
+        List<String> columnNameList = PubUtils.stringToList(columnNames);
+        List<String> filteredList = Lists.newArrayList();
+        columnNameList.each {name->
+            if(allColumnSet.contains(name)){
+                filteredList.add(name);
+            }
+        }
+        return StringUtils.join(filteredList, ",");
     }
 }

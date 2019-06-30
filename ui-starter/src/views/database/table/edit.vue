@@ -8,15 +8,21 @@
 
         <Form :label-width="120" inline>
             <Row>
-                <Col span="12">
+                <Col span="8">
                     <Form-item label="className(类名)" prop="id" style="width: 90%">
                         <Input v-model="tableDefine.id"></Input>
                     </Form-item>
                 </Col>
 
-                <Col span="12">
+                <Col span="8">
                     <Form-item label="中文名称" prop="cnname" style="width: 90%">
                         <Input v-model="tableDefine.cnname"></Input>
+                    </Form-item>
+                </Col>
+                <Col span="8">
+                    <Form-item label="表自定义扩展" prop="customProps" style="width: 90%">
+                        <custom-props :customPropsObject="tableModel['customProps']"
+                                      @on-change="tableCustomPropsChange" v-if="showTableCusProps"></custom-props>
                     </Form-item>
                 </Col>
             </Row>
@@ -46,6 +52,7 @@
     import constants from '@/constants/constants';
     import requestUtils from '@/request/requestUtils.js';
     import dictSelect from '@/views/common/dict/DictSelect'
+    import customProps from './customProps'
 
     var _ = require('underscore')
 
@@ -61,6 +68,7 @@
                 loading: false,
                 loaded: false,
                 showModal: false,
+                showTableCusProps: false,
                 title: '编辑并生成代码',
                 tableModel: {},
                 tableDefine: {
@@ -231,13 +239,28 @@
                                 }
                             });
                         }
+                    },
+                    {
+                        title: 'customProps',
+                        width: 120,
+                        render: (h, params) => {
+                            return h(customProps, {
+                                props: {
+                                    customPropsObject: params.row['customProps'],
+                                    size: 'small'
+                                },
+                                on: {
+                                    'on-change': (val) => {
+                                        this.tableDefine.columns[params.index]['customProps'] = val;
+                                    }
+                                }
+                            });
+                        }
                     }
                 ]
             };
         },
         methods: {
-            save: function () {
-            },
             cancel() {
                 this.showModal = false;
             },
@@ -245,6 +268,7 @@
                 this.showModal = isShow;
                 if (isShow && !this.loaded) {
                     this.fetchTableModel();
+                    this.showTableCusProps = true;
                 }
             },
             fetchTableModel() {
@@ -288,10 +312,14 @@
                         this.$emit(constants.actions.autoCode.tableModelNotify, this.tableModel);
                     }
                 }, null, true);
+            },
+            tableCustomPropsChange: function (val) {
+                this.tableModel['customProps'] = val;
             }
         },
         components: {
-            dictSelect
+            dictSelect,
+            customProps
         }
     };
 
