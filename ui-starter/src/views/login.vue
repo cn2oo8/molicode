@@ -4,7 +4,6 @@
 
 <template>
     <div class="login" @keydown.enter="handleSubmit">
-
         <div style="padding-left: 5%; padding-top: 20%; width: 100%;height: 100%">
             <h1 style="color:#cecece;font-family: Georgia; ">MoliCode，Tech make life better</h1>
         </div>
@@ -32,19 +31,24 @@
                         </FormItem>
                         <FormItem>
                             <Button @click="handleSubmit" type="primary" long :loading="loading">登录</Button>
+                            <br/>
+                            <Button @click="register" type="default" long :loading="loading">注册</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">输入任意用户名和密码即可</p>
+                    <p class="login-tip">默认用户名：admin, 默认密码：molicodepwd<br/> 如果已调整请记得密码！</p>
                 </div>
             </Card>
         </div>
+
+        <register ref="register"></register>
+
     </div>
 </template>
 
 <script>
     import constants from '@/constants/constants';
-    import Cookies from 'js-cookie';
     import requestUtils from '@/request/requestUtils.js';
+    import register from './user/register'
 
     var _ = require('underscore');
 
@@ -95,7 +99,13 @@
                         });
                     });
                 }, true);
+            },
+            register() {
+                this.$refs.register.show(true);
             }
+        },
+        components: {
+            register
         }
     };
 </script>

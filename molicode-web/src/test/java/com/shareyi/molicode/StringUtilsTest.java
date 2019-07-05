@@ -14,7 +14,7 @@ public class StringUtilsTest {
 
     @Test
     public void test() {
-        System.out.println(StringUtils.replace("\\test aa test bb","\\test","new_"));
+        System.out.println(StringUtils.replace("\\test aa test bb", "\\test", "new_"));
     }
 
 }

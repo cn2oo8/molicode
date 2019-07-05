@@ -115,6 +115,15 @@ public class MoliCodeStringUtils {
         return DigestUtils.md5Hex(str);
     }
 
+    /**
+     * 执行md5
+     *
+     * @param password
+     * @return
+     */
+    public static String md5PasswordWithSalt(String password) {
+        return DigestUtils.md5Hex(password + CommonConstant.PWD_SALT);
+    }
 
     /**
      * 去除字符串的引号，单引号 & 双引号, 以及mysql转义引号

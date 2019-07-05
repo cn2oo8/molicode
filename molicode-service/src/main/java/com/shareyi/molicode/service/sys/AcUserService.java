@@ -30,15 +30,35 @@ public interface AcUserService extends BaseService<AcUser> {
 
     /**
      * 获取登录用户信息
+     *
      * @return
      */
     CommonResult<AcUser> getLoginUser();
 
     /**
      * 修改密码
+     *
      * @param oldPass
      * @param newPass
+     * @param response
      * @return
      */
-    CommonResult<String> changePassword(String oldPass, String newPass);
+    CommonResult<String> changePassword(String oldPass, String newPass, HttpServletResponse response);
+
+    /**
+     * 注册用户
+     *
+     * @param loginUserVo
+     * @return
+     */
+    CommonResult<AcUser> register(LoginUserVo loginUserVo);
+
+
+    /**
+     * 变更用户，只能修改部分字段
+     *
+     * @param acUser
+     * @return
+     */
+    CommonResult<String> updateUserInfo(AcUser acUser);
 }

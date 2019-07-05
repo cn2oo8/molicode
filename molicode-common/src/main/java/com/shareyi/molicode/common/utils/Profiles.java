@@ -41,6 +41,14 @@ public class Profiles {
     @Value("${browser.windowName}")
     private String browserWindowName;
     /**
+     * 服务器安全等级
+     * 1 初级，权限较大；
+     * 2.中级，权限中度；
+     * 3.严格，权限极小；
+     */
+    @Value("${server.safe.level}")
+    private Integer serverSafeLevel;
+    /**
      * 浏览器回调中心
      */
     @Resource
@@ -61,6 +69,9 @@ public class Profiles {
      */
     @Value("${repo.url.templateRepos}")
     private String templateReposUrl;
+
+    @Value("${register.default.roleCode}")
+    private String registerRoleCode;
 
 
     public String getFileEncoding() {
@@ -111,6 +122,15 @@ public class Profiles {
         this.templateReposUrl = templateReposUrl;
     }
 
+
+    public Integer getServerSafeLevel() {
+        return serverSafeLevel;
+    }
+
+    public void setServerSafeLevel(Integer serverSafeLevel) {
+        this.serverSafeLevel = serverSafeLevel;
+    }
+
     /**
      * 放置缓存信息
      *
@@ -159,5 +179,13 @@ public class Profiles {
      */
     public boolean isHeadLess() {
         return Objects.equals(browserWindowName, BrowserWindowEnum.HEADLESS.getCode());
+    }
+
+    public String getRegisterRoleCode() {
+        return registerRoleCode;
+    }
+
+    public void setRegisterRoleCode(String registerRoleCode) {
+        this.registerRoleCode = registerRoleCode;
     }
 }

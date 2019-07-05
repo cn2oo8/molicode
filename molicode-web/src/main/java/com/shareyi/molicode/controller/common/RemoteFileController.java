@@ -1,5 +1,7 @@
 package com.shareyi.molicode.controller.common;
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.service.common.RemoteFileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ public class RemoteFileController {
 
     @ResponseBody
     @RequestMapping(value = "httpGet", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map httpGet(String url) {
         return remoteFileService.httpGet(url).getReturnMap();
     }

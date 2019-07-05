@@ -1,5 +1,7 @@
 package com.shareyi.molicode.controller.common;
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.domain.conf.AcConfig;
 import com.shareyi.molicode.service.common.DatabaseService;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ public class DatabaseController {
 
     @RequestMapping(value = "testConnection", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map testConnection(AcConfig acConfig) {
         return databaseService.testConnection(acConfig).getReturnMap();
     }

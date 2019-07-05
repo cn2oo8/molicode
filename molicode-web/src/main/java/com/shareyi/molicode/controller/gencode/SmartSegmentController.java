@@ -1,5 +1,7 @@
 package com.shareyi.molicode.controller.gencode;
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.vo.page.SmartSegmentPageVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.replace.SmartSegmentService;
@@ -27,6 +29,7 @@ public class SmartSegmentController extends BaseController {
 
     @RequestMapping("/execute")
     @ResponseBody
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map execute(SmartSegmentPageVo segmentPageVo) {
         CommonResult result = smartSegmentService.execute(segmentPageVo);
         return result.getReturnMap();

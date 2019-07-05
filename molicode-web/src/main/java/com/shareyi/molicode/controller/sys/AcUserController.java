@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Controller
@@ -45,10 +46,24 @@ public class AcUserController extends BaseController {
      */
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @ResponseBody
-    public Map changePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass) {
-        CommonResult<String> result = acUserService.changePassword(oldPass, newPass);
+    public Map changePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass, HttpServletResponse response) {
+        CommonResult<String> result = acUserService.changePassword(oldPass, newPass, response);
         return result.getReturnMap();
     }
+
+    /**
+     * 更新用户信息
+     *
+     * @param acUser
+     * @return
+     */
+    @RequestMapping(value = "updateUserInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map updateUserInfo(AcUser acUser) {
+        CommonResult<String> result = acUserService.updateUserInfo(acUser);
+        return result.getReturnMap();
+    }
+
 
     public AcUserService getService() {
         return acUserService;

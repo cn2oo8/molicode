@@ -33,6 +33,7 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(config => {
+    //  console.log(config.url)
     iView.LoadingBar.start()
     return config
 }, error => {
@@ -54,7 +55,7 @@ axiosInstance.interceptors.response.use(response => {
                 query: {message: response.data.message}
             })
         } else if (response.data.returnCode === 'NOT_LOGIN') {
-          //  window.location = cfs.getLoginUrl(response.data.loginAddress)
+            //  window.location = cfs.getLoginUrl(response.data.loginAddress)
         } else if (response.data.returnCode === 'DATA_NOT_VISIBLE') {
             router.replace({
                 path: '/v/error',

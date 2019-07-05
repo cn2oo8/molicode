@@ -1,5 +1,7 @@
 package com.shareyi.molicode.controller.repo;
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.vo.git.GitRepoVo;
 import com.shareyi.molicode.service.git.GitService;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ public class GitController {
 
     @ResponseBody
     @RequestMapping("fetchRepo")
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map fetchRepo(GitRepoVo gitRepoVo) {
         return gitService.fetch(gitRepoVo).getReturnMap();
     }

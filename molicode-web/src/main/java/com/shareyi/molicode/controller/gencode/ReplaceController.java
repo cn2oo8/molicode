@@ -1,5 +1,7 @@
 package com.shareyi.molicode.controller.gencode;
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.vo.page.ReplaceParams;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.replace.CopyAndReplaceService;
@@ -24,6 +26,7 @@ public class ReplaceController extends BaseController {
 
 	@RequestMapping("/doReplace")
 	@ResponseBody
+	@UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
 	public Map doReplace(ReplaceParams replaceParams){
 		CommonResult result=copyAndReplaceService.doCopyAndReplace(replaceParams);
 		return result.getReturnMap();

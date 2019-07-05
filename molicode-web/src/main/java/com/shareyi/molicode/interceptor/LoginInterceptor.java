@@ -1,13 +1,14 @@
 package com.shareyi.molicode.interceptor;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.shareyi.molicode.common.bean.LoginContext;
+import com.shareyi.molicode.common.constants.CacheKeyConstant;
 import com.shareyi.molicode.common.constants.CommonConstant;
-import com.shareyi.molicode.common.enums.ResultCodeEnum;
 import com.shareyi.molicode.common.utils.CookieUtils;
 import com.shareyi.molicode.common.utils.ThreadLocalHolder;
-import com.shareyi.molicode.common.web.CommonResult;
+import com.shareyi.molicode.domain.sys.AcUser;
+import com.shareyi.molicode.manager.sys.AcUserManager;
+import com.shareyi.molicode.service.common.CacheService;
 import com.shareyi.molicode.service.common.CipherService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 登录拦截
@@ -27,12 +28,15 @@ import java.util.List;
  * @date 2019/7/3
  */
 @Service
-public class LoginInterceptor implements HandlerInterceptor {
+public class LoginInterceptor extends BaseAbstractInterceptor implements HandlerInterceptor {
 
     @Resource
     private CipherService cipherService;
-
     private List<String> excludeUrlList = Lists.newArrayList("/dist/", "/loginfree/", "/error");
+    @Resource(name = "guavaCacheService")
+    private CacheService cacheService;
+    @Resource
+    private AcUserManager acUserManager;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -50,6 +54,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         try {
             String decryptStr = cipherService.decryptByRSA(loginStr);
             LoginContext loginContext = LoginContext.buildByLoginInfo(decryptStr);
+            AcUser acUser = this.loadAcUserByUserName(loginContext.getUserName());
+            if (acUser == null || !Objects.equals(acUser.getDataVersion(), loginContext.getDataVersion())) {
+                responseNoAuth(httpServletRequest, httpServletResponse, true, StringUtils.EMPTY);
+                return false;
+            }
+            loginContext.putExtInfo(CommonConstant.LoginContext.AC_USER, acUser);
             ThreadLocalHolder.putRequestThreadInfo(CommonConstant.MOLI_LOGIN_KEY, loginContext);
         } catch (Exception e) {
             responseNoAuth(httpServletRequest, httpServletResponse, true, StringUtils.EMPTY);
@@ -58,47 +68,26 @@ public class LoginInterceptor implements HandlerInterceptor {
         return true;
     }
 
-
     /**
-     * 响应无权限结果
+     * 通过用户名称查询用户信息
      *
-     * @param request
-     * @param response
-     * @param notLogin
-     * @param noAuthCode
-     * @throws IOException
-     */
-    private void responseNoAuth(HttpServletRequest request, HttpServletResponse response, boolean notLogin, String noAuthCode) throws IOException {
-        CommonResult result = CommonResult.create();
-
-        if (notLogin) {
-            String message = "尚未登录";
-            result.setReturnCode(ResultCodeEnum.LOGIN.codeString());
-            result.failed(message);
-        } else {
-            String message = "用户没有权限, resource:" + noAuthCode;
-            result.setReturnCode(ResultCodeEnum.AUTH_REQUIRED.codeString());
-            result.failed(message);
-        }
-        if (isJsonRequest(request)) {
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json;charset=utf-8");
-        } else {
-            response.setContentType("text/html;charset=utf-8");
-        }
-        response.getWriter().write(JSON.toJSONString(result.getReturnMap()));
-    }
-
-    /**
-     * 判断请求类型(json)
-     *
-     * @param request
+     * @param userName
      * @return
      */
-    private static boolean isJsonRequest(HttpServletRequest request) {
-        String contentType = request.getHeader("accept");
-        return contentType != null && contentType.startsWith("application/json");
+    private AcUser loadAcUserByUserName(String userName) {
+        String cacheKey = CacheKeyConstant.getAcUserCacheKey(userName);
+        AcUser acUser = (AcUser) cacheService.getShortTime(cacheKey);
+        if (acUser != null) {
+            return acUser;
+        }
+        acUser = acUserManager.getByUserName(userName);
+        if (acUser == null) {
+            return acUser;
+        }
+        cacheService.saveShortTime(cacheKey, acUser);
+        return acUser;
     }
+
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {

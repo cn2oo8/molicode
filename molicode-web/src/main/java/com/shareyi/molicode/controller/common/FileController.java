@@ -3,6 +3,7 @@ package com.shareyi.molicode.controller.common;
 import com.shareyi.fileutil.FileIo;
 import com.shareyi.fileutil.FileUtil;
 import com.shareyi.joywindow.window.FileChooserHelper;
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.gui.GuiWindowFactory;
 import com.shareyi.molicode.common.utils.*;
@@ -44,6 +45,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "fileChooser", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map fileChooser(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -107,6 +109,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "openFile", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map startFile(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -134,6 +137,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "editFile", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map editFile(FileVo fileVo) {
         String editFilePath = fileVo.getEditFilePath();
         CommonResult result = CommonResult.create();
@@ -170,6 +174,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "saveFile", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map saveFile(FileVo fileVo) {
         String editFilePath = fileVo.getEditFilePath();
         CommonResult result = CommonResult.create();
@@ -200,6 +205,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "getFileContent", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map getFileContent(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -255,6 +261,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "deleteFile", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map deleteFile(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -285,6 +292,7 @@ public class FileController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/openDirectory", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map openDirectory(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -314,6 +322,7 @@ public class FileController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "listFiles", method = {RequestMethod.GET, RequestMethod.POST})
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map listFiles(final FileVo fileVo) {
         if (Profiles.getInstance().isHeadLess()) {
             return CommonResult.create().failed("headless下无法支持").getReturnMap();

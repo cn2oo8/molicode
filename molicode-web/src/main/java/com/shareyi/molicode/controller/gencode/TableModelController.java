@@ -1,5 +1,7 @@
 package com.shareyi.molicode.controller.gencode;
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.vo.page.TableModelPageVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.gencode.DatabaseTableService;
@@ -23,6 +25,7 @@ public class TableModelController extends BaseController {
      */
     @RequestMapping("/getTableList")
     @ResponseBody
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
     public Map getTableList(String projectKey) {
         return databaseTableService.getTableList(projectKey).getReturnMap();
     }

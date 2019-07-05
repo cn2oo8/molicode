@@ -2,6 +2,7 @@ package com.shareyi.molicode.common.bean;
 
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
 import com.shareyi.molicode.common.exception.ExceptionMaker;
+import com.shareyi.molicode.sdk.dto.ExtAttrDto;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -10,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author zhangshibin
  * @date 2019/7/3
  */
-public class LoginContext {
+public class LoginContext extends ExtAttrDto{
 
     /**
      * 链接字符串
@@ -77,4 +78,5 @@ public class LoginContext {
         loginContext.dataVersion = Integer.valueOf(dataVersion);
         return loginContext;
     }
+
 }

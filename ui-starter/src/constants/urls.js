@@ -44,16 +44,9 @@ export default {
         },
         acConfig: {
             list: 'conf/acConfig/list',
-            add: 'conf/acConfig/add',
-            update: 'conf/acConfig/update',
-            delete: 'conf/acConfig/delete',
             save: 'conf/acConfig/save'
         },
         commonExtInfo: {
-            list: 'conf/commonExtInfo/list',
-            add: 'conf/commonExtInfo/add',
-            update: 'conf/commonExtInfo/update',
-            delete: 'conf/commonExtInfo/delete',
             save: 'conf/commonExtInfo/save',
             getByOwnerAndKey: 'conf/commonExtInfo/getByOwnerAndKey'
         }
@@ -65,12 +58,14 @@ export default {
         },
         acUser: {
             getLoginUser: 'sys/acUser/getLoginUser',
-            changePassword: 'sys/acUser/changePassword'
+            changePassword: 'sys/acUser/changePassword',
+            updateUserInfo: 'sys/acUser/updateUserInfo'
         }
     },
     loginfree: {
         login: {
-            login: 'loginfree/login'
+            login: 'loginfree/login',
+            register: 'loginfree/register'
         }
     },
     repo: {

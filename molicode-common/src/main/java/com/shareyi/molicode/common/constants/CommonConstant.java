@@ -52,4 +52,39 @@ public class CommonConstant {
      * 登录key
      */
     public static final String MOLI_LOGIN_KEY = "moliLoginKey";
+
+    /**
+     * 一天
+     */
+    public static final int ONE_DAY_SEC = 1 * 24 * 3600;
+
+
+    /**
+     * 登录context
+     */
+    public class LoginContext {
+        /**
+         * acUser
+         */
+        public static final String AC_USER = "acUser";
+
+    }
+
+    /**
+     * 角色等级
+     */
+    public class ROLE_LEVEL {
+        /**
+         * admin等级
+         */
+        public static final int ADMIN = 0;
+        /**
+         * 普通用户
+         */
+        public static final int NORMAL = 3;
+        /**
+         * guest
+         */
+        public static final int GUEST = 5;
+    }
 }
