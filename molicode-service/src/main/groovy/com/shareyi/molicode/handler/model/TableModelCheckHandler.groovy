@@ -21,28 +21,30 @@ import javax.annotation.Resource
  * @since 2018/10/7
  */
 @Service
-public class TableModelCheckHandler extends SimpleHandler<TableModelContext> implements TableModelHandlerAware{
+class TableModelCheckHandler extends SimpleHandler<TableModelContext> implements TableModelHandlerAware {
 
     @Resource
     AcConfigService acConfigService;
 
     @Override
-    public int getOrder() {
+    int getOrder() {
         return 1;
     }
 
     @Override
-    public boolean shouldHandle(TableModelContext tableModelContext) {
-        return true;
+    boolean shouldHandle(TableModelContext tableModelContext) {
+        //如果外部传入了tableModel，就不需要查库了，一般是通过SQL解析得来的
+        return tableModelContext.tableModelVo == null &&
+                !tableModelContext.isReadonly();
     }
 
     @Override
-    public void doHandle(TableModelContext tableModelContext) {
+    void doHandle(TableModelContext tableModelContext) {
         TableModelPageVo tableModelPageVo = tableModelContext.getTableModelPageVo();
         Validate.notNull(tableModelPageVo, "tableModelPageVo 不能为空");
         ValidateUtils.notEmptyField(tableModelPageVo, "projectKey");
-        Map<String,Map<String,String>> configMap = acConfigService.getConfigMapByProjectKey(tableModelPageVo.getProjectKey(), DataTypeEnum.JSON);
-        Map<String,String> databaseConfigMap = configMap.get(ConfigKeyConstant.DatabaseConfig.CONFIG_KEY);
+        Map<String, Map<String, String>> configMap = acConfigService.getConfigMapByProjectKey(tableModelPageVo.getProjectKey(), DataTypeEnum.JSON);
+        Map<String, String> databaseConfigMap = configMap.get(ConfigKeyConstant.DatabaseConfig.CONFIG_KEY);
         String driverName = MapUtils.getString(databaseConfigMap, ConfigKeyConstant.DatabaseConfig.DRIVER_CLASS);
         String url = MapUtils.getString(databaseConfigMap, ConfigKeyConstant.DatabaseConfig.URL);
         String username = MapUtils.getString(databaseConfigMap, ConfigKeyConstant.DatabaseConfig.USERNAME);

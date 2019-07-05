@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service
 class TableModelOutputHandler extends SimpleHandler<TableModelContext> implements TableModelHandlerAware {
     @Override
     int getOrder() {
-        return 4;
+        return 5;
     }
 
     @Override

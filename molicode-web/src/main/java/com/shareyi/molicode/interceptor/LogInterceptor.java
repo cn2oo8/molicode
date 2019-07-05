@@ -2,6 +2,7 @@ package com.shareyi.molicode.interceptor;
 
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.utils.Profiles;
+import com.shareyi.molicode.common.utils.ThreadLocalHolder;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class LogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest,
                              HttpServletResponse httpServletResponse, Object o) throws Exception {
-        System.out.println("当前线程：" + Thread.currentThread().getName());
+        //System.out.println("当前线程：" + Thread.currentThread().getName());
         String sid = httpServletRequest.getParameter(CommonConstant.SID);
         if (StringUtils.isNotEmpty(sid)) {
             MDC.put(CommonConstant.SID, sid);
@@ -48,5 +49,6 @@ public class LogInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                 Object o, Exception e) throws Exception {
         MDC.remove(CommonConstant.SID);
+        ThreadLocalHolder.clearRequestContext();
     }
 }

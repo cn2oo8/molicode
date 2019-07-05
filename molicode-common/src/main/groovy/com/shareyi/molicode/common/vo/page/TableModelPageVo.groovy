@@ -32,6 +32,11 @@ class TableModelPageVo {
      */
     String modelType
 
+    /**
+     * 表来源
+     */
+    String tableSourceName
+
 
     @Override
     String toString() {
@@ -41,6 +46,8 @@ class TableModelPageVo {
                 ", tableName='" + tableName + '\'' +
                 ", cnname='" + cnname + '\'' +
                 ", smartFlag=" + smartFlag +
+                ", modelType='" + modelType + '\'' +
+                ", tableSourceName='" + tableSourceName + '\'' +
                 '}';
     }
 }

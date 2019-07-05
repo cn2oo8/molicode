@@ -2,16 +2,15 @@ package com.shareyi.molicode.service.gencode.impl
 
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.serializer.SerializerFeature
+import com.google.common.base.Function
 import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.DataTypeEnum
-import com.shareyi.molicode.common.utils.LogHelper
-import com.shareyi.molicode.common.utils.Profiles
-import com.shareyi.molicode.common.utils.SystemFileUtils
-import com.shareyi.molicode.common.utils.TableNameUtil
+import com.shareyi.molicode.common.enums.TableSourceNameEnum
+import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.SimpleTableInfoVo
 import com.shareyi.molicode.common.vo.code.TableModelVo
@@ -20,6 +19,7 @@ import com.shareyi.molicode.common.web.CommonResult
 import com.shareyi.molicode.context.TableModelContext
 import com.shareyi.molicode.service.conf.AcConfigService
 import com.shareyi.molicode.service.gencode.DatabaseTableService
+import com.shareyi.molicode.service.gencode.SqlParseService
 import groovy.sql.Sql
 import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.collections4.MapUtils
@@ -35,8 +35,10 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
 
 
     @Resource
-    AcConfigService acConfigService;
+    private AcConfigService acConfigService;
 
+    @Resource
+    private SqlParseService sqlParseService;
 
     CommonResult generateTableModel(TableModelPageVo tableModelPageVo) {
         CommonResult<String> result = CommonResult.create();
@@ -52,22 +54,24 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
     }
 
     @Override
-    CommonResult<TableModelVo> getTableInfo(String projectKey, String tableName) {
+    CommonResult<TableModelVo> getTableInfo(TableModelPageVo tableModelPageVo) {
         CommonResult<String> result = CommonResult.create();
         try {
-            TableModelPageVo tableModelPageVo = new TableModelPageVo();
-            tableModelPageVo.setTableName(tableName);
-            tableModelPageVo.setProjectKey(projectKey);
+            ValidateUtils.notEmptyField(tableModelPageVo, "projectKey");
+            ValidateUtils.notEmptyField(tableModelPageVo, "tableName");
             tableModelPageVo.setSmartFlag(CommonConstant.STD_YN_YES);
-            tableModelPageVo.setTableModelDir(SystemFileUtils.getTableModelDir(projectKey))
+            tableModelPageVo.setTableModelDir(SystemFileUtils.getTableModelDir(tableModelPageVo.projectKey))
             tableModelPageVo.setModelType(CommonConstant.MODEL_TYPE_JSON);
             def context = TableModelContext.create(tableModelPageVo)
+            if (Objects.equals(TableSourceNameEnum.SQL.code, tableModelPageVo.tableSourceName)) {
+                context.setReadonly(true);
+            }
             HandlerChainFactoryImpl.executeByHandlerAware(TableModelHandlerAware.class, context);
             result.addDefaultModel(context.getTableModelVo())
             result.succeed();
         } catch (Exception e) {
-            LogHelper.EXCEPTION.error("生成表模型失败，tableName={}", tableName, e);
-            result.failed("生成表模型失败, 表:" + tableName + ", 原因是:" + e.getMessage());
+            LogHelper.EXCEPTION.error("生成表模型失败，tableName={}", tableModelPageVo.tableName, e);
+            result.failed("生成表模型失败, 表:" + tableModelPageVo.tableName + ", 原因是:" + e.getMessage());
         }
         return result;
     }
@@ -92,6 +96,36 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
         return result;
     }
 
+    @Override
+    CommonResult<List<SimpleTableInfoVo>> getTableListBySql(String projectKey, String createSql) {
+        CommonResult result = CommonResult.create();
+        try {
+            Validate.notEmpty(projectKey, "projectKey不能为空")
+            Validate.notEmpty(createSql, "createSql不能为空")
+            Map<String, Map<String, String>> configMap = acConfigService.getConfigMapByProjectKey(projectKey, DataTypeEnum.JSON);
+            Map<String, String> databaseConfigMap = configMap.get(ConfigKeyConstant.DatabaseConfig.CONFIG_KEY);
+            String databaseName = MapUtils.getString(databaseConfigMap, ConfigKeyConstant.DatabaseConfig.DATABASE_NAME);
+            Validate.notEmpty(databaseName, "数据库类型不能为空")
+            List<TableModelVo> tableModelVoList = sqlParseService.parseCreateSql(projectKey, createSql, databaseName);
+            List<SimpleTableInfoVo> list = MyLists.transform(tableModelVoList, new Function<TableModelVo, SimpleTableInfoVo>() {
+                @Override
+                SimpleTableInfoVo apply(TableModelVo input) {
+                    SimpleTableInfoVo tableInfoVo = new SimpleTableInfoVo();
+                    tableInfoVo.setId(input.tableDefine.id)
+                    tableInfoVo.setCnname(input.tableDefine.cnname)
+                    tableInfoVo.setTableName(input.tableDefine.dbTableName)
+                    tableInfoVo.setSourceName(TableSourceNameEnum.SQL.code);
+                    return tableInfoVo
+                }
+            });
+            result.addDefaultModel(list)
+            result.succeed()
+        } catch (Exception e) {
+            LogHelper.DEFAULT.error("获取数据库表列表异常", e)
+            result.failed("获取数据库表列表异常， 原因是：" + e.getMessage())
+        }
+        return result;
+    }
 /**
  * 生成数据库表名的tableModel xml文件
  * @param tName 表名
@@ -126,6 +160,7 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
                 tInfo.tableName = tableName;
                 tInfo.id = tableNameUtil.upperFirst(tableNameUtil.convertToBeanNames(tableName));
                 tInfo.cnname = tInfo.id;
+                tInfo.setSourceName(TableSourceNameEnum.DATABASE.code);
                 list.add(tInfo)
             }
 

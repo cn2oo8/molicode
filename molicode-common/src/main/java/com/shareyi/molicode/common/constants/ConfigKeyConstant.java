@@ -15,6 +15,12 @@ public class ConfigKeyConstant {
     public class DatabaseConfig {
 
         public static final String CONFIG_KEY ="databaseConfig";
+
+        /**
+         * 数据库类型名称
+         */
+        public static final String DATABASE_NAME = "databaseName";
+
         /**
          * 驱动key
          */
@@ -95,15 +101,6 @@ public class ConfigKeyConstant {
          */
         public static final String LOCAL_REPOSITORY ="localRepository";
 
-        /**
-         * artifactId
-         */
-        public static final String MAVEN_HOME ="mavenHome";
-
-        /**
-         * mavenSetting
-         */
-        public static final String MAVEN_SETTING ="mavenSetting";
     }
 
     /**

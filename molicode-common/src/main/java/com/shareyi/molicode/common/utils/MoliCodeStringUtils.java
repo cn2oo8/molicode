@@ -1,6 +1,7 @@
 package com.shareyi.molicode.common.utils;
 
 import com.google.common.collect.Lists;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -115,6 +116,27 @@ public class MoliCodeStringUtils {
     }
 
 
+    /**
+     * 去除字符串的引号，单引号 & 双引号, 以及mysql转义引号
+     *
+     * @param str
+     * @return
+     */
+    public static String removeQuot(String str) {
+        if (StringUtils.isEmpty(str)) {
+            return str;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch == '\'' || ch == '"' || ch == '`') {
+                continue;
+            }
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         System.out.println(compareVersion("1.0.0", "1.0.1"));
         System.out.println(compareVersion("1.0.a", "1.0.1"));
@@ -123,5 +145,11 @@ public class MoliCodeStringUtils {
         System.out.println(getTimeBasedStr());
 
         System.out.println(md5("hahaha"));
+
+
+        System.out.println(md5("molicodepwd" + CommonConstant.PWD_SALT));
+
+        System.out.println(removeQuot("\"dsdsds`"));
     }
+
 }

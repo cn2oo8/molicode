@@ -17,4 +17,9 @@ class SimpleTableInfoVo {
      */
     String tableName;
 
+    /**
+     * 来源名称， database, sql
+     */
+    String sourceName;
+
 }

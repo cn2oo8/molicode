@@ -2,11 +2,12 @@ package com.shareyi.molicode.service.gencode.impl
 
 import com.alibaba.fastjson.JSON
 import com.shareyi.fileutil.FileUtil
+import com.shareyi.molicode.common.bean.LoginContext
 import com.shareyi.molicode.common.constants.AutoCodeConstant
-import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.*
 import com.shareyi.molicode.common.utils.LogHelper
+import com.shareyi.molicode.common.utils.LoginHelper
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
@@ -61,7 +62,8 @@ class AutoMakeServiceImpl implements AutoMakeService {
                 codeParams.jsonConfig = JSON.parseObject(jsonConfig);
             }
         }
-        Map<String, Map<String, String>> globalConfigMap = commonExtInfoService.getConfigMapByOwner(OwnerTypeEnum.SYSTEM.getCode(), CommonConstant.DEFAULT_SYS_OWNER, DataTypeEnum.JSON);
+        LoginContext loginContext = LoginHelper.getLoginContext();
+        Map<String, Map<String, String>> globalConfigMap = commonExtInfoService.getConfigMapByOwner(OwnerTypeEnum.USER.getCode(), loginContext.getUserName(), DataTypeEnum.JSON);
 
         this.parsePathConfigInfo(globalConfigMap, codeParams, pathConfigMap)
         this.parseConfigVoInfo(codeConfigMap, codeParams)

@@ -1,7 +1,7 @@
 package com.shareyi.molicode.common.utils;
 
 import com.shareyi.fileutil.FileUtil;
-import com.shareyi.joywindow.JoyWindowData;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,16 +18,6 @@ public abstract class BindResourceUtil {
      * 获取配置资源
      *
      * @param bindId
-     * @return
-     */
-    public static Properties getBindProperties(String bindId) {
-        return getBindProperties(bindId, true);
-    }
-
-    /**
-     * 获取配置资源
-     *
-     * @param bindId
      * @param cache  是否缓存
      * @return
      */
@@ -38,12 +28,15 @@ public abstract class BindResourceUtil {
             File file = new File(bindSrc);
             if (file.exists() && file.isFile() && file.canRead()) {
                 pro = new Properties();
+                FileInputStream inStream = null;
                 try {
-                    pro.load(new FileInputStream(file));
+                    inStream = new FileInputStream(file);
+                    pro.load(inStream);
                 } catch (Exception e) {
+                } finally {
+                    IOUtils.closeQuietly(inStream);
                 }
             }
-
             resourceMap.put(bindId, pro);
         }
         return pro;
@@ -61,45 +54,26 @@ public abstract class BindResourceUtil {
         } else {
             resourceMap.put(bindId, pro);
         }
-
-        if (pro != null) {
-            String bindSrc = FileUtil.contactPath(FileUtil.getRuntimeFilePath("config/bindSource"), bindId + ".properties");
-            File file = new File(bindSrc);
-            FileUtil.makeSureFileExsit(file);
-            if (file.canWrite()) {
-                try {
-                    pro.store(new FileOutputStream(file), "update config file");
-                } catch (Exception e) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-
-        } else return false;
-
-
-        return true;
-    }
-
-    /**
-     * 获取配置资源
-     *
-     * @param bindId
-     * @return
-     */
-    public static Properties getProperties(String bindId) {
-        Properties pro = null;
-        String bindSrc = FileUtil.contactPath(FileUtil.getRunPath(), bindId + ".properties");
-        File file = new File(bindSrc);
-        if (file.exists() && file.isFile() && file.canRead()) {
-            pro = new Properties();
-            try {
-                pro.load(new FileInputStream(file));
-            } catch (Exception e) {
-            }
+        if (pro == null) {
+            return false;
         }
-        return pro;
+        String bindSrc = FileUtil.contactPath(FileUtil.getRuntimeFilePath("config/bindSource"), bindId + ".properties");
+        File file = new File(bindSrc);
+        FileUtil.makeSureFileExsit(file);
+        FileOutputStream outputStream = null;
+        if (!file.canWrite()) {
+            return false;
+        }
+
+        try {
+            outputStream = new FileOutputStream(file);
+            pro.store(outputStream, "update config file");
+        } catch (Exception e) {
+            return false;
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+        }
+        return true;
     }
 
 

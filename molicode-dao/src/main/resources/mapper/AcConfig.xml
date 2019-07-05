@@ -65,14 +65,14 @@
 
     <insert id="add" parameterType="com.shareyi.molicode.domain.conf.AcConfig"
             keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO ac_config (type,project_key,scope,config_key,config_value,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+		INSERT INTO AC_CONFIG (type,project_key,scope,config_key,config_value,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
 			VALUES(#{type},#{projectKey},#{scope},#{configKey},#{configValue},#{ext1},#{ext2},#{ext3},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified})
 	 </insert>
 
 
     <!-- 批量添加数据  -->
     <insert id="batchAdd" parameterType="java.util.List">
-        INSERT INTO ac_config
+        INSERT INTO AC_CONFIG
         (type,project_key,scope,config_key,config_value,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -81,7 +81,7 @@
     </insert>
 
     <update id="update" parameterType="com.shareyi.molicode.domain.conf.AcConfig">
-        UPDATE ac_config
+        UPDATE AC_CONFIG
         <set>
             <if test="type !=null">type = #{type},</if>
             <if test="projectKey !=null">project_key = #{projectKey},</if>
@@ -101,20 +101,20 @@
 
 
     <delete id="deleteByPk" parameterType="com.shareyi.molicode.domain.conf.AcConfig">
-		DELETE FROM ac_config WHERE id = #{id}
+		DELETE FROM AC_CONFIG WHERE id = #{id}
 	</delete>
 
     <select id="getByPk" resultMap="AcConfig-Map" parameterType="java.lang.Long">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_config WHERE id = #{id}
+        FROM AC_CONFIG WHERE id = #{id}
     </select>
 
 
     <select id="getListByExample" resultMap="AcConfig-Map" parameterType="java.util.HashMap">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_config
+        FROM AC_CONFIG
         <include refid="MAP-COMMON-SQL"/>
         LIMIT 0,1000
     </select>
@@ -123,7 +123,7 @@
     <select id="queryByPage" resultMap="AcConfig-Map" parameterType="java.util.HashMap">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_config
+        FROM AC_CONFIG
         <include refid="MAP-COMMON-SQL"/>
         <include refid="ORDER-SQL"/>
         LIMIT #{startIndex},#{pageSize}
@@ -131,7 +131,7 @@
 
     <select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
         <![CDATA[
-			SELECT COUNT(1) FROM ac_config
+			SELECT COUNT(1) FROM AC_CONFIG
 		]]>
         <include refid="MAP-COMMON-SQL"/>
     </select>

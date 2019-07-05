@@ -55,7 +55,7 @@ module.exports = merge(webpackBaseConfig, {
         watchOptions: {
             aggregateTimeout: 300
         },
-        port: '8097', //设置端口号
+        port: '8096', //设置端口号
         //其实很简单的，只要配置这个参数就可以了
         proxy: {
             '/conf/': {
@@ -76,7 +76,19 @@ module.exports = merge(webpackBaseConfig, {
                 secure: false,
                 changeOrigin: true
             },
+            '/repo/': {
+                target: 'http://localhost.shareyi.com:8098/',
+                host:'http://localhost.shareyi.com',
+                secure: false,
+                changeOrigin: true
+            },
             '/autoCode/': {
+                target: 'http://localhost.shareyi.com:8098/',
+                host:'http://localhost.shareyi.com',
+                secure: false,
+                changeOrigin: true
+            },
+            '/loginfree/': {
                 target: 'http://localhost.shareyi.com:8098/',
                 host:'http://localhost.shareyi.com',
                 secure: false,

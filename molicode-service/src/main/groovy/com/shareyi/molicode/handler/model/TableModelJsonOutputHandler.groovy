@@ -3,6 +3,7 @@ package com.shareyi.molicode.handler.model
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.serializer.SerializerFeature
 import com.google.common.collect.Lists
+import com.google.common.collect.Maps
 import com.google.common.collect.Sets
 import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
@@ -15,7 +16,8 @@ import com.shareyi.molicode.common.vo.code.TableDefineVo
 import com.shareyi.molicode.common.vo.code.TableModelVo
 import com.shareyi.molicode.common.vo.page.TableModelPageVo
 import com.shareyi.molicode.context.TableModelContext
-import org.apache.commons.io.IOUtils
+import org.apache.commons.collections4.MapUtils
+import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Service
 
@@ -29,12 +31,13 @@ import org.springframework.stereotype.Service
 class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> implements TableModelHandlerAware {
     @Override
     int getOrder() {
-        return 5;
+        return 6;
     }
 
     @Override
     boolean shouldHandle(TableModelContext tableModelContext) {
-        return Objects.equals(tableModelContext.tableModelPageVo.modelType, CommonConstant.MODEL_TYPE_JSON);
+        return Objects.equals(tableModelContext.tableModelPageVo.modelType, CommonConstant.MODEL_TYPE_JSON) &&
+                !tableModelContext.isReadonly();
     }
 
     @Override
@@ -68,17 +71,10 @@ class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> imple
      * @param tableModelVo
      */
     void loadFromPreConfigInfo(File file, TableModelVo tableModelVo) {
-        String preConfig = null;
-        def inputStream = new FileInputStream(file)
-        try {
-            preConfig = IOUtils.toString(inputStream, Profiles.instance.fileEncoding);
-        } finally {
-            IOUtils.closeQuietly(inputStream)
-        }
+        String preConfig = FileUtils.readFileToString(file, Profiles.instance.fileEncoding);
         if (StringUtils.isBlank(preConfig)) {
             return;
         }
-
         List<String> allColumnList = Lists.newArrayList();
         Set<String> columnSet = Sets.newHashSet()
         tableModelVo.tableDefine.columns.each {
@@ -88,17 +84,23 @@ class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> imple
         }
         TableModelVo preTableModelVo = JSON.parseObject(preConfig, TableModelVo.class);
         tableModelVo.orderColumns = preTableModelVo.orderColumns;
-        tableModelVo.bizFieldsMap = preTableModelVo.bizFieldsMap;
-        tableModelVo.dictMap = preTableModelVo.dictMap;
-        for (Map.Entry<String, String> entry : tableModelVo.bizFieldsMap) {
+        if (MapUtils.isNotEmpty(preTableModelVo.dictMap)) {
+            if (tableModelVo.dictMap == null) {
+                tableModelVo.dictMap = Maps.newHashMap();
+            }
+            tableModelVo.dictMap.putAll(preTableModelVo.dictMap);
+        }
+        for (Map.Entry<String, String> entry : preTableModelVo.bizFieldsMap) {
             String key = entry.getKey();
             if (Objects.equals(key, "allColumn")) {
-                entry.setValue(StringUtils.join(allColumnList, ","));
+                continue;
             } else {
-                entry.setValue(this.filterColumn(entry.getValue(), columnSet));
+                String columnNames = this.filterColumn(entry.getValue(), columnSet)
+                if (StringUtils.isNotEmpty(columnNames)) {
+                    tableModelVo.bizFieldsMap.put(entry.key, columnNames);
+                }
             }
         }
-
         tableModelVo.tableDefine.id = preTableModelVo.tableDefine.id;
         tableModelVo.tableDefine.cnname = preTableModelVo.tableDefine.cnname;
         tableModelVo.tableDefine.pageSize = preTableModelVo.tableDefine.pageSize;
@@ -127,8 +129,8 @@ class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> imple
     String filterColumn(String columnNames, HashSet<String> allColumnSet) {
         List<String> columnNameList = PubUtils.stringToList(columnNames);
         List<String> filteredList = Lists.newArrayList();
-        columnNameList.each {name->
-            if(allColumnSet.contains(name)){
+        columnNameList.each { name ->
+            if (allColumnSet.contains(name)) {
                 filteredList.add(name);
             }
         }

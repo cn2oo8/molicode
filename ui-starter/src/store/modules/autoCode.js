@@ -56,7 +56,7 @@ const autoCode = {
          */
         [constants.types.LOAD_DEFAULT_PROJECT]: ({state, commit, dispatch}, payload) => {
             var searchParam = {
-                ownerType: 1,
+                ownerType: 3,
                 ownerCode: 'admin',
                 extKey: 'defaultProjectKey'
             };
@@ -119,7 +119,7 @@ const autoCode = {
          */
         [constants.types.SAVE_DEFAULT_PROJECT_EXT]: ({state, commit}, payload) => {
             var params = {
-                ownerType: 1,
+                ownerType: 3,
                 ownerCode: 'admin',
                 extKey: 'defaultProjectKey',
                 extValue: payload.projectKey
@@ -213,7 +213,7 @@ const autoCode = {
          */
         [constants.types.LOAD_GLOBAL_CONFIG]: ({state, commit, dispatch}, payload) => {
             var searchParam = {
-                ownerType: 1,
+                ownerType: 3,
                 ownerCode: 'admin',
                 extKey: payload['extKey']
             };

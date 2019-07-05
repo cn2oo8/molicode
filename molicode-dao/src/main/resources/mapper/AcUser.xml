@@ -10,6 +10,7 @@
         <result property="gender" column="gender"/>
         <result property="passwordMd5" column="password_md5"/>
         <result property="birthDay" column="birth_day"/>
+        <result property="roleCode" column="role_code"/>
         <result property="userMark" column="user_mark"/>
         <result property="remark" column="remark"/>
         <result property="ext1" column="ext1"/>
@@ -39,14 +40,12 @@
             <if test="remark != null">AND remark = #{remark}</if>
             <if test="ext1 != null">AND ext1 = #{ext1}</if>
             <if test="ext2 != null">AND ext2 = #{ext2}</if>
-            <if test="ext3 != null">AND ext3 = #{ext3}</if>
             <if test="creator != null">AND creator = #{creator}</if>
             <if test="operator != null">AND operator = #{operator}</if>
             <if test="concurrentVersion != null">AND concurrent_version = #{concurrentVersion}</if>
             <if test="dataVersion != null">AND data_version = #{dataVersion}</if>
             <if test="status != null">AND status = #{status}</if>
-            <if test="created != null">AND created = #{created}</if>
-            <if test="modified != null">AND modified = #{modified}</if>
+            <if test="roleCode != null">AND role_code = #{roleCode}</if>
         </where>
     </sql>
 
@@ -64,35 +63,36 @@
 
 
     <sql id="All-FIELDS">
-        id,user_name,nick_name,gender,password_md5,birth_day,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified
+        id,user_name,nick_name,gender,password_md5,birth_day,role_code,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified
     </sql>
 
     <insert id="add" parameterType="com.shareyi.molicode.domain.sys.AcUser"
             keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO ac_user
-        (user_name,nick_name,gender,password_md5,birth_day,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
-        VALUES(#{userName},#{nickName},#{gender},#{passwordMd5},#{birthDay},#{userMark},#{remark},#{ext1},#{ext2},#{ext3},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified})
+        INSERT INTO AC_USER
+        (user_name,nick_name,gender,password_md5,birth_day,role_code,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+        VALUES(#{userName},#{nickName},#{gender},#{passwordMd5},#{birthDay},#{roleCode},#{userMark},#{remark},#{ext1},#{ext2},#{ext3},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified})
     </insert>
 
 
     <!-- 批量添加数据  -->
     <insert id="batchAdd" parameterType="java.util.List">
-        INSERT INTO ac_user
-        (user_name,nick_name,gender,password_md5,birth_day,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+        INSERT INTO AC_USER
+        (user_name,nick_name,gender,password_md5,birth_day,role_code,user_mark,remark,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.userName},#{item.nickName},#{item.gender},#{item.passwordMd5},#{item.birthDay},#{item.userMark},#{item.remark},#{item.ext1},#{item.ext2},#{item.ext3},#{item.creator},#{item.operator},#{item.concurrentVersion},#{item.dataVersion},#{item.status},#{item.created},#{item.modified})
+            (#{item.userName},#{item.nickName},#{item.gender},#{item.passwordMd5},#{item.birthDay},#{item.roleCode},#{item.userMark},#{item.remark},#{item.ext1},#{item.ext2},#{item.ext3},#{item.creator},#{item.operator},#{item.concurrentVersion},#{item.dataVersion},#{item.status},#{item.created},#{item.modified})
         </foreach>
     </insert>
 
     <update id="update" parameterType="com.shareyi.molicode.domain.sys.AcUser">
-        UPDATE ac_user
+        UPDATE AC_USER
         <set>
             <if test="userName !=null">user_name = #{userName},</if>
             <if test="nickName !=null">nick_name = #{nickName},</if>
             <if test="gender !=null">gender = #{gender},</if>
             <if test="passwordMd5 !=null">password_md5 = #{passwordMd5},</if>
             <if test="birthDay !=null">birth_day = #{birthDay},</if>
+            <if test="roleCode !=null">role_code = #{roleCode},</if>
             <if test="userMark !=null">user_mark = #{userMark},</if>
             <if test="remark !=null">remark = #{remark},</if>
             <if test="ext1 !=null">ext1 = #{ext1},</if>
@@ -108,20 +108,20 @@
 
 
     <delete id="deleteByPk" parameterType="com.shareyi.molicode.domain.sys.AcUser">
-        DELETE FROM ac_user WHERE id = #{id}
+        DELETE FROM AC_USER WHERE id = #{id}
     </delete>
 
     <select id="getByPk" resultMap="AcUser-Map" parameterType="java.lang.Long">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_user WHERE id = #{id}
+        FROM AC_USER WHERE id = #{id}
     </select>
 
 
     <select id="getListByExample" resultMap="AcUser-Map" parameterType="java.util.HashMap">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_user
+        FROM AC_USER
         <include refid="MAP-COMMON-SQL"/>
         LIMIT 0,1000
     </select>
@@ -130,7 +130,7 @@
     <select id="queryByPage" resultMap="AcUser-Map" parameterType="java.util.HashMap">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_user
+        FROM AC_USER
         <include refid="MAP-COMMON-SQL"/>
         <include refid="ORDER-SQL"/>
         LIMIT #{startIndex},#{pageSize}
@@ -138,7 +138,7 @@
 
     <select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
         <![CDATA[
-			SELECT COUNT(1) FROM ac_user
+			SELECT COUNT(1) FROM AC_USER
 		]]>
         <include refid="MAP-COMMON-SQL"/>
     </select>

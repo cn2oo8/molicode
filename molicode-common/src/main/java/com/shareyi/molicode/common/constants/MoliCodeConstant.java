@@ -142,4 +142,15 @@ public class MoliCodeConstant {
         public static final String COST_TIME_KEY = "costTime";
     }
 
+    /**
+     * 模板结果列表
+     */
+    public static final String TEMPLATE_RESULT_LIST = "templateResultList";
+
+    /**
+     * 输出目录名称
+     */
+    public static final String OUTPUT_DIR = "outputDir";
+
+
 }

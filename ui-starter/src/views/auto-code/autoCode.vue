@@ -25,7 +25,6 @@
 
 <script>
     import constants from '@/constants/constants';
-    import tableModel from './coding/tableModel';
     import coder from './coding/coder';
 
     var _ = require('underscore');
@@ -33,7 +32,6 @@
     export default {
         name: 'autoCode',
         components: {
-            tableModel,
             coder
         },
         beforeMount: function () {

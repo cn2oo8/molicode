@@ -9,6 +9,7 @@ export default {
     },
     autoCode: {
         'genCode': 'genCode',
-        'tableModelNotify': 'tableModelNotify'
+        'tableModelNotify': 'tableModelNotify',
+        'sqlTableListNotify': 'sqlTableListNotify'
     }
 };

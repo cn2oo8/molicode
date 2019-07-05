@@ -5,11 +5,9 @@ import com.shareyi.fileutil.FileUtil;
 import com.shareyi.joywindow.window.FileChooserHelper;
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.gui.GuiWindowFactory;
-import com.shareyi.molicode.common.utils.LogHelper;
-import com.shareyi.molicode.common.utils.Profiles;
-import com.shareyi.molicode.common.utils.SystemFileUtils;
-import com.shareyi.molicode.common.utils.SystemInvoker;
+import com.shareyi.molicode.common.utils.*;
 import com.shareyi.molicode.common.vo.FileVo;
+import com.shareyi.molicode.common.vo.code.TemplateResultVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.common.FileService;
 import com.shareyi.molicode.web.base.BaseController;
@@ -226,10 +224,42 @@ public class FileController extends BaseController {
         return result.getReturnMap();
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "loadProjectOutputFile", method = {RequestMethod.GET, RequestMethod.POST})
+    public Map loadProjectOutputFile(TemplateResultVo resultVo) {
+        CommonResult result = CommonResult.create();
+        try {
+            ValidateUtils.notEmptyField(resultVo, "projectKey");
+            ValidateUtils.notEmptyField(resultVo, "outputDir");
+            ValidateUtils.notEmptyField(resultVo, "relativePath");
+            String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(resultVo.getProjectKey());
+            String currentProjectOutputDir = FileUtil.contactPath(projectOutputDir, resultVo.getOutputDir());
+            currentProjectOutputDir = FileUtil.contactPath(currentProjectOutputDir, resultVo.getRelativePath());
+            File file = new File(SystemFileUtils.parseFilePath(currentProjectOutputDir));
+            if (!file.exists()) {
+                return result.failed("文件不存在：" + resultVo.getRelativePath()).getReturnMap();
+            }
+            if (file.isFile() && file.canRead()) {
+                result.addDefaultModel(FileIo.readFileAsString(file, Profiles.getInstance().getFileEncoding()));
+                result.succeed();
+            } else {
+                result.setMessage("文件无法读取！");
+            }
+        } catch (Exception e) {
+            result.failed("系统异常，原因是：" + e.getMessage());
+        }
+        return result.getReturnMap();
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "deleteFile", method = {RequestMethod.GET, RequestMethod.POST})
     public Map deleteFile(FileVo fileVo) {
         CommonResult result = CommonResult.create();
+        if (Profiles.getInstance().isHeadLess()) {
+            return result.failed("headless下无法支持").getReturnMap();
+        }
         String editFilePath = fileVo.getEditFilePath();
         if (StringUtils.isEmpty(editFilePath)) {
             result.failed("文件路径为空！");
@@ -285,6 +315,9 @@ public class FileController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "listFiles", method = {RequestMethod.GET, RequestMethod.POST})
     public Map listFiles(final FileVo fileVo) {
+        if (Profiles.getInstance().isHeadLess()) {
+            return CommonResult.create().failed("headless下无法支持").getReturnMap();
+        }
         CommonResult result = fileService.listFiles(fileVo);
         return result.getReturnMap();
     }

@@ -332,7 +332,10 @@
                 let resultInfo = {
                     zipUrl,
                     'startTime': data['startTime'],
-                    'costTime': data['costTime']
+                    'costTime': data['costTime'],
+                    'outputDir': data['outputDir'],
+                    'templateResultList': data['templateResultList'],
+                    projectKey
                 }
                 this.$refs.resultInfo.appendResultInfo(resultInfo);
             },

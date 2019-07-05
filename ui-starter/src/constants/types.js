@@ -60,3 +60,18 @@ export const LOAD_SYSTEM_PROFILE = 'loadSystemProfile';
  */
 export const LOAD_REPO_BASE_PROJECT = 'loadRepoBaseProject';
 export const LOAD_REPO_TEMPLATE = 'loadRepoTemplate';
+
+/**
+ * 获取登录用户信息
+ */
+export const LOAD_LOGIN_USER = 'loadLoginUser';
+/**
+ * mutation 设置登录信息
+ * @type {string}
+ */
+export const SET_LOGIN_USER = 'setLoginUser';
+/**
+ * 修改密码
+ * @type {string}
+ */
+export const CHANGE_PASSWORD = 'changePassword';

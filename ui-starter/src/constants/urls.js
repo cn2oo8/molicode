@@ -3,6 +3,7 @@ export default {
         tableModel: {
             makeTableModel: 'autoCode/tableModel/makeTableModel',
             getTableList: 'autoCode/tableModel/getTableList',
+            getTableListBySql: 'autoCode/tableModel/getTableListBySql',
             getTableInfo: 'autoCode/tableModel/getTableInfo',
             saveTableModel: 'autoCode/tableModel/saveTableModel'
         },
@@ -21,7 +22,8 @@ export default {
         file: {
             fileChooser: 'common/file/fileChooser',
             openFile: 'common/file/openFile',
-            editFile: 'common/file/editFile'
+            editFile: 'common/file/editFile',
+            loadProjectOutputFile: 'common/file/loadProjectOutputFile'
         },
         bindResource: {
             getBindResource: 'common/bindResource/getBindResource',
@@ -60,6 +62,15 @@ export default {
         system: {
             getProfileCache: 'sys/system/getProfileCache',
             getProfileInfo: 'sys/system/getProfileInfo'
+        },
+        acUser: {
+            getLoginUser: 'sys/acUser/getLoginUser',
+            changePassword: 'sys/acUser/changePassword'
+        }
+    },
+    loginfree: {
+        login: {
+            login: 'loginfree/login'
         }
     },
     repo: {

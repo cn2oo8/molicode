@@ -13,6 +13,7 @@
 
 <script>
     import * as renderUtil from '@/libs/renderUtil.js';
+    import codePreview from '../file/codePreview'
 
     var _ = require('underscore')
 
@@ -45,6 +46,18 @@
                                 }
                             }, [params.row.zipUrl]);
                         }
+                    },
+                    {
+                        title: '操作',
+                        width: 150,
+                        render: (h, params) => {
+                            return h(codePreview, {
+                                props: {
+                                    showButton: true,
+                                    item: params.row
+                                }
+                            });
+                        }
                     }
                 ]
             };
@@ -54,13 +67,11 @@
                 this.resultList = [];
             },
             appendResultInfo(result) {
-                /*  let newList = [result];
-                  _.each(this.resultList, function (item) {
-                      newList.push(item);
-                  });
-                  */
                 this.resultList.push(result);
             }
+        },
+        components: {
+            codePreview
         }
     }
 </script>

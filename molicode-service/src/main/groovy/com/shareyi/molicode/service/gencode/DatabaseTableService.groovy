@@ -25,11 +25,11 @@ interface DatabaseTableService {
 
     /**
      * 通过表名获取表结构
-     * @param projectKey
-     * @param tableName
+     *
+     * @param tableModelPageVo
      * @return
      */
-    CommonResult<TableModelVo> getTableInfo(String projectKey, String tableName)
+    CommonResult<TableModelVo> getTableInfo(TableModelPageVo tableModelPageVo)
 
     /**
      * 保存表模型
@@ -38,4 +38,12 @@ interface DatabaseTableService {
      * @return
      */
     CommonResult<Object> saveTableModel(String projectKey, String tableModelJson)
+
+    /**
+     * 通过createSql获取数据库表
+     * @param projectKey
+     * @param createSql
+     * @return
+     */
+    CommonResult<List<SimpleTableInfoVo>> getTableListBySql(String projectKey, String createSql)
 }

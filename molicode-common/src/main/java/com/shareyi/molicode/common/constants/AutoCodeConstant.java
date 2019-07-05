@@ -8,20 +8,7 @@ package com.shareyi.molicode.common.constants;
  */
 public class AutoCodeConstant {
 
-    public static final String BIND_DATABASE = "molicode_database";
-    public static final String BIND_DIR = "molicode_dir";
-    public static final String BIND_AUTOXML = "molicode_autoXml";
-    public static final String BIND_AUTOMAKE = "molicode_autoMake";
     public static final String BIND_DBTABLEUTIL = "molicode_dbTableUtil";
-
-    /**
-     * 替换工具的bindId
-     */
-    public static final String BIND_REPLACEUTIL = "autoCodeReplaceUtil";
-    /**
-     * 替换参数的bindId
-     */
-    public static final String BIND_REPLACEINFO = "autoCodeReplaceInfo";
     /**
      * 字典项配置文件的路径
      */

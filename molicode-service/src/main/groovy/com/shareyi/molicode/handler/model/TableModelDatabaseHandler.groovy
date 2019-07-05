@@ -37,7 +37,9 @@ class TableModelDatabaseHandler extends SimpleHandler<TableModelContext> impleme
 
     @Override
     boolean shouldHandle(TableModelContext tableModelContext) {
-        return true;
+        //如果外部传入了tableModel，就不需要查库了，一般是通过SQL解析得来的
+        return tableModelContext.tableModelVo == null &&
+                !tableModelContext.isReadonly();
     }
 
     @Override
@@ -90,7 +92,6 @@ class TableModelDatabaseHandler extends SimpleHandler<TableModelContext> impleme
                 column.cnname = cols.getString('REMARKS');
                 column.columnType = cols.getString('TYPE_NAME');
                 column.length = cols.getInt('COLUMN_SIZE');
-                column.canBeNull = cols.getString('IS_NULLABLE') == "YES";
                 column.isPK = cols.getString('IS_AUTOINCREMENT') == "YES";
                 column.canBeNull = cols.getString('IS_NULLABLE') == "YES";
                 column.jspTag = tableNameUtil.getJspTag(column.columnType);

@@ -5,6 +5,12 @@
             获取Table列表
         </Button> &nbsp;
 
+        <Button @click="openCreateSql" type="info" size="small">
+            CREATE SQL转换
+        </Button> &nbsp;
+
+        <create-sql ref="createSql" v-on:sqlTableListNotify="sqlTableListNotify"></create-sql>
+
         <Row>
             <Table :columns="columns" :data="tableList" size="small" :border="true"
                    no-data-text="请确认配置并获取table列表"></Table>
@@ -16,6 +22,7 @@
     import constants from '@/constants/constants';
     import requestUtils from '@/request/requestUtils.js';
     import operate from './operate';
+    import createSql from './createSql';
 
     var _ = require('underscore')
 
@@ -63,7 +70,8 @@
             };
         },
         components: {
-            operate
+            operate,
+            createSql
         },
         methods: {
             chooserAllChange(choose) {
@@ -109,6 +117,12 @@
                     findTable.id = tableModel.tableDefine.id;
                     findTable.cnname = tableModel.tableDefine.cnname;
                 }
+            },
+            openCreateSql() {
+                this.$refs.createSql.show(true);
+            },
+            sqlTableListNotify: function (tableList) {
+                this.tableList = tableList;
             }
         }
     }

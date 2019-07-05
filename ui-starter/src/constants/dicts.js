@@ -9,7 +9,8 @@ const dictKinds = {
     DATA_MODEL_TYPE_DICT: 'data_model_type_dict',
     RESOURCE_TYPE_DICT: 'resource_type_dict',
     STD_JSP_TAG: 'std_jsp_tag',
-    OUTPUT_TYPE_DICT: 'output_type_dict'
+    OUTPUT_TYPE_DICT: 'output_type_dict',
+    STD_GENDER: 'dict_std_gender'
 }
 
 export default {
@@ -32,6 +33,25 @@ export default {
                 'parentKey': '',
                 'sortNum': 2,
                 'cssType': 'red'
+            }
+        ],
+        'dict_std_gender': [
+            {
+                kind: dictKinds.STD_GENDER,
+                itemKey: '1',
+                'itemName': '男',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 1,
+                'cssType': 'green'
+            }, {
+                kind: dictKinds.STD_GENDER,
+                itemKey: '2',
+                'itemName': '女',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 2,
+                'cssType': 'blue'
             }
         ],
         'project_type_dict': [
@@ -295,10 +315,18 @@ export default {
             {
                 kind: dictKinds.STD_JSP_TAG,
                 itemKey: 'DATETIME',
-                'itemName': '时间控件',
+                'itemName': '日期时间',
                 'parentKind': '',
                 'parentKey': '',
                 'sortNum': 8
+            },
+            {
+                kind: dictKinds.STD_JSP_TAG,
+                itemKey: 'DATE',
+                'itemName': '日期控件',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 9
             }
         ],
         [dictKinds.OUTPUT_TYPE_DICT]: [

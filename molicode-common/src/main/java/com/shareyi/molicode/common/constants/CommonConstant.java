@@ -12,7 +12,6 @@ public class CommonConstant {
      */
     public static final String DEFAULT_SYS_OWNER = "admin";
 
-
     /**
      * 标准YES_NO 是
      */
@@ -45,4 +44,12 @@ public class CommonConstant {
     public static final String LOCAL_HOST_IP = "127.0.0.1";
 
     public static final String MODEL_TYPE_JSON = "json";
+    /**
+     * 密码加盐
+     */
+    public static final String PWD_SALT = "_pwd_salt_mcode";
+    /**
+     * 登录key
+     */
+    public static final String MOLI_LOGIN_KEY = "moliLoginKey";
 }

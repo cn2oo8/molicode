@@ -68,4 +68,21 @@ class ColumnVo implements Serializable {
     }
 
 
+    @Override
+    String toString() {
+        return "ColumnVo{" +
+                "dataName='" + dataName + '\'' +
+                ", columnName='" + columnName + '\'' +
+                ", jspTag='" + jspTag + '\'' +
+                ", cnname='" + cnname + '\'' +
+                ", columnType='" + columnType + '\'' +
+                ", dictName='" + dictName + '\'' +
+                ", comment='" + comment + '\'' +
+                ", canBeNull=" + canBeNull +
+                ", readonly=" + readonly +
+                ", isPK=" + isPK +
+                ", length=" + length +
+                ", customProps=" + customProps +
+                '}';
+    }
 }

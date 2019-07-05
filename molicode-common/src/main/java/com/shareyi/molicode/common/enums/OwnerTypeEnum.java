@@ -6,16 +6,20 @@ package com.shareyi.molicode.common.enums;
  * @author david
  * @date 2018/8/25
  */
-public enum OwnerTypeEnum implements EnumCode<Integer>{
+public enum OwnerTypeEnum implements EnumCode<Integer> {
 
     /**
      * 系统
      */
-    SYSTEM(1, "系统")
+    SYSTEM(1, "系统"),
     /**
      * 项目
      */
-    ,PROJECT(2, "项目");
+    PROJECT(2, "项目"),
+    /**
+     * 系统
+     */
+    USER(3, "用户");
 
     private final Integer code;
     private final String desc;

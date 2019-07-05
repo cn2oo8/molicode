@@ -1,5 +1,6 @@
 package com.shareyi.molicode.handler.gencode.generate
 
+import com.google.common.base.Function
 import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TemplateGenerateHandlerAware
@@ -7,10 +8,14 @@ import com.shareyi.molicode.common.constants.MoliCodeConstant
 import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.OutputTypeEnum
 import com.shareyi.molicode.common.utils.LogHelper
+import com.shareyi.molicode.common.utils.MyLists
 import com.shareyi.molicode.common.utils.SystemFileUtils
 import com.shareyi.molicode.common.utils.ZipHelper
+import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
-import org.apache.commons.io.FileUtils
+import com.shareyi.molicode.common.vo.code.TemplateResultVo
+import com.shareyi.molicode.common.vo.code.TemplateVo
+import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Service
 
 /**
@@ -50,10 +55,54 @@ class ContentZipHandler extends SimpleHandler<MoliCodeContext> implements
         ZipHelper.zipFile(sourceFile, zipFile);
         context.put(MoliCodeConstant.CTX_KEY_ZIP_FILE_NAME, zipFileName);
         //压缩完毕后，可以删除源文件夹
-        if (sourceFile.getAbsolutePath().startsWith(FileUtil.getRunPath())) {
-            FileUtils.deleteDirectory(sourceFile);
-        }
+        /* if (sourceFile.getAbsolutePath().startsWith(FileUtil.getRunPath())) {
+             FileUtils.deleteDirectory(sourceFile);
+         }*/
+        //获取模板列表对象，对每个模板生成模板结果
+        AutoCodeParams autoCodeParams = context.getAutoCodeParams();
+        List<TemplateVo> templates = autoMakeVo.getTemplates();
+        Set<String> templateIdSet = autoCodeParams.getTemplateIdSet();
+        List<TemplateResultVo> templateResultVos = MyLists.transformNotNull(templates, new Function<TemplateVo, TemplateResultVo>() {
+            @Override
+            TemplateResultVo apply(TemplateVo input) {
+                if (!templateIdSet.contains(input.id) || StringUtils.isEmpty(input.renderedDestFilePath) ||
+                        StringUtils.isEmpty(input.renderedContent)) {
+                    return null;
+                }
+                TemplateResultVo templateResultVo = new TemplateResultVo();
+                templateResultVo.setId(input.id);
+                templateResultVo.name = input.name;
+                templateResultVo.desc = input.desc;
+                templateResultVo.relativePath = parseRelativePath(input, sourceFile);
+                //系统&项目相关
+                templateResultVo.outputDir = autoCodeParams.outputDir;
+                templateResultVo.setProjectKey(autoCodeParams.projectKey)
+                return templateResultVo
+            }
+        });
+        context.put(MoliCodeConstant.TEMPLATE_RESULT_LIST, templateResultVos);
     }
 
+    /**
+     * 转换为相对路径
+     *
+     * @param templateVo
+     * @param parentFile
+     * @return
+     */
+    private String parseRelativePath(TemplateVo templateVo, File parentFile) {
+        File file = new File(templateVo.renderedDestFilePath);
+        String path = file.getAbsolutePath();
+        String parentFilePath = parentFile.getAbsolutePath();
+
+        if (StringUtils.startsWith(path, parentFilePath)) {
+            path = path.substring(parentFilePath.length());
+        }
+        path = StringUtils.replaceAll(path, "\\\\", "/");
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        return path;
+    }
 
 }

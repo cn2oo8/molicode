@@ -14,4 +14,10 @@ import com.shareyi.molicode.manager.BaseManager;
  */
 public interface AcUserManager extends BaseManager<AcUser>{
 
+    /**
+     * 通过用户名查询用户信息
+     * @param userName
+     * @return
+     */
+    AcUser getByUserName(String userName);
 }

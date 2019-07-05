@@ -1,25 +1,22 @@
-package com.shareyi.molicode.handler.model;
+package com.shareyi.molicode.handler.model
 
-import com.shareyi.molicode.common.chain.handler.SimpleHandler;
-import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware;
+import com.shareyi.molicode.common.chain.handler.SimpleHandler
+import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.MoliCodeConstant
 import com.shareyi.molicode.common.filter.ColumnFilter
-import com.shareyi.molicode.common.filter.impl.NameExpressionFilter;
+import com.shareyi.molicode.common.filter.impl.NameExpressionFilter
 import com.shareyi.molicode.common.utils.BindResourceUtil
 import com.shareyi.molicode.common.utils.PubUtils
-import com.shareyi.molicode.common.vo.code.ColumnVo;
-import com.shareyi.molicode.common.vo.code.TableDefineVo;
-import com.shareyi.molicode.common.vo.code.TableModelVo;
-import com.shareyi.molicode.common.vo.page.TableModelPageVo;
+import com.shareyi.molicode.common.vo.code.ColumnVo
+import com.shareyi.molicode.common.vo.code.TableDefineVo
+import com.shareyi.molicode.common.vo.code.TableModelVo
+import com.shareyi.molicode.common.vo.page.TableModelPageVo
 import com.shareyi.molicode.context.TableModelContext
-import com.shareyi.molicode.service.gencode.impl.DatabaseTableServiceImpl
-import com.shareyi.molicode.service.gencode.impl.DictColumnProcessor;
+import com.shareyi.molicode.service.gencode.impl.DictColumnProcessor
 import org.springframework.stereotype.Service
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Properties;
+import javax.annotation.Resource
 
 /**
  * tableModel 数据库处理器
@@ -35,12 +32,12 @@ class TableModelSmartHandler extends SimpleHandler<TableModelContext> implements
 
     @Override
     int getOrder() {
-        return 3;
+        return 4;
     }
 
     @Override
     boolean shouldHandle(TableModelContext tableModelContext) {
-        return true;
+        return !tableModelContext.isReadonly();
     }
 
     @Override
@@ -72,8 +69,6 @@ class TableModelSmartHandler extends SimpleHandler<TableModelContext> implements
                 tableModelVo.putBizFields(entry.key, PubUtils.joinColumnNames(bizColumnList));
             }
         }
-
-
     }
 
     /**

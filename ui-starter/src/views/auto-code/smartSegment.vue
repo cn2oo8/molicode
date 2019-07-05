@@ -128,7 +128,7 @@
         },
         data: function () {
             return {
-                formItems: _.clone(this.defConfig),
+                formItems: _.clone(defConfig),
                 formRules: validateSet,
                 constants,
                 disableInput: false,
@@ -141,6 +141,9 @@
             var _this = this;
             let promise = this.$store.dispatch(constants.types.GET_BIND_RESOURCE, {bindId: this.bindId});
             promise.then((data) => {
+                if (_.isEmpty(data)) {
+                    return;
+                }
                 _this.formItems = data;
             });
         },

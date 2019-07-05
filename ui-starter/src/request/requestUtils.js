@@ -73,6 +73,10 @@ var requestUtils = {
             if (data['success'] && data['success'] === true) {
                 successHandler.call(_this, data)
             } else {
+                // 登录码
+                if (data['returnCode'] === '120' && _vue) {
+                    _vue.$router.push({name: 'login'});
+                }
                 if (errorHandler) {
                     errorHandler.call(_this, data)
                 } else {
@@ -84,11 +88,11 @@ var requestUtils = {
                         title: '错误',
                         content: sMessage
                     });
-
                     _vue.$Message.error({
                         content: sMessage,
                         duration: 10
                     });
+
                 }
             }
         }

@@ -112,6 +112,11 @@ class AutoCodeParams extends ExtAttrDto {
     String outputType;
 
     /**
+     * 输出目录名称，单一目录名称
+     */
+    String outputDir
+
+    /**
      * 是否包含该模板ID
      * @param templateId
      * @return
@@ -251,6 +256,13 @@ class AutoCodeParams extends ExtAttrDto {
         this.jsonConfig = jsonConfig
     }
 
+    String getOutputDir() {
+        return outputDir
+    }
+
+    void setOutputDir(String outputDir) {
+        this.outputDir = outputDir
+    }
 
     @Override
     String toString() {

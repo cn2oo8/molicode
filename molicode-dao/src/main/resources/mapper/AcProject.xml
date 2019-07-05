@@ -63,14 +63,14 @@
 
     <insert id="add" parameterType="com.shareyi.molicode.domain.conf.AcProject"
             keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO ac_project (id,name,remark,project_key,type,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
+		INSERT INTO AC_PROJECT (id,name,remark,project_key,type,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
 			VALUES(#{id},#{name},#{remark},#{projectKey},#{type},#{ext1},#{ext2},#{ext3},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified})
 	 </insert>
 
 
     <!-- 批量添加数据  -->
     <insert id="batchAdd" parameterType="java.util.List">
-        INSERT INTO ac_project
+        INSERT INTO AC_PROJECT
         (id,name,remark,project_key,type,ext1,ext2,ext3,creator,operator,concurrent_version,data_version,status,created,modified)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -79,7 +79,7 @@
     </insert>
 
     <update id="update" parameterType="com.shareyi.molicode.domain.conf.AcProject">
-        UPDATE ac_project
+        UPDATE AC_PROJECT
         <set>
             <if test="name !=null">name = #{name},</if>
             <if test="remark !=null">remark = #{remark},</if>
@@ -98,20 +98,20 @@
 
 
     <delete id="deleteByPk" parameterType="com.shareyi.molicode.domain.conf.AcProject">
-		DELETE FROM ac_project WHERE id = #{id}
+		DELETE FROM AC_PROJECT WHERE id = #{id}
 	</delete>
 
     <select id="getByPk" resultMap="AcProject-Map" parameterType="java.lang.Long">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_project WHERE id = #{id}
+        FROM AC_PROJECT WHERE id = #{id}
     </select>
 
 
     <select id="getListByExample" resultMap="AcProject-Map" parameterType="java.util.HashMap">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_project
+        FROM AC_PROJECT
         <include refid="MAP-COMMON-SQL"/>
         LIMIT 0,1000
     </select>
@@ -120,7 +120,7 @@
     <select id="queryByPage" resultMap="AcProject-Map" parameterType="java.util.HashMap">
         SELECT
         <include refid="All-FIELDS"/>
-        FROM ac_project
+        FROM AC_PROJECT
         <include refid="MAP-COMMON-SQL"/>
         <include refid="ORDER-SQL"/>
         LIMIT #{startIndex},#{pageSize}
@@ -128,7 +128,7 @@
 
     <select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
         <![CDATA[
-			SELECT COUNT(1) FROM ac_project
+			SELECT COUNT(1) FROM AC_PROJECT
 		]]>
         <include refid="MAP-COMMON-SQL"/>
     </select>

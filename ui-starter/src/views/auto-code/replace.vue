@@ -254,6 +254,10 @@
             var _this = this;
             let promise = this.$store.dispatch(constants.types.GET_BIND_RESOURCE, {bindId: this.bindId});
             promise.then((data) => {
+                if (_.isEmpty(data)) {
+                    this._templateTypeChange();
+                    return;
+                }
                 if (!data['branchName']) {
                     data['branchName'] = 'master';
                 }

@@ -19,7 +19,7 @@ public class TableModelController extends BaseController {
     DatabaseTableService databaseTableService;
 
     /**
-     * 生成tableModel
+     * 获取数据库表列表
      */
     @RequestMapping("/getTableList")
     @ResponseBody
@@ -27,14 +27,22 @@ public class TableModelController extends BaseController {
         return databaseTableService.getTableList(projectKey).getReturnMap();
     }
 
+    /**
+     * 通过建表语句获取数据库表
+     */
+    @RequestMapping("/getTableListBySql")
+    @ResponseBody
+    public Map getTableListBySql(String projectKey, String createSql) {
+        return databaseTableService.getTableListBySql(projectKey, createSql).getReturnMap();
+    }
 
     /**
      * 通过表名，获取表结构
      */
     @RequestMapping("/getTableInfo")
     @ResponseBody
-    public Map getTableInfo(String projectKey, String tableName) {
-        return databaseTableService.getTableInfo(projectKey, tableName).getReturnMap();
+    public Map getTableInfo(TableModelPageVo tableModelPageVo) {
+        return databaseTableService.getTableInfo(tableModelPageVo).getReturnMap();
     }
 
 
@@ -50,6 +58,7 @@ public class TableModelController extends BaseController {
     /**
      * 生成tableModel
      */
+    @Deprecated
     @ResponseBody
     @RequestMapping("/makeTableModel")
     public Map makeTableModel(TableModelPageVo tableModelPageVo) {

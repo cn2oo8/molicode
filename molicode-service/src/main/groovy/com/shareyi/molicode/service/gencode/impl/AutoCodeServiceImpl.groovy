@@ -2,6 +2,7 @@ package com.shareyi.molicode.service.gencode.impl
 
 import com.google.common.collect.Lists
 import com.shareyi.fileutil.FileUtil
+import com.shareyi.molicode.common.bean.LoginContext
 import com.shareyi.molicode.common.chain.HandlerChainExecutor
 import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
 import com.shareyi.molicode.common.chain.handler.awares.CodeGenMainHandlerAware
@@ -48,7 +49,9 @@ class AutoCodeServiceImpl implements AutoCodeService {
     CommonResult<String> generateCode(AutoCodeParams autoMakeParams) {
         CommonResult result = CommonResult.create();
         long startTime = System.currentTimeMillis();
+        LoginContext loginContext = LoginHelper.getLoginContext();
         try {
+            LogHelper.DEFAULT.info("{}执行代码生成，param={}", loginContext.getUserName(), autoMakeParams)
             autoMakeParams.setLoadTemplateContent(true)
             ResourceTypeEnum resourceTypeEnum = EnumCode.Parser.parseToNullSafe(ResourceTypeEnum.class, autoMakeParams.resourceType, ResourceTypeEnum.FILE);
             if (resourceTypeEnum == ResourceTypeEnum.FILE || resourceTypeEnum == ResourceTypeEnum.DATABASE) {
@@ -63,8 +66,10 @@ class AutoCodeServiceImpl implements AutoCodeService {
             //如果是headless模式，输出目录设置为默认值，前台传入的无效
             if (Objects.equals(autoMakeParams.outputType, OutputTypeEnum.ZIP_FILE.getCode())) {
                 String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(autoMakeParams.getProjectKey());
-                projectOutputDir = FileUtil.contactPath(projectOutputDir, MoliCodeStringUtils.getTimeBasedStr());
+                def outputDir = MoliCodeStringUtils.getTimeBasedStr()
+                projectOutputDir = FileUtil.contactPath(projectOutputDir, outputDir);
                 autoMakeParams.setProjectOutputDir(projectOutputDir);
+                autoMakeParams.outputDir = outputDir;
             }
             if (!Objects.equals(autoMakeParams.outputType, OutputTypeEnum.FRONT_CONSOLE.code)) {
                 Validate.notEmpty(autoMakeParams.getProjectOutputDir(), "代码输出目录不能为空")
@@ -74,6 +79,8 @@ class AutoCodeServiceImpl implements AutoCodeService {
             HandlerChainFactoryImpl.executeByHandlerAware(CodeGenMainHandlerAware.class, moliCodeContext)
 
             result.addModel(MoliCodeConstant.CTX_KEY_ZIP_FILE_NAME, moliCodeContext.get(MoliCodeConstant.CTX_KEY_ZIP_FILE_NAME));
+            result.addModel(MoliCodeConstant.TEMPLATE_RESULT_LIST, moliCodeContext.get(MoliCodeConstant.TEMPLATE_RESULT_LIST));
+            result.addModel(MoliCodeConstant.OUTPUT_DIR, autoMakeParams.outputDir);
             result.setResultInfo(true, moliCodeContext.getMessage().toString());
         } catch (Exception e) {
             LogHelper.FRONT_CONSOLE.error("生成代码失败，data={}", autoMakeParams, e);

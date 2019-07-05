@@ -121,7 +121,7 @@
                     {
                         title: '控件',
                         key: 'jspTag',
-                        width: 120,
+                        width: 160,
                         render: (h, params) => {
                             return h(dictSelect, {
                                 props: {
@@ -282,7 +282,8 @@
                 }
                 let param = {
                     projectKey,
-                    tableName: this.item.tableName
+                    tableName: this.item.tableName,
+                    'tableSourceName': this.item['sourceName']
                 };
                 requestUtils.postSubmit(this, constants.urls.autoCode.tableModel.getTableInfo, param, function (data) {
                     processData(data['value'])

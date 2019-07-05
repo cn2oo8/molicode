@@ -16,7 +16,7 @@ public class TableModelContext {
     /**
      * 页面入参
      */
-    TableModelPageVo tableModelPageVo;
+    private TableModelPageVo tableModelPageVo;
     /**
      * project 关联的配置文件map
      */
@@ -30,6 +30,12 @@ public class TableModelContext {
      * 输出目录
      */
     private String outputPath;
+
+    /**
+     * 是否只读
+     */
+    private boolean readonly = false;
+
 
     public TableModelPageVo getTableModelPageVo() {
         return tableModelPageVo;
@@ -63,14 +69,35 @@ public class TableModelContext {
         this.outputPath = outputPath;
     }
 
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
+
     /**
      * 创建tableModel 上下文
+     *
      * @param pageVo
      * @return
      */
     public static TableModelContext create(TableModelPageVo pageVo) {
         TableModelContext context = new TableModelContext();
         context.tableModelPageVo = pageVo;
+        return context;
+    }
+
+    /**
+     * 通过tableModel构建
+     *
+     * @param tableModelVo
+     * @return
+     */
+    public static TableModelContext createByTableModel(TableModelVo tableModelVo) {
+        TableModelContext context = new TableModelContext();
+        context.tableModelVo = tableModelVo;
         return context;
     }
 }

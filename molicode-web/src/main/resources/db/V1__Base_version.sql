@@ -3,7 +3,7 @@ CREATE TABLE `ac_common_ext_info` (
   `owner_type` int(11) NOT NULL COMMENT '归属类型：1.系统，2.项目',
   `owner_code` varchar(50)  NOT NULL COMMENT '归属码',
   `ext_key` varchar(50)  NOT NULL COMMENT '扩展key',
-  `ext_value` varchar(200)  DEFAULT NULL COMMENT '扩展值',
+  `ext_value` varchar(4000)  DEFAULT NULL COMMENT '扩展值',
   `type` int(11) NOT NULL DEFAULT '1' COMMENT '类型：1.文本，2.json,3.xml, 4.properties, 5.开关',
   `creator` varchar(20)   DEFAULT NULL COMMENT '创建人',
   `operator` varchar(20)   DEFAULT NULL COMMENT '修改人',
@@ -63,6 +63,7 @@ CREATE TABLE `ac_user` (
   `password_md5` varchar(50)  DEFAULT NULL COMMENT '密码MD5',
   `birth_day` date DEFAULT NULL COMMENT '出生日期',
   `user_mark` varchar(20)  DEFAULT NULL COMMENT '用户标签',
+  `role_code` varchar(50)  DEFAULT NULL COMMENT '角色码',
   `remark` varchar(200)  DEFAULT NULL COMMENT '备注',
   `ext1` varchar(50)  DEFAULT NULL COMMENT '扩展1',
   `ext2` varchar(50)  DEFAULT NULL COMMENT '扩展2',
@@ -76,3 +77,6 @@ CREATE TABLE `ac_user` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 )COMMENT='用户信息';
+
+
+INSERT INTO ac_user (`user_name`, `nick_name`, `gender`, `password_md5`, `birth_day`, `role_code`, `remark`, `concurrent_version`, `data_version`, `status`, `created`, `modified`) VALUES ('admin', '超级管理员', '1', 'b19ab76ee452116f55a844249d8bc6fa', '1990-01-01', 'sys_admin', '默认账号', '1', '1', '1', '2019-07-01 00:00:00', '2019-07-01 00:00:00');

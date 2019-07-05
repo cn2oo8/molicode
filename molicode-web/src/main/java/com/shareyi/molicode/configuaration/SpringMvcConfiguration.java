@@ -4,6 +4,7 @@ import com.shareyi.fileutil.FileUtil;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
 import com.shareyi.molicode.common.utils.LogHelper;
 import com.shareyi.molicode.interceptor.LogInterceptor;
+import com.shareyi.molicode.interceptor.LoginInterceptor;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -21,11 +22,15 @@ import javax.annotation.Resource;
 public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Resource
-    LogInterceptor logInterceptor;
+    private LogInterceptor logInterceptor;
+
+    @Resource
+    private LoginInterceptor loginInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/loginfree/**", "/dist/**", "");
     }
 
 
