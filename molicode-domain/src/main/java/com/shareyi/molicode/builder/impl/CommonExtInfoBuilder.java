@@ -36,6 +36,17 @@ public class CommonExtInfoBuilder extends AbstractBuilder<CommonExtInfo> {
         return CommonExtInfo.class;
     }
 
+
+    @Override
+    public CommonExtInfo supplyAddInfo(CommonExtInfo dto) {
+        super.supplyAddInfo(dto);
+        //默认设置为text
+        if (dto.getType() == null) {
+            dto.setType(DataTypeEnum.TEXT.getCode());
+        }
+        return dto;
+    }
+
     public Map<String, Map<String, String>> buildConfigMap(List<CommonExtInfo> list) {
         Map<String, Map<String, String>> dataMap = new HashMap<>();
         if (CollectionUtils.isEmpty(list)) {

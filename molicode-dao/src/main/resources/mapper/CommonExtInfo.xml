@@ -36,7 +36,7 @@
             <if test="status != null">AND status = #{status}</if>
             <if test="created != null">AND created = #{created}</if>
             <if test="modified != null">AND modified = #{modified}</if>
-            <if test="type != null">AND type = #{type}</if>
+            <if test="type != null">AND `type` = #{type}</if>
         </where>
     </sql>
 
@@ -54,12 +54,12 @@
 
 
     <sql id="All-FIELDS">
-		id,owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,type
+		id,owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,`type`
 	</sql>
 
     <insert id="add" parameterType="com.shareyi.molicode.domain.conf.CommonExtInfo"
             keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO AC_COMMON_EXT_INFO (owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,type)
+		INSERT INTO AC_COMMON_EXT_INFO (owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,`type`)
 			VALUES(#{ownerType},#{ownerCode},#{extKey},#{extValue},#{creator},#{operator},#{concurrentVersion},#{dataVersion},#{status},#{created},#{modified},#{type})
 	 </insert>
 
@@ -67,7 +67,7 @@
     <!-- 批量添加数据  -->
     <insert id="batchAdd" parameterType="java.util.List">
         INSERT INTO AC_COMMON_EXT_INFO
-        (owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,type)
+        (owner_type,owner_code,ext_key,ext_value,creator,operator,concurrent_version,data_version,status,created,modified,`type`)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.ownerType},#{item.ownerCode},#{item.extKey},#{item.extValue},#{item.creator},#{item.operator},#{item.concurrentVersion},#{item.dataVersion},#{item.status},#{item.created},#{item.modified},#{type})
@@ -84,7 +84,7 @@
             <if test="operator !=null">operator = #{operator},</if>
             <if test="dataVersion !=null">data_version = #{dataVersion},</if>
             <if test="status !=null">status = #{status},</if>
-            <if test="type !=null">type = #{type},</if>
+            <if test="type !=null">`type` = #{type},</if>
 
             concurrent_version = concurrent_version + 1
         </set>
