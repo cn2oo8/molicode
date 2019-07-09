@@ -9,6 +9,7 @@ import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.DataTypeEnum
+import com.shareyi.molicode.common.enums.DatabaseNameEnum
 import com.shareyi.molicode.common.enums.TableSourceNameEnum
 import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.valid.Validate
@@ -105,6 +106,9 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
             Map<String, Map<String, String>> configMap = acConfigService.getConfigMapByProjectKey(projectKey, DataTypeEnum.JSON);
             Map<String, String> databaseConfigMap = configMap.get(ConfigKeyConstant.DatabaseConfig.CONFIG_KEY);
             String databaseName = MapUtils.getString(databaseConfigMap, ConfigKeyConstant.DatabaseConfig.DATABASE_NAME);
+            if (StringUtils.isEmpty(databaseName)) {
+                databaseName = DatabaseNameEnum.MYSQL.code;
+            }
             Validate.notEmpty(databaseName, "数据库类型不能为空")
             List<TableModelVo> tableModelVoList = sqlParseService.parseCreateSql(projectKey, createSql, databaseName);
             List<SimpleTableInfoVo> list = MyLists.transform(tableModelVoList, new Function<TableModelVo, SimpleTableInfoVo>() {
