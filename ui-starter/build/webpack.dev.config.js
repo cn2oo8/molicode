@@ -9,7 +9,7 @@ const package = require('../package.json');
 
 fs.open('./build/env.js', 'w', function (err, fd) {
     const buf = 'export default "development";';
-    fs.write(fd, buf, 0, buf.length, 0, function (err, written, buffer) {
+    fs.write(fd, buf, 0, 'utf-8', function (err, written, buffer) {
     });
 });
 
@@ -55,7 +55,7 @@ module.exports = merge(webpackBaseConfig, {
         watchOptions: {
             aggregateTimeout: 300
         },
-        port: '8096', //设置端口号
+        port: '8097', //设置端口号
         //其实很简单的，只要配置这个参数就可以了
         proxy: {
             '/conf/': {

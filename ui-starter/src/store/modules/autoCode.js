@@ -55,6 +55,7 @@ const autoCode = {
             if (state.profile['browserWindowName'] === 'headless' || state.profile['browserWindowName'] === 'server') {
                 removeDictElement(constants.dicts.dictKinds.TEMPLATE_TYPE_DICT, ['local']);
                 removeDictElement(constants.dicts.dictKinds.RESOURCE_TYPE_DICT, ['file']);
+                removeDictElement(constants.dicts.dictKinds.OUTPUT_TYPE_DICT, ['1']);
             }
         }
     },

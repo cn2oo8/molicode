@@ -2,7 +2,7 @@
     <div>
         <Form ref="formItems" :model="formItems" :rules="formRules" :label-width="120" inline>
 
-            <Row v-show="windowName!='headless'">
+            <Row>
                 <Col span="24">
                     <Form-item label="代码输出方式" prop="outputType" style="width: 95%">
                         <dict-radio v-model="formItems.outputType" :disabled="disableInput"
@@ -158,7 +158,7 @@
             var configType = this.$route.query['configType'];
             var myData = {
                 formItems: {
-                    outputType: '1',
+                    outputType: '2',
                     templateBaseDir: '',
                     tableModelPath: '',
                     projectOutputDir: '',
@@ -202,7 +202,7 @@
             this.formItems.tableModelDir = configObject[constants.bizKeys.configs.pathConfig.tableModelDir];
             this.formItems.outputType = configObject[constants.bizKeys.configs.pathConfig.outputType];
             if (!this.formItems.outputType) {
-                this.formItems.outputType = '1';
+                this.formItems.outputType = '2';
             }
             this.formValidateChange();
             this.loadBrowserPassContent();
@@ -250,7 +250,7 @@
             },
             storeOutputType: function (newVal) {
                 if (!newVal) {
-                    newVal = '1';
+                    newVal = '2';
                 }
                 this.formItems.outputType = newVal;
             },
@@ -356,6 +356,7 @@
                     this.formRules.tableModelPath[0].required = false;
                     this.formRules.frontContent[0].required = true;
                 }
+                this.formRules.projectOutputDir[0].required = this.formItems.outputType === '1';
             },
             connectLogServer() {
                 this.$refs.logConsole.connectServer();

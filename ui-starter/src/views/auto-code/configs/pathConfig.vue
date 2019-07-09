@@ -2,7 +2,7 @@
     <div>
         <Form ref="formItems" :model="formItems" :rules="formRules" :label-width="120" inline>
 
-            <Row v-show="windowName != 'headless'">
+            <Row>
                 <Col span="24">
                     <Form-item label="代码输出方式" prop="outputType" style="width: 95%">
                         <dict-radio v-model="formItems.outputType" :disabled="disableInput"
@@ -105,10 +105,10 @@
     var _ = require('underscore')
 
     var defConfig = {
-        outputType: '1',
+        outputType: '2',
         templateBaseDir: '',
         projectOutputDir: '',
-        templateType: 'local',
+        templateType: 'git',
         'gitUrl': '',
         'branchName': 'master',
         'templateRelativePath': '',
@@ -206,14 +206,15 @@
                     this.formItems = _.clone(defConfig);
                 } else {
                     if (!configInfo.templateType) {
-                        configInfo.templateType = 'local';
+                        configInfo.templateType = 'git';
                     }
                     if (!configInfo.outputType) {
-                        configInfo.outputType = '1';
+                        configInfo.outputType = '2';
                     }
                     this.formItems = configInfo;
                 }
-                this._templateTypeChange(this.formItems.templateType === 'maven');
+                this._templateTypeChange();
+                this._outputTypeChange();
             },
             fetchGitRepo() {
                 this.$refs['formItems'].validate((valid) => {
