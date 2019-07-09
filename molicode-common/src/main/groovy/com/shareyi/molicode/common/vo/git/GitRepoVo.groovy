@@ -41,7 +41,7 @@ class GitRepoVo {
                 "gitUrl='" + gitUrl + '\'' +
                 ", branchName='" + branchName + '\'' +
                 ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + password ==null? "null":"notNull" + '\'' +
                 ", encryptPassword='" + encryptPassword + '\'' +
                 '}';
     }

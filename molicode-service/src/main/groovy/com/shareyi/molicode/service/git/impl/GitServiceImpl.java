@@ -44,6 +44,9 @@ public class GitServiceImpl implements GitService {
                 LogHelper.DEFAULT.info("git repo already exist, fetch from url={}, branch={}", gitRepoVo.getGitUrl(), gitRepoVo.getBranchName());
                 PullCommand pull = git.pull();
                 pull.setRemoteBranchName(gitRepoVo.getBranchName()).call();
+                if (credentialsProvider != null) {
+                    pull.setCredentialsProvider(credentialsProvider);
+                }
                 result.addDefaultModel("info", "仓库已存在，拉取最新内容到分支:" + gitRepoVo.getBranchName());
             } else {
                 FileUtil.makeDir(repoDir);
@@ -78,6 +81,7 @@ public class GitServiceImpl implements GitService {
         if (StringUtils.isNotEmpty(gitRepoVo.getUserName()) && StringUtils.isNotEmpty(gitRepoVo.getPassword())) {
             credentialsProvider = new UsernamePasswordCredentialsProvider(gitRepoVo.getUserName(), gitRepoVo.getPassword());
         }
+
         return credentialsProvider;
     }
 
