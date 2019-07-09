@@ -25,6 +25,9 @@ const user = {
             }
             this.login = false;
             this.userInfo = null;
+            requestUtils.postSubmit(vm, constants.urls.sys.acUser.logout, {}, function (data) {
+            });
+            Cookies.remove('moliLoginKey');
         },
         [constants.types.SET_LOGIN_USER]: function (state, payload) {
             state.login = true;

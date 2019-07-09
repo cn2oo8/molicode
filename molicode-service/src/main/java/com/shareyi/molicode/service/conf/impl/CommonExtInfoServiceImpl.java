@@ -5,12 +5,15 @@
 package com.shareyi.molicode.service.conf.impl;
 
 import com.shareyi.molicode.builder.impl.CommonExtInfoBuilder;
+import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.enums.DataTypeEnum;
 import com.shareyi.molicode.common.enums.OwnerTypeEnum;
+import com.shareyi.molicode.common.enums.RoleCodeEnum;
 import com.shareyi.molicode.common.utils.LogHelper;
-import com.shareyi.molicode.common.utils.LoginHelper;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.domain.conf.CommonExtInfo;
+import com.shareyi.molicode.domain.sys.AcUser;
+import com.shareyi.molicode.helper.LoginHelper;
 import com.shareyi.molicode.manager.conf.CommonExtInfoManager;
 import com.shareyi.molicode.service.AbstractService;
 import com.shareyi.molicode.service.conf.CommonExtInfoService;
@@ -58,6 +61,12 @@ public class CommonExtInfoServiceImpl extends
             //如果为用户信息，则直接设置死ownerCode信息
             if (Objects.equals(commonExtInfo.getOwnerType(), OwnerTypeEnum.USER.getCode())) {
                 commonExtInfo.setOwnerCode(LoginHelper.getLoginContext().getUserName());
+            } else if(Objects.equals(commonExtInfo.getOwnerType(), OwnerTypeEnum.SYSTEM.getCode())){
+                AcUser acUser = LoginHelper.getLoginUser();
+                RoleCodeEnum roleCodeEnum = RoleCodeEnum.Parser.parseToNullSafe(RoleCodeEnum.class, acUser.getRoleCode());
+                if (roleCodeEnum.getPrivilegeLevel() > CommonConstant.ROLE_LEVEL.NORMAL) {
+                    return result.failed("没有权限");
+                }
             }
             commonExtInfoValidator.addValid(commonExtInfo);
             CommonExtInfo existData = commonExtInfoManager.getByOwnerAndKey(commonExtInfo);
@@ -87,6 +96,12 @@ public class CommonExtInfoServiceImpl extends
             //如果为用户信息，则直接设置死ownerCode信息
             if (Objects.equals(commonExtInfo.getOwnerType(), OwnerTypeEnum.USER.getCode())) {
                 commonExtInfo.setOwnerCode(LoginHelper.getLoginContext().getUserName());
+            } else if(Objects.equals(commonExtInfo.getOwnerType(), OwnerTypeEnum.SYSTEM.getCode())){
+                AcUser acUser = LoginHelper.getLoginUser();
+                RoleCodeEnum roleCodeEnum = RoleCodeEnum.Parser.parseToNullSafe(RoleCodeEnum.class, acUser.getRoleCode());
+                if (roleCodeEnum.getPrivilegeLevel() > CommonConstant.ROLE_LEVEL.NORMAL) {
+                    return result.failed("没有权限");
+                }
             }
             commonExtInfoValidator.queryValid(commonExtInfo);
             CommonExtInfo data = getManager().getByOwnerAndKey(commonExtInfo);

@@ -38,7 +38,7 @@ public class ExtAttrDto implements Serializable {
     /**
      * 设置扩展属性信息
      *
-     * @param key key
+     * @param key   key
      * @param value 值
      * @return 本身
      */
@@ -61,9 +61,24 @@ public class ExtAttrDto implements Serializable {
     }
 
     /**
+     * 获取泛型类型的扩展信息
+     *
+     * @param key   key
+     * @param clazz 数据类型
+     * @return 获取扩展value
+     */
+    public <T> T getExtValue(String key, Class<T> clazz) {
+        Object object = getExtObject(key, null);
+        if (object != null) {
+            return (T) object;
+        }
+        return null;
+    }
+
+    /**
      * 获取object类型的扩展信息
      *
-     * @param key key
+     * @param key    key
      * @param defVal 默认值
      * @return 获取扩展object
      */
@@ -88,8 +103,8 @@ public class ExtAttrDto implements Serializable {
     /**
      * 获取字符串类型的扩展信息
      *
-     * @param key key
-     * @param defVal  默认参数
+     * @param key    key
+     * @param defVal 默认参数
      * @return 扩展字符串
      */
     public String getExtStr(String key, String defVal) {

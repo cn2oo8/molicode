@@ -10,7 +10,9 @@ const dictKinds = {
     RESOURCE_TYPE_DICT: 'resource_type_dict',
     STD_JSP_TAG: 'std_jsp_tag',
     OUTPUT_TYPE_DICT: 'output_type_dict',
-    STD_GENDER: 'dict_std_gender'
+    STD_GENDER: 'dict_std_gender',
+    ROlE_CODE_DICT: 'role_code_dict'
+
 }
 
 export default {
@@ -351,6 +353,34 @@ export default {
                 kind: dictKinds.OUTPUT_TYPE_DICT,
                 itemKey: '3',
                 'itemName': '输出到前台',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 3,
+                'cssType': 'green'
+            }
+        ],
+        [dictKinds.ROlE_CODE_DICT]: [
+            {
+                kind: dictKinds.ROlE_CODE_DICT,
+                itemKey: 'sys_admin',
+                'itemName': 'sys_admin',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 1,
+                'cssType': 'blue'
+            }, {
+                kind: dictKinds.ROlE_CODE_DICT,
+                itemKey: 'normal_user',
+                'itemName': 'normal_user',
+                'parentKind': '',
+                'parentKey': '',
+                'sortNum': 2,
+                'cssType': 'green'
+            },
+            {
+                kind: dictKinds.ROlE_CODE_DICT,
+                itemKey: 'guest_user',
+                'itemName': 'guest_user',
                 'parentKind': '',
                 'parentKey': '',
                 'sortNum': 3,

@@ -85,7 +85,7 @@
                             name: 'home_index'
                         });
                         _this.$Message.success({
-                            content: '登录成功',
+                            content: '登录成功，欢迎使用MoliCode',
                             duration: 10
                         });
                     }, function (data) {

@@ -9,6 +9,7 @@ import com.shareyi.molicode.domain.sys.AcUser;
 import com.shareyi.molicode.service.BaseService;
 import com.shareyi.molicode.vo.user.LoginUserVo;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -61,4 +62,22 @@ public interface AcUserService extends BaseService<AcUser> {
      * @return
      */
     CommonResult<String> updateUserInfo(AcUser acUser);
+
+    /**
+     * 登出
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    CommonResult<String> logout(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 管理员新增用户
+     *
+     * @param loginUserVo
+     * @return
+     */
+    CommonResult<AcUser> addByAdmin(LoginUserVo loginUserVo);
+
 }

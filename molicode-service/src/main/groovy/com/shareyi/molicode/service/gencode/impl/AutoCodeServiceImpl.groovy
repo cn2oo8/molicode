@@ -17,6 +17,7 @@ import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
 import com.shareyi.molicode.common.web.CommonResult
 import com.shareyi.molicode.hander.gencode.loader.AutoMakeLoadHandler
+import com.shareyi.molicode.helper.LoginHelper
 import com.shareyi.molicode.service.conf.AcConfigService
 import com.shareyi.molicode.service.conf.CommonExtInfoService
 import com.shareyi.molicode.service.gencode.AutoCodeService
@@ -60,7 +61,7 @@ class AutoCodeServiceImpl implements AutoCodeService {
                 Validate.notEmpty(autoMakeParams.getFrontContent(), "frontContent不能为空")
             }
             //headless模式只能输出到zip文件
-            if (Profiles.getInstance().isHeadLess()) {
+            if (Profiles.getInstance().isHeadLess() && !Objects.equals(autoMakeParams.getOutputType(), OutputTypeEnum.FRONT_CONSOLE.code)) {
                 autoMakeParams.setOutputType(OutputTypeEnum.ZIP_FILE.getCode());
             }
             //如果是headless模式，输出目录设置为默认值，前台传入的无效

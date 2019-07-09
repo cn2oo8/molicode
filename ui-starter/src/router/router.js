@@ -143,6 +143,13 @@ export const appRouter = [
         component: Main,
         children: [
             {
+                path: 'userList',
+                icon: 'social-chrome',
+                name: 'userList',
+                title: '用户管理',
+                component: () => import('@//views/user/list.vue')
+            },
+            {
                 path: 'browser',
                 icon: 'social-chrome',
                 name: 'browser',

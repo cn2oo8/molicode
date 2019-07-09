@@ -198,6 +198,7 @@
                 <artifactId>javaparser-symbol-solver-core</artifactId>
                 <version>3.6.26</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

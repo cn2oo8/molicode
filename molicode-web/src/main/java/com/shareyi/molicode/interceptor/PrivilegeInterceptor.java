@@ -4,7 +4,7 @@ import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
 import com.shareyi.molicode.common.bean.LoginContext;
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.enums.RoleCodeEnum;
-import com.shareyi.molicode.common.utils.LoginHelper;
+import com.shareyi.molicode.helper.LoginHelper;
 import com.shareyi.molicode.common.utils.Profiles;
 import com.shareyi.molicode.domain.sys.AcUser;
 import org.apache.commons.lang3.StringUtils;
@@ -56,10 +56,12 @@ public class PrivilegeInterceptor extends BaseAbstractInterceptor implements Han
         //可切换掉整个系统的权限等级
         Integer safeLevel = Profiles.getInstance().getServerSafeLevel();
         int level = annotation.level();
-        if (safeLevel != null && roleCodeEnum.getPrivilegeLevel() != CommonConstant.ROLE_LEVEL.ADMIN) {
-            level = Math.max(level, safeLevel);
+
+        Integer userLevel = roleCodeEnum.getPrivilegeLevel();
+        if (safeLevel != null && userLevel != CommonConstant.ROLE_LEVEL.ADMIN) {
+            userLevel = Math.max(userLevel, safeLevel);
         }
-        if (roleCodeEnum.getPrivilegeLevel() > level) {
+        if (userLevel > level) {
             this.responseNoAuth(request, response, false, annotation.code());
             return false;
         }

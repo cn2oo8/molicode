@@ -4,6 +4,7 @@
 
 package com.shareyi.molicode.service.sys.impl;
 
+import com.google.common.base.Function;
 import com.google.common.util.concurrent.RateLimiter;
 import com.shareyi.molicode.builder.impl.AcUserBuilder;
 import com.shareyi.molicode.common.bean.LoginContext;
@@ -12,7 +13,9 @@ import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.enums.RoleCodeEnum;
 import com.shareyi.molicode.common.utils.*;
 import com.shareyi.molicode.common.web.CommonResult;
+import com.shareyi.molicode.common.web.PageQuery;
 import com.shareyi.molicode.domain.sys.AcUser;
+import com.shareyi.molicode.helper.LoginHelper;
 import com.shareyi.molicode.manager.sys.AcUserManager;
 import com.shareyi.molicode.service.AbstractService;
 import com.shareyi.molicode.service.common.CacheService;
@@ -21,11 +24,14 @@ import com.shareyi.molicode.service.common.RateLimiterProvider;
 import com.shareyi.molicode.service.sys.AcUserService;
 import com.shareyi.molicode.validate.provide.AcUserValidator;
 import com.shareyi.molicode.vo.user.LoginUserVo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -94,6 +100,7 @@ public class AcUserServiceImpl extends
             result.addDefaultModel(acUser);
             result.succeed();
         } catch (Exception e) {
+            LogHelper.EXCEPTION.error("登录失败,loginInfo={}", loginUserVo, e);
             result.failed("登录失败，原因是：" + e.getMessage());
         }
         return result;
@@ -119,7 +126,8 @@ public class AcUserServiceImpl extends
             result.addDefaultModel(acUser);
             result.succeed();
         } catch (Exception e) {
-            result.failed("登录失败，原因是：" + e.getMessage());
+            LogHelper.EXCEPTION.error("获取用户信息失败", e);
+            result.failed("获取用户信息失败，原因是：" + e.getMessage());
         }
         return result;
     }
@@ -159,6 +167,7 @@ public class AcUserServiceImpl extends
                 result.failed("更新失败，原因未知！");
             }
         } catch (Exception e) {
+            LogHelper.EXCEPTION.error("修改密码失败", e);
             result.failed("修改密码失败，原因是：" + e.getMessage());
         }
         return result;
@@ -198,7 +207,7 @@ public class AcUserServiceImpl extends
             }
         } catch (Exception e) {
             LogHelper.EXCEPTION.error("注册用户异常,loginUserVo={}", loginUserVo, e);
-            result.failed("登录失败，原因是：" + e.getMessage());
+            result.failed("注册用户异常，原因是：" + e.getMessage());
         }
         return result;
     }
@@ -233,7 +242,75 @@ public class AcUserServiceImpl extends
                 result.failed("更新失败，原因未知！");
             }
         } catch (Exception e) {
+            LogHelper.EXCEPTION.error("更新用户失败，acUser={}", acUser, e);
             result.failed("更新失败，原因是：" + e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public CommonResult<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        CommonResult result = CommonResult.create();
+        try {
+            LoginContext loginContext = LoginHelper.getLoginContext();
+            if (loginContext == null) {
+                return result.failed("尚未登录！");
+            }
+            cacheService.deleteShortTimeKey(CacheKeyConstant.getAcUserCacheKey(loginContext.getUserName()));
+            CookieUtils.removeCookie(request, response, CommonConstant.MOLI_LOGIN_KEY);
+            result.succeed();
+        } catch (Exception e) {
+            LogHelper.EXCEPTION.error("登出失败", e);
+            result.failed("登出失败，原因是：" + e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public CommonResult<AcUser> addByAdmin(LoginUserVo loginUserVo) {
+        CommonResult result = CommonResult.create();
+        try {
+            AcUser loginUser = LoginHelper.getLoginUser();
+            if (loginUser == null) {
+                return result.failed("您尚未登录，请先登录！");
+            }
+            acUserValidator.validateForRegister(loginUserVo);
+            AcUser acUser = acUserManager.getByUserName(loginUserVo.getUserName());
+            if (acUser != null) {
+                return result.failed("用户已存在！");
+            }
+            if (StringUtils.isEmpty(loginUserVo.getRoleCode())) {
+                loginUserVo.setRoleCode(RoleCodeEnum.GUEST_USER.getCode());
+            }
+            AcUser acUserNew = acUserBuilder.buildForRegister(loginUserVo);
+            acUserNew.setCreator(loginUser.getUserName());
+            CommonResult addResult = super.add(acUserNew);
+            if (addResult.isSuccess()) {
+                acUserNew.setPasswordMd5(null);
+                result.addDefaultModel(acUserNew);
+                result.succeed();
+            } else {
+                result.failed(addResult.getMessage());
+            }
+        } catch (Exception e) {
+            LogHelper.EXCEPTION.error("注册用户异常,loginUserVo={}", loginUserVo, e);
+            result.failed("注册用户异常，原因是：" + e.getMessage());
+        }
+        return result;
+    }
+
+
+    @Override
+    public CommonResult<List<AcUser>> queryByPage(PageQuery pageQuery) {
+        CommonResult<List<AcUser>> result = super.queryByPage(pageQuery);
+        if (CollectionUtils.isNotEmpty(result.getDefaultModel())) {
+            MyLists.transform(result.getDefaultModel(), new Function<AcUser, AcUser>() {
+                @Override
+                public AcUser apply(AcUser input) {
+                    input.setPasswordMd5(null);
+                    return input;
+                }
+            });
         }
         return result;
     }

@@ -2,6 +2,25 @@ import constants from '@/constants/constants';
 import requestUtils from '@/request/requestUtils.js';
 import * as configUtil from '@/libs/configUtil.js'
 
+var _ = require('underscore')
+
+
+function removeDictElement(dictKind, removeElements) {
+    let dictList = constants.dicts.dictData[dictKind];
+    if (dictList === null || dictList === undefined) {
+        return;
+    }
+    let newDictList = [];
+    for (var index = 0; index < dictList.length; index++) {
+        var element = dictList[index];
+        if (_.contains(removeElements, element['itemKey'])) {
+            continue;
+        }
+        newDictList.push(element);
+    }
+    constants.dicts.dictData[dictKind] = newDictList;
+}
+
 const autoCode = {
     state: {
         defaultProjectKey: null,
@@ -29,6 +48,13 @@ const autoCode = {
         setGlobalConfig(state, commonExtInfo) {
             if (commonExtInfo && commonExtInfo['extValue']) {
                 state.globalConfig[commonExtInfo['extKey']] = JSON.parse(commonExtInfo['extValue']);
+            }
+        },
+        setSystemProfile(state, profile) {
+            state.profile = profile;
+            if (state.profile['browserWindowName'] === 'headless' || state.profile['browserWindowName'] === 'server') {
+                removeDictElement(constants.dicts.dictKinds.TEMPLATE_TYPE_DICT, ['local']);
+                removeDictElement(constants.dicts.dictKinds.RESOURCE_TYPE_DICT, ['file']);
             }
         }
     },
@@ -272,13 +298,13 @@ const autoCode = {
         [constants.types.LOAD_SYSTEM_PROFILE]: ({state, commit, dispatch}, payload) => {
             var _this = payload['_vue'] ? payload['_vue'] : this;
             return new Promise((resolve, reject) => {
-                if (state.profile['browserWindowName'] !== null) {
+                if (state.profile['browserWindowName']) {
                     resolve(state.profile);
                     return;
                 }
                 requestUtils.postSubmit(_this, constants.urls.sys.system.getProfileInfo, {}, function (data) {
                     var profile = data['value'];
-                    state.profile = profile;
+                    commit('setSystemProfile', profile)
                     resolve(profile);
                 }, function (data) {
                     reject(data);

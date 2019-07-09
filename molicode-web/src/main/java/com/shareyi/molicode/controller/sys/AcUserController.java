@@ -6,9 +6,12 @@
 package com.shareyi.molicode.controller.sys;
 
 
+import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
 import com.shareyi.molicode.common.web.CommonResult;
+import com.shareyi.molicode.common.web.PageQuery;
 import com.shareyi.molicode.domain.sys.AcUser;
 import com.shareyi.molicode.service.sys.AcUserService;
+import com.shareyi.molicode.vo.user.LoginUserVo;
 import com.shareyi.molicode.web.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -63,6 +67,68 @@ public class AcUserController extends BaseController {
         CommonResult<String> result = acUserService.updateUserInfo(acUser);
         return result.getReturnMap();
     }
+
+
+    /**
+     * 登出
+     *
+     * @return
+     */
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @ResponseBody
+    public Map logout(HttpServletRequest request, HttpServletResponse response) {
+        CommonResult<String> result = acUserService.logout(request, response);
+        return result.getReturnMap();
+    }
+
+
+
+    /**
+     * list
+     *
+     * @return
+     */
+    @RequestMapping(value = "list", method = RequestMethod.POST)
+    @ResponseBody
+    @UserAuthPrivilege
+    public Map list(HttpServletRequest request) {
+        PageQuery pageQuery =new PageQuery(request, this.getPageSize(request));
+        return  getService().queryByPage(pageQuery).getReturnMap();
+    }
+
+
+    /**
+     * 新增
+     *
+     * @return
+     */
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @ResponseBody
+    @UserAuthPrivilege
+    public Map add(LoginUserVo loginUserVo) {
+        CommonResult<AcUser> result = acUserService.addByAdmin(loginUserVo);
+        return result.getReturnMap();
+    }
+
+
+
+    /**
+     * 修改
+     *
+     * @return
+     */
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @ResponseBody
+    @UserAuthPrivilege
+    public Map update(AcUser acUser) {
+        CommonResult<AcUser> result = acUserService.update(acUser);
+        return result.getReturnMap();
+    }
+
+
+
+
+
 
 
     public AcUserService getService() {

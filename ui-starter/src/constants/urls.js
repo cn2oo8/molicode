@@ -57,9 +57,14 @@ export default {
             getProfileInfo: 'sys/system/getProfileInfo'
         },
         acUser: {
+            list: 'sys/acUser/list',
+            update: 'sys/acUser/update',
+            add: 'sys/acUser/add',
             getLoginUser: 'sys/acUser/getLoginUser',
             changePassword: 'sys/acUser/changePassword',
-            updateUserInfo: 'sys/acUser/updateUserInfo'
+            updateUserInfo: 'sys/acUser/updateUserInfo',
+            logout: 'sys/acUser/logout'
+
         }
     },
     loginfree: {

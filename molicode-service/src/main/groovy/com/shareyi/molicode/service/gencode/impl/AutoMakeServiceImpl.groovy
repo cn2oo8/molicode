@@ -7,7 +7,7 @@ import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.*
 import com.shareyi.molicode.common.utils.LogHelper
-import com.shareyi.molicode.common.utils.LoginHelper
+import com.shareyi.molicode.helper.LoginHelper
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo

@@ -38,7 +38,7 @@ axiosInstance.interceptors.request.use(config => {
     return config
 }, error => {
     iView.LoadingBar.error()
-    iView.Message.error('请求入参异常！' + error)
+    iView.Message.error('请求异常！' + error)
     return Promise.reject(error)
 })
 
@@ -70,7 +70,7 @@ axiosInstance.interceptors.response.use(response => {
     // window.location.href = location.href
     iView.LoadingBar.error()
     iView.Notice.error({
-        desc: '数据查询失败，请刷新页面重试！' + error.message
+        desc: '数据查询失败，请检查WiFi或者网络是否正常！' + error.message
     })
     // 这里我们把错误信息扶正, 后面就不需要写 catch 了
     return Promise.reject(error)
