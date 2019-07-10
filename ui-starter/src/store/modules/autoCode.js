@@ -33,6 +33,12 @@ const autoCode = {
         profile: {}
     },
     mutations: {
+        logout(state, _vue) {
+            state.defaultProjectKey = null;
+            state.defaultProject = null;
+            state.defaultProjectConfig = null;
+            state.autoMake = null;
+        },
         setDefaultProjectKey(state, projectKey) {
             state.defaultProjectKey = projectKey;
         },

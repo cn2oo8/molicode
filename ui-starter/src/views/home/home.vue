@@ -104,11 +104,6 @@
                 newToDoItemValue: ''
             };
         },
-        computed: {
-            avatorPath() {
-                return localStorage.avatorImgPath;
-            }
-        },
         methods: {
             addNewToDoItem() {
                 this.showAddNewTodo = true;

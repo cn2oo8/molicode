@@ -79,14 +79,15 @@
                     }
                     var datas = requestUtils.serializeObject(_this.form, true, true);
                     requestUtils.postSubmit(_this, constants.urls.loginfree.login.login, datas, function (data) {
-                        this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
                         this.$store.commit('setLoginUser', {'userInfo': data.value, vm: this});
-                        this.$router.push({
-                            name: 'home_index'
-                        });
+                        this.$store.commit('setLoginUser', {'userInfo': data.value, vm: this});
+
                         _this.$Message.success({
                             content: '登录成功，欢迎使用MoliCode',
                             duration: 10
+                        });
+                        this.$router.push({
+                            name: 'home_index'
                         });
                     }, function (data) {
                         var sMessage = data['message']

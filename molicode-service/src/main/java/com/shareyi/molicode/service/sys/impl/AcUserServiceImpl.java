@@ -98,6 +98,7 @@ public class AcUserServiceImpl extends
             CookieUtils.setCookie(response, CommonConstant.MOLI_LOGIN_KEY, encryptUserName, CommonConstant.ONE_DAY_SEC);
             acUser.setPasswordMd5(null);
             result.addDefaultModel(acUser);
+            cacheService.deleteShortTimeKey(loginFailureKey);
             result.succeed();
         } catch (Exception e) {
             LogHelper.EXCEPTION.error("登录失败,loginInfo={}", loginUserVo, e);
