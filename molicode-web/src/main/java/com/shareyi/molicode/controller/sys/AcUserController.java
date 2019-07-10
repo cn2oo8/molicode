@@ -82,7 +82,6 @@ public class AcUserController extends BaseController {
     }
 
 
-
     /**
      * list
      *
@@ -92,8 +91,8 @@ public class AcUserController extends BaseController {
     @ResponseBody
     @UserAuthPrivilege
     public Map list(HttpServletRequest request) {
-        PageQuery pageQuery =new PageQuery(request, this.getPageSize(request));
-        return  getService().queryByPage(pageQuery).getReturnMap();
+        PageQuery pageQuery = new PageQuery(request, this.getPageSize(request));
+        return getService().queryByPage(pageQuery).getReturnMap();
     }
 
 
@@ -111,7 +110,6 @@ public class AcUserController extends BaseController {
     }
 
 
-
     /**
      * 修改
      *
@@ -121,14 +119,10 @@ public class AcUserController extends BaseController {
     @ResponseBody
     @UserAuthPrivilege
     public Map update(AcUser acUser) {
+        acUser.setPasswordMd5(null); //不允许更新密码
         CommonResult<AcUser> result = acUserService.update(acUser);
         return result.getReturnMap();
     }
-
-
-
-
-
 
 
     public AcUserService getService() {
