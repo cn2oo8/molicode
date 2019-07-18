@@ -9,7 +9,6 @@ const user = {
     },
     mutations: {
         logout(state, vm) {
-            Cookies.remove('moliLoginKey');
             Cookies.remove('access');
             // 恢复默认样式
             let themeLink = document.querySelector('link[name="theme"]');

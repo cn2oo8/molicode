@@ -9,8 +9,6 @@
     import {transferString, transferNumber} from '@/libs/renderUtil.js'
     import constants from '@/constants/constants'
 
-    var _ = require('underscore')
-
     export default {
         name: 'DictRadio',
         props: {

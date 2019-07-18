@@ -37,15 +37,20 @@
                 <Row>
                     <Col span="24">
                         <Form-item label="输出内容" prop="code" style="width: 96%">
-                            <Input v-model="formItems.code" type="textarea" placeholder="请选择文件进行输出..."
-                                   :autosize="{minRows:15,maxRows: 15}"></Input>
+                            <div style="height: 450px; overflow-y: scroll; background: #1f1f1f; color: #f0f0f0; ">
+                                <pre class="code_pre" ref="codeRef">{{formItems.code}}</pre>
+                            </div>
                         </Form-item>
                     </Col>
                 </Row>
             </Form>
 
             <div slot="footer">
-                <Button type="info" :loading="loading" @click="show(false)">
+                <Button type="primary" :loading="loading" @click="selectAll">
+                    内容全选
+                </Button>
+
+                <Button type="default" :loading="loading" @click="show(false)">
                     关闭
                 </Button>
             </div>
@@ -123,11 +128,24 @@
                     templateResult['renderedContent'] = data['value'];
                     this.formItems.code = templateResult['renderedContent'];
                 }, null, true);
+            },
+            selectAll() {
+                let codeRef = this.$refs['codeRef'];
+                window.getSelection().removeAllRanges();
+                let selection = window.getSelection();
+                let range = document.createRange();
+                range.selectNode(codeRef);
+                selection.addRange(range);
             }
         }
     };
 </script>
 
 <style scoped>
-
+    .code_pre {
+        margin: 0px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        line-height: 1.4;
+    }
 </style>
