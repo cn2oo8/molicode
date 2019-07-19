@@ -1,7 +1,7 @@
 package com.shareyi.molicode.common.utils;
 
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
-import com.shareyi.molicode.common.exception.ExceptionMaker;
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -31,7 +31,7 @@ public class ZipHelper {
             zos.flush();
         } catch (Exception e) {
             LogHelper.DEFAULT.error("执行文件压缩失败，srcPath={}, zipFile={}", "执行文件压缩完成，srcPath={}, zipFile={}", sourceFile.getAbsolutePath(), destZipFile.getAbsolutePath(), e);
-            throw ExceptionMaker.buildException("压缩文件失败，原因是：" + e.getMessage(), ResultCodeEnum.EXCEPTION);
+            throw DefaultExceptionMaker.buildException("压缩文件失败，原因是：" + e.getMessage(), ResultCodeEnum.EXCEPTION);
         } finally {
             IOUtils.closeQuietly(zos);
         }

@@ -7,7 +7,7 @@ import com.shareyi.molicode.common.chain.handler.SimpleHandler;
 import com.shareyi.molicode.common.chain.handler.awares.SmartSegmentHandlerAware;
 import com.shareyi.molicode.common.context.SmartSegmentContext;
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
-import com.shareyi.molicode.common.exception.ExceptionMaker;
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import com.shareyi.molicode.common.utils.*;
 import com.shareyi.molicode.common.valid.Validate;
 import com.shareyi.molicode.common.vo.page.SmartSegmentPageVo;
@@ -59,7 +59,7 @@ public class ScriptParserHandler extends SimpleHandler<SmartSegmentContext> impl
         try {
             scriptContent = FileUtils.readFileToString(file, Profiles.getInstance().getFileEncoding());
         } catch (IOException e) {
-            throw ExceptionMaker.buildException("读取文件内容异常, path=" + file.getAbsolutePath(), ResultCodeEnum.EXCEPTION);
+            throw DefaultExceptionMaker.buildException("读取文件内容异常, path=" + file.getAbsolutePath(), ResultCodeEnum.EXCEPTION);
         }
         Validate.notEmpty(scriptContent, "scriptContent不能为空");
 
@@ -85,7 +85,7 @@ public class ScriptParserHandler extends SimpleHandler<SmartSegmentContext> impl
         List<String> mustContainScriptKeyList = Lists.newArrayList("segmentStartFinder", "segmentEndFinder", "segmentProcess");
         for (String key : mustContainScriptKeyList) {
             if (!scriptContext.containsKey(key)) {
-                throw ExceptionMaker.buildException("脚本文件缺失实现：" + key, ResultCodeEnum.PARAM_ERROR);
+                throw DefaultExceptionMaker.buildException("脚本文件缺失实现：" + key, ResultCodeEnum.PARAM_ERROR);
             }
         }
         smartSegmentContext.setScriptContext(scriptContext);

@@ -2,12 +2,10 @@ package com.shareyi.molicode.common.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 不用guava的list，非常安全
@@ -158,5 +156,29 @@ public class MyLists {
             resultList.add(new HashSet<T>(part));
         }
         return resultList;
+    }
+
+    /**
+     * 将列表转化为指定map对象
+     *
+     * @param list          列表
+     * @param functionKey   key转化函数
+     * @param functionValue
+     * @param <S>           列表元素类型
+     * @param <T>           mapping key
+     * @return map 对象
+     */
+    public static <S, T, U> Map<S, T> transformToMap(List<U> list, Function<U, S> functionKey, Function<U, T> functionValue) {
+        if (org.apache.commons.collections4.CollectionUtils.isEmpty(list)) {
+            return Maps.newHashMapWithExpectedSize(0);
+        }
+
+        Map<S, T> map = Maps.newHashMap();
+        for (U element : list) {
+            if (functionValue.apply(element) != null) {
+                map.put(functionKey.apply(element), functionValue.apply(element));
+            }
+        }
+        return map;
     }
 }

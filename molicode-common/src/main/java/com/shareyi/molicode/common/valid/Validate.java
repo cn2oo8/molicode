@@ -4,7 +4,7 @@
 package com.shareyi.molicode.common.valid;
 
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
-import com.shareyi.molicode.common.exception.ExceptionMaker;
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
@@ -33,10 +33,10 @@ public class Validate {
             return;
         }
         if (min != null && val < min) {
-            throw ExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
+            throw DefaultExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
         }
         if (max != null && val > max) {
-            throw ExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
+            throw DefaultExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
         }
     }
 
@@ -62,7 +62,7 @@ public class Validate {
 
     public static void notNull(Object obj, String message) {
         if (isNull(obj)) {
-            throw ExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
+            throw DefaultExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
         }
     }
 
@@ -78,14 +78,14 @@ public class Validate {
 
     public static void notEmpty(Object obj, String message) {
         if (isEmpty(obj)) {
-            throw ExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
+            throw DefaultExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
         }
     }
 
 
     public static void assertTrue(boolean check, String message) {
         if (!check) {
-            throw ExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
+            throw DefaultExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
         }
     }
 
@@ -97,7 +97,7 @@ public class Validate {
      */
     public static void checkChineseAndLetterNum(String str, String message) {
         if (StringUtils.isEmpty(str)) {
-            throw ExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
+            throw DefaultExceptionMaker.buildException(message, ResultCodeEnum.PARAM_ERROR);
         }
         assertTrue(patternCheck(str, CN_AND_LETTER_PTN), message);
     }

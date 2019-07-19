@@ -5,12 +5,8 @@ package com.shareyi.molicode.manager;
 
 
 import com.shareyi.molicode.builder.BaseBuilder;
-import com.shareyi.molicode.common.exception.AutoCodeException;
-import com.shareyi.molicode.common.exception.ExceptionMaker;
 import com.shareyi.molicode.domain.BasicDomain;
-import org.apache.commons.beanutils.PropertyUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 

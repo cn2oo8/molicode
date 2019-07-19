@@ -6,7 +6,7 @@ import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.enums.DataModelTypeEnum
 import com.shareyi.molicode.common.enums.ResultCodeEnum
-import com.shareyi.molicode.common.exception.ExceptionMaker
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker
 import com.shareyi.molicode.common.utils.Profiles
 import com.shareyi.molicode.common.vo.code.TableModelVo
 import com.shareyi.molicode.common.vo.page.TableModelPageVo
@@ -40,7 +40,7 @@ class TableModelSqlLoadHandler extends SimpleHandler<TableModelContext> implemen
         File f = new File(FileUtil.contactPath(tableModelPageVo.tableModelDir, tableModelPageVo.tableName?.trim() + ".json"));
         String tableModelJson = FileUtils.readFileToString(f, Profiles.instance.fileEncoding)
         if (StringUtils.isEmpty(tableModelJson)) {
-            throw ExceptionMaker.buildException("表模型还不存在，table=" + tableModelPageVo.tableName, ResultCodeEnum.ERROR);
+            throw DefaultExceptionMaker.buildException("表模型还不存在，table=" + tableModelPageVo.tableName, ResultCodeEnum.ERROR);
         }
         tableModelContext.tableModelVo = JSON.parseObject(tableModelJson, TableModelVo.class);
     }

@@ -5,7 +5,7 @@ import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.ResultCodeEnum
 import com.shareyi.molicode.common.exception.AutoCodeException
-import com.shareyi.molicode.common.exception.ExceptionMaker
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.common.utils.TableNameUtil
 import com.shareyi.molicode.common.vo.code.ColumnVo
@@ -112,7 +112,7 @@ class TableModelDatabaseHandler extends SimpleHandler<TableModelContext> impleme
             tableModelContext.setTableModelVo(tableModel)
         } catch (Exception e) {
             LogHelper.EXCEPTION.error("获取数据库信息失败", e);
-            throw ExceptionMaker.buildException("获取数据库信息失败，原因是" + e.getMessage(), ResultCodeEnum.EXCEPTION);
+            throw DefaultExceptionMaker.buildException("获取数据库信息失败，原因是" + e.getMessage(), ResultCodeEnum.EXCEPTION);
         } finally {
             sql.close();
         }

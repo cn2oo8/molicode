@@ -6,7 +6,7 @@ package com.shareyi.molicode.validate.provide;
 
 import com.shareyi.molicode.common.enums.OwnerTypeEnum;
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
-import com.shareyi.molicode.common.exception.ExceptionMaker;
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import com.shareyi.molicode.common.valid.Validate;
 import com.shareyi.molicode.domain.conf.AcProject;
 import com.shareyi.molicode.domain.conf.CommonExtInfo;
@@ -70,11 +70,11 @@ public class AcProjectValidator extends AbstractValidator<AcProject> {
 
        AcProject acProject = acProjectManager.getByPk(primaryKey);
         if(acProject == null){
-          throw ExceptionMaker.buildException("数据不存在", ResultCodeEnum.DATA_NOT_EXIST);
+          throw DefaultExceptionMaker.buildException("数据不存在", ResultCodeEnum.DATA_NOT_EXIST);
         }
 
         if(Objects.equals(defProjectKey.getExtValue(), acProject.getProjectKey())){
-            throw ExceptionMaker.buildException("不能删除默认项目！", ResultCodeEnum.FAILURE);
+            throw DefaultExceptionMaker.buildException("不能删除默认项目！", ResultCodeEnum.FAILURE);
         }
     }
 

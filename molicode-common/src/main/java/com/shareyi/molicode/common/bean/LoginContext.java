@@ -1,7 +1,7 @@
 package com.shareyi.molicode.common.bean;
 
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
-import com.shareyi.molicode.common.exception.ExceptionMaker;
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import com.shareyi.molicode.sdk.dto.ExtAttrDto;
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,16 +62,16 @@ public class LoginContext extends ExtAttrDto{
      */
     public static LoginContext buildByLoginInfo(String loginInfo) {
         if (StringUtils.isEmpty(loginInfo)) {
-            throw ExceptionMaker.buildException("登录信息有误", ResultCodeEnum.AUTH_REQUIRED);
+            throw DefaultExceptionMaker.buildException("登录信息有误", ResultCodeEnum.AUTH_REQUIRED);
         }
         int idx = loginInfo.lastIndexOf(CONTACT_CHAR);
         if (idx < 0) {
-            throw ExceptionMaker.buildException("登录信息有误", ResultCodeEnum.AUTH_REQUIRED);
+            throw DefaultExceptionMaker.buildException("登录信息有误", ResultCodeEnum.AUTH_REQUIRED);
         }
         String userName = loginInfo.substring(0, idx);
         String dataVersion = loginInfo.substring(idx + 1);
         if (!StringUtils.isNumeric(dataVersion)) {
-            throw ExceptionMaker.buildException("登录信息有误", ResultCodeEnum.AUTH_REQUIRED);
+            throw DefaultExceptionMaker.buildException("登录信息有误", ResultCodeEnum.AUTH_REQUIRED);
         }
         LoginContext loginContext = new LoginContext();
         loginContext.userName = userName;
