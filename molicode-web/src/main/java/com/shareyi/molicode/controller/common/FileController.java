@@ -7,12 +7,13 @@ import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.gui.GuiWindowFactory;
 import com.shareyi.molicode.common.utils.*;
+import com.shareyi.molicode.common.valid.Validate;
 import com.shareyi.molicode.common.vo.FileVo;
 import com.shareyi.molicode.common.vo.code.TemplateResultVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.common.FileService;
 import com.shareyi.molicode.web.base.BaseController;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +39,7 @@ import java.util.Objects;
 @RequestMapping("/common/file")
 public class FileController extends BaseController {
 
+    public static final String SEARCH_SEQ = "..";
     protected FileChooserHelper fileChooserHelper = null;
 
     @Resource
@@ -45,7 +47,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "fileChooser", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map fileChooser(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -109,7 +111,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "openFile", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map startFile(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -137,7 +139,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "editFile", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map editFile(FileVo fileVo) {
         String editFilePath = fileVo.getEditFilePath();
         CommonResult result = CommonResult.create();
@@ -174,7 +176,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "saveFile", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map saveFile(FileVo fileVo) {
         String editFilePath = fileVo.getEditFilePath();
         CommonResult result = CommonResult.create();
@@ -205,7 +207,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "getFileContent", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map getFileContent(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -239,6 +241,11 @@ public class FileController extends BaseController {
             ValidateUtils.notEmptyField(resultVo, "projectKey");
             ValidateUtils.notEmptyField(resultVo, "outputDir");
             ValidateUtils.notEmptyField(resultVo, "relativePath");
+
+            Validate.assertTrue(!StringUtils.contains(resultVo.getProjectKey(), SEARCH_SEQ), "projectKey参数异常");
+            Validate.assertTrue(!StringUtils.contains(resultVo.getOutputDir(), SEARCH_SEQ), "outputDir参数异常");
+            Validate.assertTrue(!StringUtils.contains(resultVo.getRelativePath(), SEARCH_SEQ), "relativePath参数异常");
+
             String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(resultVo.getProjectKey());
             String currentProjectOutputDir = FileUtil.contactPath(projectOutputDir, resultVo.getOutputDir());
             currentProjectOutputDir = FileUtil.contactPath(currentProjectOutputDir, resultVo.getRelativePath());
@@ -261,7 +268,7 @@ public class FileController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "deleteFile", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map deleteFile(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {
@@ -292,7 +299,7 @@ public class FileController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/openDirectory", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map openDirectory(FileVo fileVo) {
         CommonResult result = CommonResult.create();
         if (Profiles.getInstance().isHeadLess()) {

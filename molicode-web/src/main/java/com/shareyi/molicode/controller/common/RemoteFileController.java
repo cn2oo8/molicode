@@ -26,7 +26,7 @@ public class RemoteFileController {
 
     @ResponseBody
     @RequestMapping(value = "httpGet", method = {RequestMethod.GET, RequestMethod.POST})
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege
     public Map httpGet(String url) {
         return remoteFileService.httpGet(url).getReturnMap();
     }

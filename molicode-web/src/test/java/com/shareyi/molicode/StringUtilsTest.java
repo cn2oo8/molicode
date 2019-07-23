@@ -17,4 +17,16 @@ public class StringUtilsTest {
         System.out.println(StringUtils.replace("\\test aa test bb", "\\test", "new_"));
     }
 
+
+    @Test
+    public void test2(){
+        System.out.println(StringUtils.contains("hello....java", ".."));
+        System.out.println(StringUtils.contains(".java.dsjdf", ".."));
+
+        System.out.println(StringUtils.contains("../aa.java", ".."));
+
+        System.out.println(StringUtils.contains(".java", ".."));
+
+    }
+
 }

@@ -21,8 +21,7 @@ import org.springframework.stereotype.Service
 /**
  * 对输出文件进行压缩
  *
- * @author zhangshibin
- * @since 2019/06/09
+ * @author zhangshibin* @since 2019/06/09
  */
 @Service
 class ContentZipHandler extends SimpleHandler<MoliCodeContext> implements
@@ -39,7 +38,7 @@ class ContentZipHandler extends SimpleHandler<MoliCodeContext> implements
 
     @Override
     void doHandle(MoliCodeContext context) {
-        AutoMakeVo autoMakeVo = (AutoMakeVo) context.get(MoliCodeConstant.CTX_KEY_AUTO_MAKE);
+        final AutoMakeVo autoMakeVo = (AutoMakeVo) context.get(MoliCodeConstant.CTX_KEY_AUTO_MAKE);
         File sourceFile = new File(autoMakeVo.getProjectOutputDir());
         if (!sourceFile.exists() || !sourceFile.isDirectory() || sourceFile.listFiles().length < 1) {
             LogHelper.FRONT_CONSOLE.error("项目输出目录为空，可能未生成输出代码！path={}", autoMakeVo.getProjectOutputDir())
@@ -91,7 +90,7 @@ class ContentZipHandler extends SimpleHandler<MoliCodeContext> implements
      * @return
      */
     private String parseRelativePath(TemplateVo templateVo, File parentFile) {
-        File file = new File(templateVo.renderedDestFilePath);
+        File file = new File(parentFile.getAbsolutePath(), templateVo.renderedDestFilePath);
         String path = file.getAbsolutePath();
         String parentFilePath = parentFile.getAbsolutePath();
 
