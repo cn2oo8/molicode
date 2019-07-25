@@ -18,11 +18,12 @@ MoliCode是基于java开发的一种代码生成器，当然其除了生成java�
 [https://github.com/cn2oo8/molicode/releases](https://github.com/cn2oo8/molicode/releases)
 
 ## 在线试用（感谢 @我的兄弟叫代码  提供服务器资源）
-http://molicode.shareyi.com 
+
+http://molicode.shareyi.com
 
 http://39.98.242.10 （备用）
 
-访客用户名：guest, 访客密码：123456
+用户请自行注册；
 因为涉及模板动态化风险，为保证 朋友提供的服务器，访客目前只能使用模板，不能进行配置和链接数据库，请见谅！
 您可以下载在本地使用，即可拥有完全权限，谢谢支持理解；
 
