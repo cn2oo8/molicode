@@ -6,6 +6,20 @@ MoliCode  is a code generator for java and other language. It's a standalone too
 
 MoliCode是基于java开发的一种代码生成器，当然其除了生成java代码亦可生成其它代码。 它是一个独立(standalone)的工具，用于在git仓库存储代码模板并依此生成目标代码。 它和其它代码生成器的最主要区别在于，其关注点不在模板本身。 即不关注生成了什么样的代码，而是作为一个基础工具方便大家编写和共享使用代码模板。
 
+
+## 代码仓库
+
+### github仓库
+https://github.com/cn2oo8/molicode
+### 国内站点仓库
+https://gitee.com/zhangshibin1987/molicode
+
+近期美国佬可能限制部分国家使用github, 所以之后会逐渐迁移到国内服务器；
+
+### oschina 项目介绍页
+https://www.oschina.com/p/molicode
+
+
 ## 帮助文档
 请访问以下地址，查看帮助文档：
 [https://cn2oo8.github.io/molicode_doc](https://cn2oo8.github.io/molicode_doc)
