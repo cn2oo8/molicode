@@ -5,13 +5,15 @@ import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import com.shareyi.molicode.sdk.dto.ExtAttrDto;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
+
 /**
  * 登录上下文
  *
  * @author zhangshibin
  * @date 2019/7/3
  */
-public class LoginContext extends ExtAttrDto{
+public class LoginContext extends ExtAttrDto {
 
     /**
      * 链接字符串
@@ -79,4 +81,28 @@ public class LoginContext extends ExtAttrDto{
         return loginContext;
     }
 
+    /**
+     * 通过userName创建登录上下文
+     *
+     * @param userName
+     * @return
+     */
+    public static LoginContext buildByUserName(String userName) {
+        LoginContext loginContext = new LoginContext();
+        loginContext.userName = userName;
+        return loginContext;
+    }
+
+    /**
+     * 比较数据版本
+     *
+     * @param dataVersion
+     * @return
+     */
+    public boolean checkDataVersion(Integer dataVersion) {
+        if (this.dataVersion == null) {
+            return true;
+        }
+        return Objects.equals(this.dataVersion, dataVersion);
+    }
 }
