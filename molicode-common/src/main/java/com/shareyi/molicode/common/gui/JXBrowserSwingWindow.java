@@ -1,7 +1,6 @@
 package com.shareyi.molicode.common.gui;
 
-import com.shareyi.fileutil.FileUtil;
-import com.shareyi.joywindow.window.FileChooserHelper;
+import com.shareyi.molicode.common.utils.FileIoUtil;
 import com.shareyi.molicode.common.utils.LogHelper;
 import com.shareyi.molicode.common.utils.Profiles;
 import com.shareyi.molicode.common.utils.SystemUtils;
@@ -238,7 +237,7 @@ public class JXBrowserSwingWindow implements BrowserWindow {
     }
 
     private void chooserScriptToExecute() {
-        String openPath = fileChooserHelper.getOpenPath(FileUtil.getRunPath(), true, new String[]{"*.js"}, new String[]{"*.js"});
+        String openPath = fileChooserHelper.getOpenPath(FileIoUtil.getRunPath(), true, new String[]{"*.js"}, new String[]{"*.js"});
         if (StringUtils.isEmpty(openPath)) {
             return;
         }

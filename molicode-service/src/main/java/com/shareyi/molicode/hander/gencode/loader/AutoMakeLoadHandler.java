@@ -1,6 +1,5 @@
 package com.shareyi.molicode.hander.gencode.loader;
 
-import com.shareyi.fileutil.FileUtil;
 import com.shareyi.molicode.common.chain.handler.SimpleHandler;
 import com.shareyi.molicode.common.chain.handler.awares.DataLoadHandlerAware;
 import com.shareyi.molicode.common.constants.AutoCodeConstant;
@@ -111,7 +110,7 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
         ValidateUtils.notEmptyField(gitRepoVo, "branchName");
         String filePath = SystemFileUtils.buildGitRepoDir(gitRepoVo.getGitUrl(), gitRepoVo.getBranchName());
         if (StringUtils.isNotBlank(gitRepoVo.getTemplateRelativePath())) {
-            filePath = FileUtil.contactPath(filePath, gitRepoVo.getTemplateRelativePath());
+            filePath = FileIoUtil.contactPath(filePath, gitRepoVo.getTemplateRelativePath());
         }
         File file = new File(filePath);
         Validate.assertTrue(file.exists() && file.isDirectory(), "仓库尚未拉取或者不存在，请检查！gitUrl=" + gitRepoVo.getGitUrl());
@@ -159,7 +158,7 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
             }
             autoMake = loadAutoMakeFromJarFile(autoCodeParams, templateBaseFile);
         } else {
-            autoCodeParams.setAutoXmlPath(FileUtil.contactPath(autoCodeParams.getTemplateBaseDir(), AUTO_CODE_XML_FILE_NAME));
+            autoCodeParams.setAutoXmlPath(FileIoUtil.contactPath(autoCodeParams.getTemplateBaseDir(), AUTO_CODE_XML_FILE_NAME));
             String autoXmlPath = SystemFileUtils.parseFilePath(autoCodeParams.getAutoXmlPath());
             String templateBaseDir = SystemFileUtils.parseFilePath(autoCodeParams.getTemplateBaseDir());
             autoMake = XmlUtils.getAutoMake(autoXmlPath, templateBaseDir);

@@ -1,6 +1,5 @@
 package com.shareyi.molicode.handler.gencode.generate
 
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TemplateGenerateHandlerAware
 import com.shareyi.molicode.common.constants.MoliCodeConstant
@@ -8,6 +7,7 @@ import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.EngineType
 import com.shareyi.molicode.common.enums.EnumCode
 import com.shareyi.molicode.common.enums.OutputTypeEnum
+import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
@@ -20,8 +20,7 @@ import org.springframework.stereotype.Service
 /**
  * 输出处理器
  *
- * @author zhangshibin
- * @since 2018/10/3
+ * @author zhangshibin* @since 2018/10/3
  */
 @Service
 class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
@@ -102,7 +101,7 @@ class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
             }
         }
 
-        File f = FileUtil.makeSureFileExsit(file);
+        File f = FileIoUtil.makeSureFileExist(file);
         if (f != null) {
             if (Objects.equals(template.engine, EngineType.JXLS.type)) {
                 Workbook workbook = template.getExtObject("workbook");

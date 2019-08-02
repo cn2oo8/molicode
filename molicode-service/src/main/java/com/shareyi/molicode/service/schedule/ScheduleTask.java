@@ -1,7 +1,7 @@
 package com.shareyi.molicode.service.schedule;
 
 import com.google.common.collect.Sets;
-import com.shareyi.fileutil.FileUtil;
+import com.shareyi.molicode.common.utils.FileIoUtil;
 import com.shareyi.molicode.common.utils.LogHelper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -34,7 +34,7 @@ public class ScheduleTask {
     @Scheduled(fixedDelay = 1800 * 1000)  //间隔半小时
     public void wipeTempData() throws InterruptedException {
         LogHelper.DEFAULT.info("执行临时文件夹清理start");
-        String outputFilePath = FileUtil.getRuntimeFilePath("code_output");
+        String outputFilePath = FileIoUtil.getRuntimeFilePath("code_output");
         File file = new File(outputFilePath);
         if (file.exists() && file.isDirectory()) {
             cleanTempFile(file);

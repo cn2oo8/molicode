@@ -1,11 +1,11 @@
 package com.shareyi.molicode.handler.model
 
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.filter.ColumnFilter
 import com.shareyi.molicode.common.filter.impl.PKFilter
+import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.vo.code.OptionVo
 import com.shareyi.molicode.common.vo.code.TableDefineVo
 import com.shareyi.molicode.common.vo.code.TableModelVo
@@ -75,10 +75,10 @@ class TableModelOutputHandler extends SimpleHandler<TableModelContext> implement
             }
         }
         if (StringUtils.isBlank(tableModelPageVo.tableModelDir)) {
-            tableModelPageVo.setTableModelDir(FileUtil.getRuntimeFilePath("tableModel/project_" + tableModelPageVo.projectKey))
+            tableModelPageVo.setTableModelDir(FileIoUtil.getRuntimeFilePath("tableModel/project_" + tableModelPageVo.projectKey))
         }
-        File f = new File(FileUtil.contactPath(tableModelPageVo.tableModelDir, tableDefineVo.id?.trim() + ".xml"));
-        FileUtil.makeSureFileExsit(f);
+        File f = new File(FileIoUtil.contactPath(tableModelPageVo.tableModelDir, tableDefineVo.id?.trim() + ".xml"));
+        FileIoUtil.makeSureFileExist(f);
         //换行符号替换为Windows的换行符号
         f.withWriter("utf-8")
                 { writer ->

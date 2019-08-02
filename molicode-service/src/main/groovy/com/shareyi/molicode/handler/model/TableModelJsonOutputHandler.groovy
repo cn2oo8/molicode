@@ -5,10 +5,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.CommonConstant
+import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.utils.Profiles
 import com.shareyi.molicode.common.utils.PubUtils
 import com.shareyi.molicode.common.vo.code.ColumnVo
@@ -45,7 +45,7 @@ class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> imple
         TableModelVo tableModelVo = tableModelContext.tableModelVo;
         TableDefineVo tableDefineVo = tableModelVo.tableDefine;
         TableModelPageVo tableModelPageVo = tableModelContext.tableModelPageVo;
-        File f = new File(FileUtil.contactPath(tableModelPageVo.tableModelDir, tableDefineVo.dbTableName?.trim() + ".json"));
+        File f = new File(FileIoUtil.contactPath(tableModelPageVo.tableModelDir, tableDefineVo.dbTableName?.trim() + ".json"));
 
         //如果文件已经存在，需要读取，并将已配置的信息配置回来
         if (f.exists()) {
@@ -53,7 +53,7 @@ class TableModelJsonOutputHandler extends SimpleHandler<TableModelContext> imple
         }
 
 
-        FileUtil.makeSureFileExsit(f);
+        FileIoUtil.makeSureFileExist(f);
         //换行符号替换为Windows的换行符号
         f.withWriter("utf-8")
                 { writer ->

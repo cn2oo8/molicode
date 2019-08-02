@@ -3,7 +3,6 @@ package com.shareyi.molicode.service.gencode.impl
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.serializer.SerializerFeature
 import com.google.common.base.Function
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.constants.CommonConstant
@@ -82,10 +81,10 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
         CommonResult<String> result = CommonResult.create();
         try {
             TableModelVo tableModelVo = JSON.parseObject(tableModelJson, TableModelVo.class);
-            String tableModelDir = FileUtil.getRuntimeFilePath("tableModel/project_" + projectKey);
-            String fullPath = FileUtil.contactPath(tableModelDir, tableModelVo.getTableDefine().dbTableName + ".json");
+            String tableModelDir = FileIoUtil.getRuntimeFilePath("tableModel/project_" + projectKey);
+            String fullPath = FileIoUtil.contactPath(tableModelDir, tableModelVo.getTableDefine().dbTableName + ".json");
             File file = new File(fullPath);
-            FileUtil.makeSureFileExsit(file);
+            FileIoUtil.makeSureFileExist(file);
             def newJson = JSON.toJSONString(tableModelVo, SerializerFeature.PrettyFormat, SerializerFeature.QuoteFieldNames, SerializerFeature.UseSingleQuotes, SerializerFeature.DisableCircularReferenceDetect);
             FileUtils.write(file, newJson, Profiles.instance.fileEncoding, false);
             result.addDefaultModel(file.getAbsolutePath());
@@ -214,7 +213,7 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
         String tableModelDir = SystemFileUtils.getTableModelDir(projectKey);
         list.each { simpleTableInfoVo ->
             try {
-                String filePath = FileUtil.contactPath(tableModelDir, simpleTableInfoVo.tableName + ".json")
+                String filePath = FileIoUtil.contactPath(tableModelDir, simpleTableInfoVo.tableName + ".json")
                 File file = new File(filePath);
                 if (file.exists()) {
                     String tableModelJson = FileUtils.readFileToString(file, Profiles.instance.fileEncoding);

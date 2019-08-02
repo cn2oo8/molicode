@@ -1,12 +1,12 @@
 package com.shareyi.molicode.handler.model
 
 import com.alibaba.fastjson.JSON
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TableModelHandlerAware
 import com.shareyi.molicode.common.enums.DataModelTypeEnum
 import com.shareyi.molicode.common.enums.ResultCodeEnum
 import com.shareyi.molicode.common.exception.DefaultExceptionMaker
+import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.utils.Profiles
 import com.shareyi.molicode.common.vo.code.TableModelVo
 import com.shareyi.molicode.common.vo.page.TableModelPageVo
@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service
 /**
  * 表模型sql模式加载器
  *
- * @author zhangshibin
- * @date 2019/7/4
+ * @author zhangshibin* @date 2019/7/4
  */
 @Service
 class TableModelSqlLoadHandler extends SimpleHandler<TableModelContext> implements TableModelHandlerAware {
@@ -37,7 +36,7 @@ class TableModelSqlLoadHandler extends SimpleHandler<TableModelContext> implemen
     @Override
     void doHandle(TableModelContext tableModelContext) {
         TableModelPageVo tableModelPageVo = tableModelContext.tableModelPageVo;
-        File f = new File(FileUtil.contactPath(tableModelPageVo.tableModelDir, tableModelPageVo.tableName?.trim() + ".json"));
+        File f = new File(FileIoUtil.contactPath(tableModelPageVo.tableModelDir, tableModelPageVo.tableName?.trim() + ".json"));
         String tableModelJson = FileUtils.readFileToString(f, Profiles.instance.fileEncoding)
         if (StringUtils.isEmpty(tableModelJson)) {
             throw DefaultExceptionMaker.buildException("表模型还不存在，table=" + tableModelPageVo.tableName, ResultCodeEnum.ERROR);

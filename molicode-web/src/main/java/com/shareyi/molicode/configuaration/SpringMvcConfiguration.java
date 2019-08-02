@@ -1,7 +1,7 @@
 package com.shareyi.molicode.configuaration;
 
-import com.shareyi.fileutil.FileUtil;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
+import com.shareyi.molicode.common.utils.FileIoUtil;
 import com.shareyi.molicode.common.utils.LogHelper;
 import com.shareyi.molicode.interceptor.LogInterceptor;
 import com.shareyi.molicode.interceptor.LoginInterceptor;
@@ -42,7 +42,7 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String zipPath = FileUtil.getRuntimeFilePath(MoliCodeConstant.CODE_OUTPUT_ZIP_NAME);
+        String zipPath = FileIoUtil.getRuntimeFilePath(MoliCodeConstant.CODE_OUTPUT_ZIP_NAME);
         String location = "file:" + zipPath;
         LogHelper.DEFAULT.info("zip resourceLocations={}", location);
         registry.addResourceHandler("/zip/**").addResourceLocations(location);

@@ -1,7 +1,5 @@
 package com.shareyi.molicode.service.replace.impl
 
-import com.shareyi.fileutil.FileIo
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.constants.MoliCodeConstant
 import com.shareyi.molicode.common.enums.EnumCode
 import com.shareyi.molicode.common.enums.TemplateTypeEnum
@@ -16,6 +14,7 @@ import com.shareyi.molicode.common.web.CommonResult
 import com.shareyi.molicode.service.replace.CopyAndReplaceService
 import com.shareyi.molicode.service.replace.FileNameReplaceUtil
 import com.shareyi.molicode.service.replace.FileReplace
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang.StringUtils
 import org.springframework.stereotype.Service
@@ -57,7 +56,7 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
                 return result.failed("输入路径参数有误！");
             }
             //如果为headless模式，输出目录不能指定, 手动设置
-            replaceParams.destPath = FileUtil.contactPath(SystemFileUtils.getSampleProjectOutDir(), MoliCodeStringUtils.getTimeBasedStr());
+            replaceParams.destPath = FileIoUtil.contactPath(SystemFileUtils.getSampleProjectOutDir(), MoliCodeStringUtils.getTimeBasedStr());
 
             if (StringUtils.isEmpty(replaceParams.replaceType)) {
                 replaceParams.replaceType = 1;
@@ -79,7 +78,7 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
                 return result.failed("源文件不存在，请检查！");
             }
             File destParentPath = new File(replaceParams.destPath);
-            FileUtil.makeDir(destParentPath)
+            FileIoUtil.makeDir(destParentPath)
             CostWatch costWatch = CostWatch.createStarted();
 
             TouchFileHelper touchFileHelper = TouchFileHelper.getTouchFileHelper(replaceParams.dirReplaceExp);
@@ -97,8 +96,8 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
             //执行压缩处理
             LogHelper.FRONT_CONSOLE.info("执行工程文件压缩开始");
             String zipOutputRootDir = SystemFileUtils.buildZipOutputDir("sampleProject");
-            FileUtil.makeDir(zipOutputRootDir);
-            File destZipFile = new File(FileUtil.contactPath(zipOutputRootDir, destParentPath.getName() + ".zip"));
+            FileIoUtil.makeDir(zipOutputRootDir);
+            File destZipFile = new File(FileIoUtil.contactPath(zipOutputRootDir, destParentPath.getName() + ".zip"));
             ZipHelper.zipFile(destParentPath, destZipFile);
             LogHelper.FRONT_CONSOLE.info("执行工程文件压缩结束");
 
@@ -121,7 +120,7 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
                                    String replaceType) {
 
         if (fileReplace.isDirectory()) {
-            FileUtil.makeDir(fileReplace.destFile);
+            FileIoUtil.makeDir(fileReplace.destFile);
             fileReplace.srcFile.eachFile { file ->
                 String fileName = file.getName();
                 if (throwFilter.isMatch(fileName)) {
@@ -160,11 +159,11 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
             }
 
             if (onlyCopy || ignoreFilter.isMatch(fileReplace.srcFile.name) || !isTextFile(fileReplace.srcFile)) {
-                FileUtil.copyFile(fileReplace.srcFile, fileReplace.destFile);
+                FileIoUtil.copyFile(fileReplace.srcFile, fileReplace.destFile);
             } else {
-                String content = FileIo.readFileAsString(fileReplace.srcFile, "UTF-8");
+                String content = FileUtils.readFileToString(fileReplace.srcFile, "UTF-8");
                 content = fileNameReplaceUtil.doReplace(content);
-                FileIo.writeToFile(fileReplace.destFile, content, "UTF-8");
+                FileUtils.writeStringToFile(fileReplace.destFile, content, "UTF-8");
 
             }
         }

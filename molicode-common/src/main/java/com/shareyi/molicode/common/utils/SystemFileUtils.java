@@ -1,6 +1,5 @@
 package com.shareyi.molicode.common.utils;
 
-import com.shareyi.fileutil.FileUtil;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
 import com.shareyi.molicode.common.vo.FileInfoVo;
 import org.apache.commons.lang.StringUtils;
@@ -81,12 +80,12 @@ public class SystemFileUtils {
         String parsePath = filePath.trim();
         if (filePath.startsWith(CUR_DIR)) {
             parsePath = filePath.substring(filePath.indexOf(":") + 1).trim();
-            parsePath = FileUtil.getRuntimeFilePath(parsePath);
+            parsePath = FileIoUtil.getRuntimeFilePath(parsePath);
         } else if (filePath.startsWith("projectOutputDir:")) {
             parsePath = filePath.substring(filePath.indexOf(":") + 1).trim();
-            parsePath = FileUtil.contactPath(FileUtil.getRuntimeFilePath("bind"), parsePath);
+            parsePath = FileIoUtil.contactPath(FileIoUtil.getRuntimeFilePath("bind"), parsePath);
         } else if (filePath.indexOf(":") == -1 && !filePath.startsWith("/")) { //既非linux绝对路径 也非Windows绝对路径 添加浅醉
-            parsePath = FileUtil.getRuntimeFilePath(parsePath);
+            parsePath = FileIoUtil.getRuntimeFilePath(parsePath);
         }
         return parsePath;
     }
@@ -102,7 +101,7 @@ public class SystemFileUtils {
         if (StringUtils.isEmpty(filePath)) {
             return filePath;
         }
-        String runPath = FileUtil.getRunPath() + File.separator;
+        String runPath = FileIoUtil.getRunPath() + File.separator;
         logger.error("runPath=" + runPath + ", filePath=" + filePath);
         if (filePath.startsWith(runPath)) {
             if (runPath.length() == filePath.length()) {
@@ -121,7 +120,7 @@ public class SystemFileUtils {
      * @return
      */
     public static String getTableModelDir(String projectKey) {
-        return FileUtil.getRuntimeFilePath("tableModel/project_" + projectKey);
+        return FileIoUtil.getRuntimeFilePath("tableModel/project_" + projectKey);
     }
 
     /**
@@ -131,7 +130,7 @@ public class SystemFileUtils {
      * @return
      */
     public static String buildDefaultProjectOutputDir(String projectKey) {
-        return FileUtil.getRuntimeFilePath("code_output/project_" + projectKey);
+        return FileIoUtil.getRuntimeFilePath("code_output/project_" + projectKey);
     }
 
     /**
@@ -141,7 +140,7 @@ public class SystemFileUtils {
      * @return
      */
     public static String buildZipOutputDir(String projectKey) {
-        return FileUtil.getRuntimeFilePath(MoliCodeConstant.CODE_OUTPUT_ZIP_NAME + projectKey);
+        return FileIoUtil.getRuntimeFilePath(MoliCodeConstant.CODE_OUTPUT_ZIP_NAME + projectKey);
     }
 
     /**
@@ -150,7 +149,7 @@ public class SystemFileUtils {
      * @return
      */
     public static String getSampleProjectOutDir() {
-        return FileUtil.getRuntimeFilePath("code_output/sampleProject");
+        return FileIoUtil.getRuntimeFilePath("code_output/sampleProject");
     }
 
     /**
@@ -160,7 +159,7 @@ public class SystemFileUtils {
      * @return
      */
     public static String buildRepoPath(String repoName) {
-        return FileUtil.getRuntimeFilePath("molicode_repos/" + repoName);
+        return FileIoUtil.getRuntimeFilePath("molicode_repos/" + repoName);
     }
 
     /**
@@ -172,6 +171,6 @@ public class SystemFileUtils {
      */
     public static String buildGitRepoDir(String remoteUrl, String branchName) {
         String repoDirName = MoliCodeStringUtils.md5(remoteUrl) + "_" + branchName;
-        return FileUtil.getRuntimeFilePath("molicode_repos/git/" + repoDirName);
+        return FileIoUtil.getRuntimeFilePath("molicode_repos/git/" + repoDirName);
     }
 }

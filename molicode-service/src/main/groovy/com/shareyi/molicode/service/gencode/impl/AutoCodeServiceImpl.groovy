@@ -1,7 +1,6 @@
 package com.shareyi.molicode.service.gencode.impl
 
 import com.google.common.collect.Lists
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.bean.LoginContext
 import com.shareyi.molicode.common.chain.HandlerChainExecutor
 import com.shareyi.molicode.common.chain.HandlerChainFactoryImpl
@@ -68,7 +67,7 @@ class AutoCodeServiceImpl implements AutoCodeService {
             if (Objects.equals(autoMakeParams.outputType, OutputTypeEnum.ZIP_FILE.getCode())) {
                 String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(autoMakeParams.getProjectKey());
                 def outputDir = MoliCodeStringUtils.getTimeBasedStr()
-                projectOutputDir = FileUtil.contactPath(projectOutputDir, outputDir);
+                projectOutputDir = FileIoUtil.contactPath(projectOutputDir, outputDir);
                 autoMakeParams.setProjectOutputDir(projectOutputDir);
                 autoMakeParams.outputDir = outputDir;
             }

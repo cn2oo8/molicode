@@ -1,11 +1,11 @@
 package com.shareyi.molicode.service.gencode.impl
 
 import com.alibaba.fastjson.JSON
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.bean.LoginContext
 import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.*
+import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.helper.LoginHelper
 import com.shareyi.molicode.common.valid.Validate
@@ -104,7 +104,7 @@ class AutoMakeServiceImpl implements AutoMakeService {
                     BeanUtils.populate(resourceVo, mavenConfigMap);
                 }
                 if (StringUtils.isEmpty(resourceVo.mavenTempDir)) {
-                    resourceVo.setMavenTempDir(FileUtil.getRuntimeFilePath("maven_temp"));
+                    resourceVo.setMavenTempDir(FileIoUtil.getRuntimeFilePath("maven_temp"));
                 }
                 break;
             case TemplateTypeEnum.LOCAL:

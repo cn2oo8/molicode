@@ -1,6 +1,5 @@
 package com.shareyi.molicode.service.maven.impl
 
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
 import com.shareyi.molicode.common.web.CommonResult
@@ -82,7 +81,7 @@ class MavenServiceImpl implements MavenService {
         Map<String, String> contextMap = PropertyUtils.describe(resourceVo)
         String renderPomContent = templateUtil.renderContent(template, contextMap);
         File outputFile = new File(resourceVo.mavenTempDir, "pom.xml")
-        FileUtil.makeSureFileExsit(outputFile)
+        FileIoUtil.makeSureFileExist(outputFile)
         LogHelper.DEFAULT.info("maven pom.xml 输出路径：" + outputFile.getAbsolutePath())
         IOUtils.write(renderPomContent, new FileOutputStream(outputFile));
         return result.succeed()

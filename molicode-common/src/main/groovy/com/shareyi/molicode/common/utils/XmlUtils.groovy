@@ -1,7 +1,6 @@
 package com.shareyi.molicode.common.utils
 
 import com.alibaba.fastjson.JSON
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.constants.CommonConstant
 import com.shareyi.molicode.common.enums.EngineType
 import com.shareyi.molicode.common.enums.ResultCodeEnum

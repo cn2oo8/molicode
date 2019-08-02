@@ -1,11 +1,11 @@
 package com.shareyi.molicode.service.git.impl;
 
-import com.shareyi.fileutil.FileUtil;
 import com.shareyi.molicode.common.constants.CacheKeyConstant;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
 import com.shareyi.molicode.common.lock.LockExecuteAdapter;
 import com.shareyi.molicode.common.lock.RedisLockExecutor;
 import com.shareyi.molicode.common.utils.CostWatch;
+import com.shareyi.molicode.common.utils.FileIoUtil;
 import com.shareyi.molicode.common.utils.LogHelper;
 import com.shareyi.molicode.common.utils.SystemFileUtils;
 import com.shareyi.molicode.common.vo.git.GitRepoVo;
@@ -76,7 +76,7 @@ public class GitServiceImpl implements GitService {
             pull.setRemoteBranchName(gitRepoVo.getBranchName()).call();
             result.addDefaultModel("info", "仓库已存在，拉取最新内容到分支:" + gitRepoVo.getBranchName());
         } else {
-            FileUtil.makeDir(repoDir);
+            FileIoUtil.makeDir(repoDir);
             CloneCommand cloneCommand = Git.cloneRepository().setURI(gitRepoVo.getGitUrl()).setDirectory(repoDir).setBranch(gitRepoVo.getBranchName());
             if (credentialsProvider != null) {
                 cloneCommand.setCredentialsProvider(credentialsProvider);

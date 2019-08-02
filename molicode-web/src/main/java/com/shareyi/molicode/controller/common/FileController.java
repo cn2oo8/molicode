@@ -1,10 +1,8 @@
 package com.shareyi.molicode.controller.common;
 
-import com.shareyi.fileutil.FileIo;
-import com.shareyi.fileutil.FileUtil;
-import com.shareyi.joywindow.window.FileChooserHelper;
 import com.shareyi.molicode.common.annotations.UserAuthPrivilege;
 import com.shareyi.molicode.common.constants.CommonConstant;
+import com.shareyi.molicode.common.gui.FileChooserHelper;
 import com.shareyi.molicode.common.gui.GuiWindowFactory;
 import com.shareyi.molicode.common.utils.*;
 import com.shareyi.molicode.common.valid.Validate;
@@ -13,6 +11,7 @@ import com.shareyi.molicode.common.vo.code.TemplateResultVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.common.FileService;
 import com.shareyi.molicode.web.base.BaseController;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +39,9 @@ import java.util.Objects;
 public class FileController extends BaseController {
 
     public static final String SEARCH_SEQ = "..";
+    /**
+     * 文件选择器
+     */
     protected FileChooserHelper fileChooserHelper = null;
 
     @Resource
@@ -57,7 +59,7 @@ public class FileController extends BaseController {
         //转换文件路径为正确路径
         String parentPath = SystemFileUtils.parseFilePath(fileVo.getParentPath());
         if (StringUtils.isEmpty(parentPath)) {
-            parentPath = FileUtil.getRunPath();
+            parentPath = FileIoUtil.getRunPath();
         }
         if (Objects.equals("open", fileVo.getDialogType())) {
             File file = new File(parentPath);
@@ -183,24 +185,29 @@ public class FileController extends BaseController {
         if (Profiles.getInstance().isHeadLess()) {
             return result.failed("headless下无法支持").getReturnMap();
         }
-        if (StringUtils.isEmpty(editFilePath) || "null".equals(editFilePath)) {
-            result.setSuccess(false);
-            result.setMessage("文件路径为空！");
-        } else {
-            File file = new File(SystemFileUtils.parseFilePath(editFilePath));
-            if (!file.exists()) {
-                file = FileUtil.makeSureFileExsit(file);
-                if (file == null) {
-                    return result.failed("创建文件失败：" + editFilePath).getReturnMap();
+        try {
+            if (StringUtils.isEmpty(editFilePath) || "null".equals(editFilePath)) {
+                result.setSuccess(false);
+                result.setMessage("文件路径为空！");
+            } else {
+                File file = new File(SystemFileUtils.parseFilePath(editFilePath));
+                if (!file.exists()) {
+                    file = FileIoUtil.makeSureFileExist(file);
+                    if (file == null) {
+                        return result.failed("创建文件失败：" + editFilePath).getReturnMap();
+                    }
+                }
+
+                if (file.isFile() && file.canWrite()) {
+                    FileUtils.writeStringToFile(file, fileVo.getFileContent(), "utf-8");
+                    result.succeed("文件保存成功");
+                } else {
+                    result.setMessage("文件无法写入,无法保存！");
                 }
             }
-
-            if (file.isFile() && file.canWrite()) {
-                FileIo.writeToFile(file, fileVo.getFileContent(), "utf-8");
-                result.succeed("文件保存成功");
-            } else {
-                result.setMessage("文件无法写入,无法保存！");
-            }
+        } catch (Exception e) {
+            LogHelper.EXCEPTION.error("保存文件异常，fileVo={}", fileVo, e);
+            result.failed("系统异常，原因是：" + e.getMessage());
         }
         return result.getReturnMap();
     }
@@ -213,22 +220,27 @@ public class FileController extends BaseController {
         if (Profiles.getInstance().isHeadLess()) {
             return result.failed("headless下无法支持").getReturnMap();
         }
-
-        String editFilePath = fileVo.getEditFilePath();
-        if (StringUtils.isEmpty(editFilePath)) {
-            result.failed("文件路径为空！");
-        } else {
-            File file = new File(SystemFileUtils.parseFilePath(editFilePath));
-            if (!file.exists()) {
-                return result.failed("文件不存在：" + editFilePath).getReturnMap();
-            }
-            if (file.isFile() && file.canRead()) {
-                result.setSuccess(true);
-                result.setMessage(FileIo.readFileAsString(file, "utf-8"));
+        try {
+            String editFilePath = fileVo.getEditFilePath();
+            if (StringUtils.isEmpty(editFilePath)) {
+                result.failed("文件路径为空！");
             } else {
-                result.setMessage("文件无法读取！");
+                File file = new File(SystemFileUtils.parseFilePath(editFilePath));
+                if (!file.exists()) {
+                    return result.failed("文件不存在：" + editFilePath).getReturnMap();
+                }
+                if (file.isFile() && file.canRead()) {
+                    result.setSuccess(true);
+                    result.setMessage(FileUtils.readFileToString(file, "utf-8"));
+                } else {
+                    result.setMessage("文件无法读取！");
+                }
             }
+        } catch (Exception e) {
+            LogHelper.EXCEPTION.error("读取文件异常，fileVo={}", fileVo, e);
+            result.failed("系统异常，原因是：" + e.getMessage());
         }
+
         return result.getReturnMap();
     }
 
@@ -247,14 +259,14 @@ public class FileController extends BaseController {
             Validate.assertTrue(!StringUtils.contains(resultVo.getRelativePath(), SEARCH_SEQ), "relativePath参数异常");
 
             String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(resultVo.getProjectKey());
-            String currentProjectOutputDir = FileUtil.contactPath(projectOutputDir, resultVo.getOutputDir());
-            currentProjectOutputDir = FileUtil.contactPath(currentProjectOutputDir, resultVo.getRelativePath());
+            String currentProjectOutputDir = FileIoUtil.contactPath(projectOutputDir, resultVo.getOutputDir());
+            currentProjectOutputDir = FileIoUtil.contactPath(currentProjectOutputDir, resultVo.getRelativePath());
             File file = new File(SystemFileUtils.parseFilePath(currentProjectOutputDir));
             if (!file.exists()) {
                 return result.failed("文件不存在：" + resultVo.getRelativePath()).getReturnMap();
             }
             if (file.isFile() && file.canRead()) {
-                result.addDefaultModel(FileIo.readFileAsString(file, Profiles.getInstance().getFileEncoding()));
+                result.addDefaultModel(FileUtils.readFileToString(file, Profiles.getInstance().getFileEncoding()));
                 result.succeed();
             } else {
                 result.setMessage("文件无法读取！");

@@ -1,12 +1,12 @@
 package com.shareyi.molicode.handler.gencode.generate
 
 import com.google.common.base.Function
-import com.shareyi.fileutil.FileUtil
 import com.shareyi.molicode.common.chain.handler.SimpleHandler
 import com.shareyi.molicode.common.chain.handler.awares.TemplateGenerateHandlerAware
 import com.shareyi.molicode.common.constants.MoliCodeConstant
 import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.OutputTypeEnum
+import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.utils.LogHelper
 import com.shareyi.molicode.common.utils.MyLists
 import com.shareyi.molicode.common.utils.SystemFileUtils
@@ -46,16 +46,16 @@ class ContentZipHandler extends SimpleHandler<MoliCodeContext> implements
         }
         LogHelper.DEFAULT.info("开始进行文件夹压缩，path={}", autoMakeVo.getProjectOutputDir())
         String zipParentDirPath = SystemFileUtils.buildZipOutputDir(context.autoCodeParams.getProjectKey());
-        FileUtil.makeDir(zipParentDirPath);
+        FileIoUtil.makeDir(zipParentDirPath);
         def zipFileName = sourceFile.getName() + ".zip"
-        String zipFilePath = FileUtil.contactPath(zipParentDirPath, zipFileName);
+        String zipFilePath = FileIoUtil.contactPath(zipParentDirPath, zipFileName);
         File zipFile = new File(zipFilePath);
         //执行压缩
         ZipHelper.zipFile(sourceFile, zipFile);
         context.put(MoliCodeConstant.CTX_KEY_ZIP_FILE_NAME, zipFileName);
         //压缩完毕后，可以删除源文件夹
-        /* if (sourceFile.getAbsolutePath().startsWith(FileUtil.getRunPath())) {
-             FileUtils.deleteDirectory(sourceFile);
+        /* if (sourceFile.getAbsolutePath().startsWith(FileIoUtil.getRunPath())) {
+             FileIoUtil.deleteDirectory(sourceFile);
          }*/
         //获取模板列表对象，对每个模板生成模板结果
         AutoCodeParams autoCodeParams = context.getAutoCodeParams();
