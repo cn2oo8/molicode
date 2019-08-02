@@ -25,20 +25,17 @@ https://www.oschina.com/p/molicode
 [https://cn2oo8.github.io/molicode_doc](https://cn2oo8.github.io/molicode_doc)
 
 模板中心请访问：
-[https://github.com/cn2oo8/molicode_template_awesome](https://github.com/cn2oo8/molicode_template_awesome)
+[https://gitee.com/molicode_repo/molicode_template_awesome](https://gitee.com/molicode_repo/molicode_template_awesome)
 
 ## 下载使用
 已提供二进制编译版本可供下载使用：
-[https://github.com/cn2oo8/molicode/releases](https://github.com/cn2oo8/molicode/releases)
+[https://gitee.com/zhangshibin1987/molicode/releases](https://gitee.com/zhangshibin1987/molicode/releases)
 
-## 在线试用（感谢 @我的兄弟叫代码  提供服务器资源）
-
+## 在线试用
 http://molicode.shareyi.com
-
 用户请自行注册；
 因为涉及模板动态化风险，为保证 朋友提供的服务器，访客目前只能使用模板，不能进行配置和链接数据库，请见谅！
 您可以下载在本地使用，即可拥有完全权限，谢谢支持理解；
-
 
 ## 示例教程
 molicode生成工程代码实战: [https://my.oschina.net/davidzhang/blog/3036548](https://my.oschina.net/davidzhang/blog/3036548)
@@ -69,15 +66,10 @@ Because I like jasmine flower , and I have planted many jasmine flower On my Bal
 
 ## tech stack
 springboot + iveiw admin + H2 embeded database + swing ui + JXBrowser(evaluate version).  
-Thanks for so many open source software we can use. 
+Thanks for so many open source software we can use.
 
-## todo
-1. Because of the JXBrowser evaluate version have been expired , so I have to apply JXBrowser open source license, hope the teamdev.com will approve my application.
-2. souce data model design , code generate chain design.
-3. keep on going...
 
 ## Author
 David Zhang from chengdu of China (Panda hometown).
-
 
 
