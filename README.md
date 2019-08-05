@@ -39,7 +39,11 @@ http://molicode.shareyi.com
 
 ## 示例教程
 
-MoliCode使用介绍视屏教程：[https://www.ixigua.com/i6721698395569783304/](https://www.ixigua.com/i6721698395569783304/)
+MoliCode使用介绍视屏教程：
+
+西瓜视频: [https://www.ixigua.com/i6721698395569783304/](https://www.ixigua.com/i6721698395569783304/)
+
+优酷：[https://v.youku.com/v_show/id_XNDMwMTg5ODQ3Mg==.html](https://v.youku.com/v_show/id_XNDMwMTg5ODQ3Mg==.html)
 
 molicode生成工程代码实战: [https://my.oschina.net/davidzhang/blog/3036548](https://my.oschina.net/davidzhang/blog/3036548)
 
