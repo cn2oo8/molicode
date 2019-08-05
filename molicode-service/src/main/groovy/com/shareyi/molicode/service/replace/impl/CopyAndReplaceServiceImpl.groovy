@@ -69,7 +69,7 @@ class CopyAndReplaceServiceImpl implements CopyAndReplaceService {
             throwFilter.setEmptyMatch(false);
 
             File srcFile = new File(replaceParams.srcPath);
-            File destFile = new File(FileUtil.contactPath(replaceParams.destPath, srcFile.getName()));
+            File destFile = new File(FileIoUtil.contactPath(replaceParams.destPath, srcFile.getName()));
             FileReplace fileReplace = new FileReplace();
             fileReplace.srcFile = srcFile;
             fileReplace.destFile = destFile;

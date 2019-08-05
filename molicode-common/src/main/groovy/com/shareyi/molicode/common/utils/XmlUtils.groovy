@@ -197,7 +197,7 @@ class XmlUtils {
             return getAutoMakeByContent(IOUtils.toString(inputStream, "UTF-8"))
         }
         autoMakeVo.templates.each { template ->
-            template.templateFile = FileUtil.contactPath(templateBaseDir, template.templateFile?.trim());
+            template.templateFile = FileIoUtil.contactPath(templateBaseDir, template.templateFile?.trim());
         }
         return autoMakeVo;
     }
