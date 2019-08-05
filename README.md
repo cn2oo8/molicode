@@ -1,4 +1,4 @@
-# MoliCode index page
+# MoliCode 源码仓库主页
 
 ## Introduce
 
@@ -38,6 +38,9 @@ http://molicode.shareyi.com
 您可以下载在本地使用，即可拥有完全权限，谢谢支持理解；
 
 ## 示例教程
+
+MoliCode使用介绍视屏教程：[https://www.ixigua.com/i6721698395569783304/](https://www.ixigua.com/i6721698395569783304/)
+
 molicode生成工程代码实战: [https://my.oschina.net/davidzhang/blog/3036548](https://my.oschina.net/davidzhang/blog/3036548)
 
 使用molicode进行json数据处理 [https://my.oschina.net/davidzhang/blog/3034658](https://my.oschina.net/davidzhang/blog/3034658) 
@@ -71,5 +74,6 @@ Thanks for so many open source software we can use.
 
 ## Author
 David Zhang from chengdu of China (Panda hometown).
+
 
 
