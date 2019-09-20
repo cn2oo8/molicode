@@ -8,7 +8,7 @@ import java.util.jar.JarFile;
 /**
  * autoMake 服务类
  *
- * @author zhangshibin
+ * @author david
  * @since 2018/10/3
  */
 interface AutoMakeService {

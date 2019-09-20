@@ -3,7 +3,7 @@ package com.shareyi.molicode.service.common;
 /**
  * 加解密服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/3
  */
 public interface CipherService {

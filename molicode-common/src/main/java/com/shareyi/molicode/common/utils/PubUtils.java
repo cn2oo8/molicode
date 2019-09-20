@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * 通用工具类，主要是一些字符串，UUID，时间等功能生成
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/12/12
  */
 public class PubUtils {

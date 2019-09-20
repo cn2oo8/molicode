@@ -3,7 +3,7 @@ package com.shareyi.molicode.service.common;
 /**
  * 缓存服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/5
  */
 public interface CacheService {

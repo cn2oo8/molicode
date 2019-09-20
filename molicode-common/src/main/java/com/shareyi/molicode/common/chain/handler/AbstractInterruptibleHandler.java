@@ -7,7 +7,7 @@ import com.shareyi.molicode.common.chain.HandlerChain;
  * <p>
  * 如果 doHandle 返回false, 则中断整个责任链
  *
- * @author zhangshibin
+ * @author david
  * @since 2018/5/12
  */
 public abstract class AbstractInterruptibleHandler<T> implements Handler<T> {

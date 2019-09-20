@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.enums;
 /**
  * 仓库类型
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/10
  */
 public enum RepoTypeEnum implements EnumCode<String> {

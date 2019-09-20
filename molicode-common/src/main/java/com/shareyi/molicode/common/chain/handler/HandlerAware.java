@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.chain.handler;
 /**
  * 责任链识别
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/8/7
  */
 public interface HandlerAware {

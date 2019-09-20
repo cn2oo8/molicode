@@ -5,7 +5,7 @@ import com.shareyi.molicode.common.web.CommonResult;
 /**
  * 浏览器回调监听器
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/11/1
  */
 public interface BrowserCallbackListener {

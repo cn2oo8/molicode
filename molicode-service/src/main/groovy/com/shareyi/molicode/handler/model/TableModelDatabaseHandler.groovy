@@ -24,7 +24,7 @@ import java.sql.DatabaseMetaData
 /**
  * tableModel 数据库处理器
  *
- * @author zhangshibin
+ * @author david
  * @since 2018/10/7
  */
 @Service

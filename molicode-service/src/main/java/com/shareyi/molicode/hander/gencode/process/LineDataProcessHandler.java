@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * 单行文本 数据处理handler
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/3
  */
 @Service

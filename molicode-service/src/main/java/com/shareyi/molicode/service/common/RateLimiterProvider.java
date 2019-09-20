@@ -5,7 +5,7 @@ import com.google.common.util.concurrent.RateLimiter;
 /**
  * 限流供应器
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/5
  */
 public interface RateLimiterProvider {

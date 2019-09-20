@@ -6,6 +6,7 @@
         <Modal v-model="showModal"
                :title="title"
                @on-cancel="cancel"
+               :mask-closable="false"
                width="80%">
 
 

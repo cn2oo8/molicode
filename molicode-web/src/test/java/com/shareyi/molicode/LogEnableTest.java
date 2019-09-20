@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * 日志测试
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/5/20
  */
 public class LogEnableTest {

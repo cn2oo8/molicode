@@ -6,7 +6,7 @@ import com.shareyi.molicode.common.web.CommonResult;
 /**
  * git相关服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/14
  */
 public interface GitService {

@@ -6,7 +6,7 @@ import com.shareyi.molicode.common.chain.HandlerChain;
 /**
  * 简单的处理器
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/2/2
  */
 public abstract class SimpleHandler<T> implements Handler<T> {

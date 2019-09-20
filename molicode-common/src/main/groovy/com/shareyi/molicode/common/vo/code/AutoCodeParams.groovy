@@ -117,6 +117,11 @@ class AutoCodeParams extends ExtAttrDto {
     String outputDir
 
     /**
+     * 前端传入的模板信息
+     */
+    String frontTemplate
+
+    /**
      * 是否包含该模板ID
      * @param templateId
      * @return
@@ -262,6 +267,14 @@ class AutoCodeParams extends ExtAttrDto {
 
     void setOutputDir(String outputDir) {
         this.outputDir = outputDir
+    }
+
+    String getFrontTemplate() {
+        return frontTemplate
+    }
+
+    void setFrontTemplate(String frontTemplate) {
+        this.frontTemplate = frontTemplate
     }
 
     @Override

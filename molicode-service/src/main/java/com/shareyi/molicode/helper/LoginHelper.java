@@ -8,7 +8,7 @@ import com.shareyi.molicode.domain.sys.AcUser;
 /**
  * 描述
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/3
  */
 public class LoginHelper {

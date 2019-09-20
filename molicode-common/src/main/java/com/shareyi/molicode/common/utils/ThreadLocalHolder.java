@@ -9,7 +9,7 @@ import java.util.jar.JarFile;
 /**
  * 线程变量持有器
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/11
  */
 public class ThreadLocalHolder {

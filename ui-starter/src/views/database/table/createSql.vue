@@ -6,6 +6,7 @@
 
         <Modal v-model="showModal"
                :title="title"
+               :mask-closable="false"
                width="94%">
 
             <Form :label-width="120" inline>

@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * 日志相关拦截器
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/11/4
  */
 @Component

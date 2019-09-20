@@ -3,6 +3,7 @@
         <Modal v-model="showModal"
                title="复制项目"
                @on-ok="save"
+               :mask-closable="false"
                @on-cancel="cancel">
             <Form ref="formItems" :model="formItems" :rules="formRules" :label-width="120" inline>
 

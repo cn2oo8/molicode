@@ -1,6 +1,6 @@
 package com.shareyi.molicode;
 
-import com.shareyi.fileutil.FileUtil;
+import com.shareyi.molicode.common.utils.FileIoUtil;
 import org.junit.Test;
 
 /**
@@ -13,6 +13,6 @@ public class MyTest {
 
     @Test
     public void test(){
-        System.out.println(FileUtil.getRunPath());
+        System.out.println(FileIoUtil.getRunPath());
     }
 }

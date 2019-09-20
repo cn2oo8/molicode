@@ -1,6 +1,8 @@
 package com.shareyi.molicode.service.replace
 
 import com.shareyi.molicode.common.utils.LogHelper
+import com.shareyi.molicode.common.utils.MoliCodeStringUtils
+import com.shareyi.molicode.common.utils.Profiles
 import org.apache.commons.collections4.MapUtils
 import org.apache.commons.lang3.StringUtils
 
@@ -50,7 +52,11 @@ class FileNameReplaceUtil {
         Set<Entry<String, String>> set = replaceMap.entrySet();
         for (Entry<String, String> entry : set) {
             if (StringUtils.isNotEmpty(entry.getKey()) && entry.getValue() != null) {
-                dest = StringUtils.replaceAll(dest, entry.key, entry.value);
+                if(Profiles.instance.simpleReplace){
+                    dest = MoliCodeStringUtils.replaceAllSimple(dest, entry.key, entry.value);
+                }else{
+                    dest = StringUtils.replaceAll(dest, entry.key, entry.value);
+                }
             }
         }
         return dest;

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 用户登录信息万
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/3
  */
 public class LoginUserVo {

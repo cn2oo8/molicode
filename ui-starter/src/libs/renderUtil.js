@@ -55,7 +55,7 @@ export function toStringArray(params) {
     })
 }
 
-export function transferString (param) {
+export function transferString(param) {
     if (_.isArray(param)) {
         return toStringArray(param)
     }
@@ -66,7 +66,7 @@ export function transferString (param) {
     return tempVal
 }
 
-export function transferNumber (v) {
+export function transferNumber(v) {
     if (_.isArray(v)) {
         v = _.map(v, function (i) {
             return Number.isNaN(Number(i)) ? i : Number(i)
@@ -75,4 +75,13 @@ export function transferNumber (v) {
         v = Number.isNaN(Number(v)) ? v : Number(v)
     }
     return v
+}
+
+/**
+ * 字符串是否为空
+ * @param v
+ * @returns {boolean}
+ */
+export function isEmptyStr(v) {
+    return v === undefined || v === null || v === '';
 }

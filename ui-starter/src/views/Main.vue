@@ -122,6 +122,7 @@
         },
         methods: {
             init() {
+                this.$store.dispatch(constants.types.LOAD_LOGIN_USER, {_vue: this});
                 let pathArr = util.setCurrentPath(this, this.$route.name);
                 this.$store.commit('updateMenulist');
                 if (pathArr.length >= 2) {
@@ -131,7 +132,6 @@
                 this.messageCount = messageCount.toString();
                 this.checkTag(this.$route.name);
                 this.$store.commit('setMessageCount', 3);
-                this.$store.dispatch(constants.types.LOAD_LOGIN_USER, {_vue: this});
             },
             toggleClick() {
                 this.shrink = !this.shrink;

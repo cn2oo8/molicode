@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.utils;
 /**
  * 系统工具类
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/11/2
  */
 public class SystemUtils {

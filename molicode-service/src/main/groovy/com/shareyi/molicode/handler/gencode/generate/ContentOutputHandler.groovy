@@ -15,12 +15,13 @@ import com.shareyi.molicode.common.vo.code.TemplateVo
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.poi.ss.usermodel.Workbook
+import org.slf4j.Logger
 import org.springframework.stereotype.Service
 
 /**
  * 输出处理器
  *
- * @author zhangshibin* @since 2018/10/3
+ * @author david* @since 2018/10/3
  */
 @Service
 class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
@@ -58,6 +59,9 @@ class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
                         if (!Objects.equals(template.engine, EngineType.JXLS.type)) {
                             this.outputFront(context, template);
                         }
+                        break;
+                    case OutputTypeEnum.RESPONSE:
+                        outputToLog(LogHelper.DEFAULT, context, template);
                         break;
                     case OutputTypeEnum.LOCAL_DIR:
                     case OutputTypeEnum.ZIP_FILE:
@@ -130,11 +134,22 @@ class ContentOutputHandler extends SimpleHandler<MoliCodeContext> implements
  * @param template
  */
     private void outputFront(MoliCodeContext moliCodeContext, TemplateVo template) {
+        outputToLog(LogHelper.FRONT_CONSOLE, moliCodeContext, template);
+
+    }
+
+    /**
+     * 输出到日志
+     * @param logger
+     * @param moliCodeContext
+     * @param template
+     */
+    private void outputToLog(Logger logger, MoliCodeContext moliCodeContext, TemplateVo template) {
         StringBuilder stringBuilder = new StringBuilder("\n [" + template.desc + "]模板执行成功，输出到前台，应输出路径:" + template.getRenderedDestFilePath());
         stringBuilder.append("\n").append("==============模板输出开始 =================")
         stringBuilder.append("\n").append(template.getRenderedContent())
         stringBuilder.append("\n").append("==============模板输出结束 =================")
-        LogHelper.FRONT_CONSOLE.info(stringBuilder.toString())
+        logger.info(stringBuilder.toString())
     }
 
 }

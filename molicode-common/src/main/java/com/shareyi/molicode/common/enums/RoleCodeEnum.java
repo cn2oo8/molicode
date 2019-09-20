@@ -5,7 +5,7 @@ import com.shareyi.molicode.common.constants.CommonConstant;
 /**
  * 描述
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/5
  */
 public enum RoleCodeEnum implements EnumCode<String> {

@@ -1,12 +1,11 @@
 package com.shareyi.molicode.configuaration;
 
-import org.springframework.context.annotation.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.tomcat.jdbc.pool.DataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import javax.sql.DataSource;
 
 /**
  * MyBatis 配置，需要的时候再放开

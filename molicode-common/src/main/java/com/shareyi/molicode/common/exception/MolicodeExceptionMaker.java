@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.exception;
 /**
  * 用户平台异常构建器
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/4/3
  */
 public interface MolicodeExceptionMaker {

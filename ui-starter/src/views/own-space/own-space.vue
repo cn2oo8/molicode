@@ -57,7 +57,7 @@
                         <Button type="text" size="small" @click="showEditPassword">修改密码</Button>
                     </FormItem>
                     <div>
-                        <Button type="text" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
+                        <Button type="text" style="width: 100px;" @click="cancelEditUserInfo">取消</Button>
                         <Button type="primary" style="width: 100px;" :loading="save_loading" @click="saveEdit">保存
                         </Button>
                     </div>
@@ -147,7 +147,7 @@
             }
         },
         watch: {
-            userInfo: function (newVal) {
+            'userInfo': function (newVal) {
                 this.init(newVal);
             }
         },
@@ -158,7 +158,7 @@
                 this.editPasswordForm.rePass = '';
                 this.editPasswordModal = true;
             },
-            cancelEditUserInfor() {
+            cancelEditUserInfo() {
                 this.$store.commit('removeTag', 'ownspace_index');
                 localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
                 let lastPageName = '';
@@ -201,6 +201,9 @@
                 });
             },
             init(userInfo) {
+                if (userInfo === null || userInfo === undefined) {
+                    userInfo = this.$store.state.user.userInfo;
+                }
                 if (userInfo !== undefined && userInfo !== null) {
                     this.userForm.userName = userInfo.userName;
                     this.userForm.nickName = userInfo.nickName;

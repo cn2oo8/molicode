@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 魔力code 常量
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/3
  */
 public class MoliCodeConstant {

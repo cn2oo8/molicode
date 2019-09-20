@@ -5,7 +5,7 @@ package com.shareyi.molicode.common.chain.handler;
  * 基础的持续向下的handler
  * 无需返回是否继续，默认继续处理下一个
  *
- * @author zhangshibin
+ * @author david
  * @since 2018/5/12
  */
 public abstract class AbstractContinueHandler<T> extends AbstractInterruptibleHandler<T> {

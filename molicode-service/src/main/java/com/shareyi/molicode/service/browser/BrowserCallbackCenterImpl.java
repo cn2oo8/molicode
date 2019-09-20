@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 浏览器回调中心服务实现
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/11/1
  */
 @Service

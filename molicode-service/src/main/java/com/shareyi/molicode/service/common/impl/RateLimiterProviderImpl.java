@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * 限流服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/5
  */
 @Service

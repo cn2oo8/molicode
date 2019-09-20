@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.enums;
 /**
  * 源文件来源类型
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/19
  */
 public enum ResourceTypeEnum implements EnumCode<String> {

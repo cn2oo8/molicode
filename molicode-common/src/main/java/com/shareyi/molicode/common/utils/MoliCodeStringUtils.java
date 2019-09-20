@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * String 工具类
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/11
  */
 public class MoliCodeStringUtils {
@@ -145,6 +145,59 @@ public class MoliCodeStringUtils {
         }
         return sb.toString();
     }
+
+
+    /**
+     * 进行字符串简单替换
+     *
+     * @param str
+     * @param searchChars
+     * @param replaceChars
+     * @return
+     */
+    public static String replaceAllSimple(final String str, final String searchChars, String replaceChars) {
+        if (StringUtils.isEmpty(str) || StringUtils.isEmpty(searchChars)) {
+            return str;
+        }
+        if (replaceChars == null) {
+            replaceChars = StringUtils.EMPTY;
+        }
+        boolean modified = false;
+        final int strLength = str.length();
+        final int searchLength = searchChars.length();
+        final StringBuilder buf = new StringBuilder(strLength);
+
+        for (int i = 0; i < strLength; ) {
+            if (i + searchLength > strLength) {
+                buf.append(str.charAt(i));
+                i++;
+                continue;
+            }
+            boolean allMatch = true;
+            for (int searchIndex = 0; searchIndex < searchLength; searchIndex++) {
+                final char originChar = str.charAt(i + searchIndex);
+                final char searchChar = searchChars.charAt(searchIndex);
+                if (originChar != searchChar) {
+                    allMatch = false;
+                    break;
+                }
+            }
+
+            if (allMatch) {
+                modified = true;
+                buf.append(replaceChars);
+                i = i + searchLength;
+            } else {
+                buf.append(str.charAt(i));
+                i++;
+            }
+        }
+        if (modified) {
+            return buf.toString();
+        }
+        return str;
+    }
+
 
     public static void main(String[] args) {
         System.out.println(compareVersion("1.0.0", "1.0.1"));

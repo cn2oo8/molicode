@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.gui;
 /**
  * 浏览器回调注册中心
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/29
  */
 public interface BrowserCallbackCenter {

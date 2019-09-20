@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * 登录上下文
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/3
  */
 public class LoginContext extends ExtAttrDto {
@@ -27,7 +27,10 @@ public class LoginContext extends ExtAttrDto {
      * 用户版本信息
      */
     private Integer dataVersion;
-
+    /**
+     * 是否通过token登录
+     */
+    private boolean byToken;
 
     public String getUserName() {
         return userName;
@@ -104,5 +107,13 @@ public class LoginContext extends ExtAttrDto {
             return true;
         }
         return Objects.equals(this.dataVersion, dataVersion);
+    }
+
+    public boolean isByToken() {
+        return byToken;
+    }
+
+    public void setByToken(boolean byToken) {
+        this.byToken = byToken;
     }
 }

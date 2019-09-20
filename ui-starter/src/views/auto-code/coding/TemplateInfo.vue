@@ -2,6 +2,7 @@
     <div>
         <Modal v-model="showModal"
                title="模板信息"
+               :mask-closable="false"
                @on-ok="close" width="780">
             <Form :label-width="120" inline>
                 <Row>

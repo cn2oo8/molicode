@@ -1,19 +1,20 @@
 package com.shareyi.molicode.service.gencode.impl
 
 import com.alibaba.fastjson.JSON
+import com.google.common.collect.Maps
 import com.shareyi.molicode.common.bean.LoginContext
 import com.shareyi.molicode.common.constants.AutoCodeConstant
 import com.shareyi.molicode.common.constants.ConfigKeyConstant
 import com.shareyi.molicode.common.enums.*
 import com.shareyi.molicode.common.utils.FileIoUtil
 import com.shareyi.molicode.common.utils.LogHelper
-import com.shareyi.molicode.helper.LoginHelper
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
 import com.shareyi.molicode.common.vo.code.AutoMakeVo
 import com.shareyi.molicode.common.vo.code.ConfigVo
 import com.shareyi.molicode.common.vo.git.GitRepoVo
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo
+import com.shareyi.molicode.helper.LoginHelper
 import com.shareyi.molicode.service.conf.AcConfigService
 import com.shareyi.molicode.service.conf.CommonExtInfoService
 import com.shareyi.molicode.service.gencode.AutoMakeService
@@ -31,8 +32,7 @@ import java.util.jar.JarFile
 
 /**
  * autoMake 实现类
- * @author zhangshibin
- * @since 2018/10/3
+ * @author david* @since 2018/10/3
  */
 @Service
 class AutoMakeServiceImpl implements AutoMakeService {
@@ -50,6 +50,14 @@ class AutoMakeServiceImpl implements AutoMakeService {
      * @param autoCodeParams
      */
     void getConfigInfo(AutoCodeParams codeParams) {
+        //如果是前台
+        if (Objects.equals(codeParams.getTemplateType(), TemplateTypeEnum.FRONT.getCode())) {
+            if (StringUtils.isEmpty(codeParams.getProjectKey())) {
+                this.parseConfigVoInfo(Maps.newHashMap(), codeParams);
+                return;
+            }
+        }
+
         Validate.notEmpty(codeParams.getProjectKey(), "projectKey不能为空")
         Map<String, Map<String, String>> configMap = acConfigService.getConfigMapByProjectKey(codeParams.projectKey, DataTypeEnum.JSON);
         Map<String, String> pathConfigMap = configMap.get(ConfigKeyConstant.PathConfig.CONFIG_KEY);

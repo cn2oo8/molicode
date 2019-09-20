@@ -147,7 +147,7 @@ class DatabaseTableServiceImpl implements DatabaseTableService {
             Validate.notEmpty(driverName, "数据库驱动不能为空")
             Validate.notEmpty(url, "数据库url不能为空")
             Validate.notEmpty(username, "数据库userName不能为空")
-            Validate.notEmpty(password, "数据库密码不能为空")
+           // Validate.notEmpty(password, "数据库密码不能为空")
 
             sql = Sql.newInstance(url, username, password, driverName);
             TableNameUtil tableNameUtil = new TableNameUtil()

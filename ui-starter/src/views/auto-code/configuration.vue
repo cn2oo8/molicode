@@ -27,7 +27,14 @@
                     默认项目下配置信息 （默认项目ID:{{defaultProjectId}}）
                 </p>
 
-                <Collapse :value="[1,2,3]">
+                <Collapse :value="[0,1,2,3]">
+                    <Panel name="0">
+                        默认项目信息
+                        <p slot="content">
+                            <default-project ref="defaultProject"></default-project>
+                        </p>
+                    </Panel>
+
                     <Panel name="1">
                         数据库设置
                         <p slot="content">
@@ -67,6 +74,7 @@
     import pathConfig from './configs/pathConfig';
     import codeConfig from './configs/codeConfig';
     import jsonConfig from './configs/jsonConfig';
+    import defaultProject from './configs/defaultProject';
     import autoCodeProjectList from '@/views/conf/acProject/autoCodeProjectList';
     import constants from '@/constants/constants';
 
@@ -105,7 +113,8 @@
             autoCodeProjectList,
             pathConfig,
             codeConfig,
-            jsonConfig
+            jsonConfig,
+            defaultProject
         },
         computed: {
             defaultProjectId() {
@@ -132,6 +141,7 @@
                         _this.setProjectConfigs(data);
                     });
                 }
+                this.$refs['defaultProject'].notifyProject(project);
             },
             setProjectConfigs: function (configList) {
                 if (!configList) {

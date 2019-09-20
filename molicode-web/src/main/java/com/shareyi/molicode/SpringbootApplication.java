@@ -4,6 +4,7 @@ import com.shareyi.molicode.common.enums.BrowserWindowEnum;
 import com.shareyi.molicode.common.gui.GuiWindowFactory;
 import com.shareyi.molicode.common.utils.LogHelper;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -15,7 +16,7 @@ import java.util.Objects;
 /**
  * springboot启动入口类
  *
- * @author zhangshibin
+ * @author david
  * @date 2018-09-23
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
@@ -25,7 +26,7 @@ public class SpringbootApplication {
     public static void main(String[] args) {
 
         SpringApplicationBuilder builder = new SpringApplicationBuilder(SpringbootApplication.class);
-        ConfigurableApplicationContext configurableApplicationContext = builder.headless(false).web(true).run(args);
+        ConfigurableApplicationContext configurableApplicationContext = builder.headless(false).web(WebApplicationType.SERVLET).run(args);
         ConfigurableEnvironment configurableEnvironment = configurableApplicationContext.getEnvironment();
         final String port = configurableEnvironment.getProperty("server.port", "8086");
         final String windowName = configurableEnvironment.getProperty("browser.windowName", BrowserWindowEnum.SWING.getCode());

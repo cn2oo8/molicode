@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * 自定义bean 构建器
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/3
  */
 @Configuration

@@ -1,11 +1,13 @@
 package com.shareyi.molicode.hander.gencode.loader;
 
+import com.google.common.collect.Lists;
 import com.shareyi.molicode.common.chain.handler.SimpleHandler;
 import com.shareyi.molicode.common.chain.handler.awares.DataLoadHandlerAware;
 import com.shareyi.molicode.common.constants.AutoCodeConstant;
 import com.shareyi.molicode.common.constants.CommonConstant;
 import com.shareyi.molicode.common.constants.MoliCodeConstant;
 import com.shareyi.molicode.common.context.MoliCodeContext;
+import com.shareyi.molicode.common.enums.EngineType;
 import com.shareyi.molicode.common.enums.EnumCode;
 import com.shareyi.molicode.common.enums.ResultCodeEnum;
 import com.shareyi.molicode.common.enums.TemplateTypeEnum;
@@ -15,6 +17,7 @@ import com.shareyi.molicode.common.utils.*;
 import com.shareyi.molicode.common.valid.Validate;
 import com.shareyi.molicode.common.vo.code.AutoCodeParams;
 import com.shareyi.molicode.common.vo.code.AutoMakeVo;
+import com.shareyi.molicode.common.vo.code.TemplateVo;
 import com.shareyi.molicode.common.vo.git.GitRepoVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.gencode.AutoMakeService;
@@ -29,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -36,7 +40,7 @@ import java.util.jar.JarFile;
 /**
  * autoMake.xml 数据加载器
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/3
  */
 @Service
@@ -68,7 +72,6 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
     public void doHandle(MoliCodeContext context) {
         try {
             AutoCodeParams autoCodeParams = context.getAutoCodeParams();
-            ValidateUtils.notEmptyField(autoCodeParams, AcProjectColumn.projectKey.name());
             autoMakeService.getConfigInfo(autoCodeParams);
             TemplateTypeEnum typeEnum = EnumCode.Parser.parseToNullSafe(TemplateTypeEnum.class, autoCodeParams.getTemplateType());
             AutoMakeVo autoMake = null;
@@ -86,6 +89,11 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
                 case GIT:
                     autoMake = loadFromGit(autoCodeParams);
                     break;
+                case FRONT:
+                    autoMake = loadFromFront(autoCodeParams);
+            }
+            if (typeEnum != TemplateTypeEnum.FRONT) {
+                appendFrontTemplate(autoMake, autoCodeParams);
             }
 
             context.put(MoliCodeConstant.CTX_KEY_AUTO_MAKE, autoMake);
@@ -95,6 +103,54 @@ public class AutoMakeLoadHandler extends SimpleHandler<MoliCodeContext>
             LogHelper.EXCEPTION.error("加载AutoMake.xml配置文件失败", e);
             throw new AutoCodeException("加载AutoMake.xml配置文件失败，原因是：" + e.getMessage(), ResultCodeEnum.EXCEPTION);
         }
+    }
+
+    private void appendFrontTemplate(AutoMakeVo autoMake, AutoCodeParams autoCodeParams) {
+        if (StringUtils.isEmpty(autoCodeParams.getFrontTemplate())) {
+            return;
+        }
+        autoCodeParams.setTemplateIds(TemplateTypeEnum.FRONT.getCode());
+        List<TemplateVo> templateVos = autoMake.getTemplates();
+        if (templateVos == null) {
+            templateVos = Lists.newArrayListWithCapacity(1);
+            autoMake.setTemplates(templateVos);
+        }
+        templateVos.add(buildFrontTemplateVo(autoCodeParams));
+    }
+
+    /**
+     * 从前台数据中构建
+     *
+     * @param autoCodeParams
+     * @return
+     */
+    private AutoMakeVo loadFromFront(AutoCodeParams autoCodeParams) {
+        Validate.notEmpty(autoCodeParams.getFrontTemplate(), "模板不能为空！");
+        AutoMakeVo autoMakeVo = new AutoMakeVo();
+        autoMakeVo.setMoliCodeVersion(Profiles.getInstance().getMoliCodeVersion());
+        List<TemplateVo> templates = Lists.newArrayList();
+        TemplateVo templateVo = buildFrontTemplateVo(autoCodeParams);
+        templates.add(templateVo);
+        autoMakeVo.setTemplates(templates);
+        autoCodeParams.setTemplateIds(TemplateTypeEnum.FRONT.getCode());
+        return autoMakeVo;
+
+    }
+
+    /**
+     * 构建前台传入的模板内容
+     *
+     * @param autoCodeParams
+     * @return
+     */
+    private TemplateVo buildFrontTemplateVo(AutoCodeParams autoCodeParams) {
+        TemplateVo templateVo = new TemplateVo();
+        templateVo.setId(TemplateTypeEnum.FRONT.getCode());
+        templateVo.setDesc("自定义模板");
+        templateVo.setEngine(EngineType.GROOVY.getType());
+        templateVo.setTemplateContent(autoCodeParams.getFrontTemplate());
+        templateVo.setDestFile("response.out");
+        return templateVo;
     }
 
     /**

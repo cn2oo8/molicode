@@ -26,11 +26,6 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-velocity</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
@@ -108,23 +103,20 @@
             <version>6.21</version>
             <systemPath>${basedir}/locallib/jxbrowser-6.21.jar</systemPath>
         </dependency>
-<!--
-        <dependency>
+    <!--    <dependency>
             <groupId>teamdev.com</groupId>
             <artifactId>jxbrower-mac</artifactId>
             <scope>system</scope>
             <version>6.21</version>
             <systemPath>${basedir}/locallib/jxbrowser-mac-6.21.jar</systemPath>
         </dependency>-->
-
-        <dependency>
+      <!--  <dependency>
             <groupId>teamdev.com</groupId>
             <artifactId>jxbrower-win64</artifactId>
             <scope>system</scope>
             <version>6.21</version>
             <systemPath>${basedir}/locallib/jxbrowser-win64-6.21.jar</systemPath>
-        </dependency>
-
+        </dependency>-->
         <dependency>
             <groupId>teamdev.com</groupId>
             <artifactId>jxbrower-license</artifactId>
@@ -154,8 +146,8 @@
 
         <dependency>
             <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools</artifactId>
-            <version>2.0</version>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
         </dependency>
 
         <dependency>

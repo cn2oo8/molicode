@@ -200,6 +200,7 @@
     import resultInfo from '@/views/common/log/resultInfo';
     import logConsole from '@/views/common/log/log-console';
     import gitRepoList from '@/views/repos/git/list';
+    import * as renderUtil from '@/libs/renderUtil.js';
 
     var _ = require('underscore')
 
@@ -311,27 +312,25 @@
                 });
             },
             fetchGitRepo() {
-                this.$refs['formItems'].validate((valid) => {
-                    if (!valid) {
-                        this.$Message.error({
-                            content: '参数验证失败，请检验参数',
-                            duration: 5
-                        });
-                        return false;
-                    }
-                    let gitRepoParam = {
-                        'gitUrl': this.formItems.gitUrl,
-                        'branchName': this.formItems.branchName,
-                        'userName': this.formItems.userName,
-                        'password': this.formItems.password
-                    };
-                    requestUtils.postSubmit(this, constants.urls.repo.git.fetchRepo, gitRepoParam, function (data) {
-                        this.$Message.success({
-                            content: '拉取仓库地址信息成功，耗时(s)：' + data['costTime'],
-                            duration: 5
-                        });
-                    }, null, true);
-                });
+                if (renderUtil.isEmptyStr(this.formItems.gitUrl) || renderUtil.isEmptyStr(this.formItems.branchName)) {
+                    this.$Message.error({
+                        content: '参数验证失败，请检验参数',
+                        duration: 5
+                    });
+                    return false;
+                }
+                let gitRepoParam = {
+                    'gitUrl': this.formItems.gitUrl,
+                    'branchName': this.formItems.branchName,
+                    'userName': this.formItems.userName,
+                    'password': this.formItems.password
+                };
+                requestUtils.postSubmit(this, constants.urls.repo.git.fetchRepo, gitRepoParam, function (data) {
+                    this.$Message.success({
+                        content: '拉取仓库地址信息成功，耗时(s)：' + data['costTime'],
+                        duration: 5
+                    });
+                }, null, true);
             },
             _templateTypeChange: function (newVal) {
                 if (!newVal) {

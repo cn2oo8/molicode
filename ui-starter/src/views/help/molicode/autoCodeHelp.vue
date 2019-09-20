@@ -26,7 +26,7 @@
             <Row>
                 <Col span="24">
                     <Form-item label="最新版本下载&源码" style="width: 96%">
-                        <Input value="https://github.com/cn2oo8/molicode/releases"></Input>
+                        <Input value="https://gitee.com/zhangshibin1987/molicode/releases"></Input>
 
                     </Form-item>
                 </Col>

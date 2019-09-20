@@ -1,11 +1,11 @@
 package com.shareyi.molicode;
 
+import com.shareyi.molicode.common.utils.FileIoUtil;
 import com.shareyi.molicode.common.vo.code.AutoCodeParams;
 import com.shareyi.molicode.common.vo.maven.MavenResourceVo;
 import com.shareyi.molicode.common.web.CommonResult;
 import com.shareyi.molicode.service.gencode.AutoCodeService;
 import com.shareyi.molicode.service.maven.impl.MavenServiceImpl;
-import com.shareyi.fileutil.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +49,7 @@ public class SpringbootApplicationTests {
 		vo.setGroupId("com.jd.b2b");
 		vo.setArtifactId("b2b-user-svr-sdk");
 		vo.setVersion("0.1.4-SNAPSHOT");
-		File parentFile = new File(FileUtil.getRunPath());
+		File parentFile = new File(FileIoUtil.getRunPath());
 		vo.setMavenTempDir(new File(parentFile.getParent(), "maven_temp").getAbsolutePath());
 		CommonResult resultOne = service.makeMavenExecuteEvn(vo);
 		CommonResult result = service.fetchMavenResource(vo);

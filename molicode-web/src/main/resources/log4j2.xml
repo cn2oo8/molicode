@@ -10,18 +10,18 @@
     </properties>
     <appenders>
         <Console name="CONSOLE" target="system_out">
-            <PatternLayout pattern="${patternLayout}" />
+            <PatternLayout charset="UTF-8" pattern="${patternLayout}" />
         </Console>
 
         <RollingFile name="DEFAULT_FILE" fileName="${LOG_PATH}/default.log"  immediateFlush="false" append="true"  filePattern="${LOG_PATH}/default-%d{yyyyMMdd}_%i.log" >
-            <PatternLayout Pattern="${patternLayout}" />
+            <PatternLayout charset="UTF-8" Pattern="${patternLayout}" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="${sizeMB}"/>
             </Policies>
         </RollingFile>
 
         <RollingFile name="EXCEPTION_FILE" fileName="${LOG_PATH}/exception.log"  immediateFlush="false" append="true"  filePattern="${LOG_PATH}/exception-%d{yyyyMMdd}_%i.log" >
-            <PatternLayout Pattern="${patternLayout}" />
+            <PatternLayout charset="UTF-8" Pattern="${patternLayout}" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="${sizeMB}"/>
             </Policies>
@@ -29,14 +29,14 @@
 
 
         <RollingFile name="BROWSER_FILE" fileName="${LOG_PATH}/browser.log"  immediateFlush="false" append="true"  filePattern="${LOG_PATH}/browser-%d{yyyyMMdd}_%i.log" >
-            <PatternLayout Pattern="${patternLayout}" />
+            <PatternLayout charset="UTF-8" Pattern="${patternLayout}" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="${sizeMB}"/>
             </Policies>
         </RollingFile>
 
         <FrontConsoleAppender name="FRONT_CONSOLE">
-            <PatternLayout Pattern="${patternLayout}" />
+            <PatternLayout charset="UTF-8" Pattern="${patternLayout}" />
         </FrontConsoleAppender>
     </appenders>
     <loggers>

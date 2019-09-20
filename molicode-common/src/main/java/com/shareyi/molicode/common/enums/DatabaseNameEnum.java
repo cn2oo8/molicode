@@ -5,7 +5,7 @@ import com.alibaba.druid.util.JdbcConstants;
 /**
  * 数据库类型
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/4
  */
 public enum DatabaseNameEnum implements EnumCode<String> {

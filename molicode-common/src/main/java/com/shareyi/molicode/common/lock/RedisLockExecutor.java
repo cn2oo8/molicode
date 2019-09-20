@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * redisLock执行器
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/1/23
  */
 @Service

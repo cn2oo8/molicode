@@ -3,7 +3,7 @@ package com.shareyi.molicode.sdk.dto;
 /**
  * 字段信息
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/28
  */
 public class FieldInfoDto {

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * handler chain 生成工厂
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/8/7
  */
 public class HandlerChainFactoryImpl implements ApplicationContextAware {

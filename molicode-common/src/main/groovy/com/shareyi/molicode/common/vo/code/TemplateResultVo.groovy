@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.vo.code
 /**
  * 模板输出结果对象
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/5
  */
 class TemplateResultVo {

@@ -79,8 +79,7 @@
     var validateSet = {
         driverClass: [{type: 'string', required: true, message: '驱动名称不能为空', trigger: 'blur'}],
         url: [{type: 'string', required: true, message: '数据库链接不能为空', trigger: 'blur'}],
-        username: [{type: 'string', required: true, message: '用户名不能为空', trigger: 'blur'}],
-        password: [{type: 'string', required: true, message: '密码不能为空', trigger: 'blur'}]
+        username: [{type: 'string', required: true, message: '用户名不能为空', trigger: 'blur'}]
     };
 
     var defConfig = {

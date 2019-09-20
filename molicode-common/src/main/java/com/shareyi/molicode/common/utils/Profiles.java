@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 单列模式
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/11/1
  */
 public class Profiles {
@@ -73,6 +73,9 @@ public class Profiles {
     @Value("${register.default.roleCode}")
     private String registerRoleCode;
 
+
+    @Value("${profile.simpleReplace:true}")
+    private boolean simpleReplace;
 
     public String getFileEncoding() {
         return fileEncoding;
@@ -187,5 +190,13 @@ public class Profiles {
 
     public void setRegisterRoleCode(String registerRoleCode) {
         this.registerRoleCode = registerRoleCode;
+    }
+
+    public boolean isSimpleReplace() {
+        return simpleReplace;
+    }
+
+    public void setSimpleReplace(boolean simpleReplace) {
+        this.simpleReplace = simpleReplace;
     }
 }

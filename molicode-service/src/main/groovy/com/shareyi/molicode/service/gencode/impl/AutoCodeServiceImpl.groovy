@@ -10,6 +10,7 @@ import com.shareyi.molicode.common.context.MoliCodeContext
 import com.shareyi.molicode.common.enums.EnumCode
 import com.shareyi.molicode.common.enums.OutputTypeEnum
 import com.shareyi.molicode.common.enums.ResourceTypeEnum
+import com.shareyi.molicode.common.enums.TemplateTypeEnum
 import com.shareyi.molicode.common.utils.*
 import com.shareyi.molicode.common.valid.Validate
 import com.shareyi.molicode.common.vo.code.AutoCodeParams
@@ -59,19 +60,29 @@ class AutoCodeServiceImpl implements AutoCodeService {
             } else {
                 Validate.notEmpty(autoMakeParams.getFrontContent(), "frontContent不能为空")
             }
+
+            //headless模式，非token，不允许传入自定义模板 
+            if (Profiles.getInstance().isHeadLess() && !loginContext.isByToken()) {
+                autoMakeParams.setFrontTemplate(null);
+            }
+
+            OutputTypeEnum outputTypeEnum = EnumCode.Parser.parseTo(OutputTypeEnum.class, autoMakeParams.getOutputType());
+
             //headless模式只能输出到zip文件
-            if (Profiles.getInstance().isHeadLess() && !Objects.equals(autoMakeParams.getOutputType(), OutputTypeEnum.FRONT_CONSOLE.code)) {
+            if (Profiles.getInstance().isHeadLess() && outputTypeEnum == OutputTypeEnum.LOCAL_DIR) {
                 autoMakeParams.setOutputType(OutputTypeEnum.ZIP_FILE.getCode());
             }
+
             //如果是headless模式，输出目录设置为默认值，前台传入的无效
-            if (Objects.equals(autoMakeParams.outputType, OutputTypeEnum.ZIP_FILE.getCode())) {
+            if (outputTypeEnum == OutputTypeEnum.ZIP_FILE ||
+                    outputTypeEnum == OutputTypeEnum.RESPONSE) {
                 String projectOutputDir = SystemFileUtils.buildDefaultProjectOutputDir(autoMakeParams.getProjectKey());
                 def outputDir = MoliCodeStringUtils.getTimeBasedStr()
                 projectOutputDir = FileIoUtil.contactPath(projectOutputDir, outputDir);
                 autoMakeParams.setProjectOutputDir(projectOutputDir);
                 autoMakeParams.outputDir = outputDir;
             }
-            if (!Objects.equals(autoMakeParams.outputType, OutputTypeEnum.FRONT_CONSOLE.code)) {
+            if (outputTypeEnum.needOutputDir) {
                 Validate.notEmpty(autoMakeParams.getProjectOutputDir(), "代码输出目录不能为空")
             }
             MoliCodeContext moliCodeContext = MoliCodeContext.create(autoMakeParams)

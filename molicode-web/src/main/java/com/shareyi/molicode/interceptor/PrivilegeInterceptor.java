@@ -20,13 +20,17 @@ import java.lang.reflect.Method;
 /**
  * 权限拦截器
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/5
  */
 @Service
 public class PrivilegeInterceptor extends BaseAbstractInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //如果是资源请求，如ResourceHttpRequestHandler， 直接返回true
+        if(!(handler instanceof HandlerMethod)){
+            return true;
+        }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         LoginContext loginContext = LoginHelper.getLoginContext();
         if (loginContext == null) {

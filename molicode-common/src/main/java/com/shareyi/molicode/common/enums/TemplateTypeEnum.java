@@ -10,7 +10,8 @@ public enum TemplateTypeEnum implements EnumCode<String> {
 
     LOCAL("local", "本地"),
     MAVEN("maven", "maven"),
-    GIT("git", "git");
+    GIT("git", "git"),
+    FRONT("front", "前台");
 
     private final String code;
     private final String desc;

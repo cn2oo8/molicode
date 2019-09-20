@@ -8,6 +8,7 @@
         <Modal v-model="showModal"
                title="新增用户信息"
                @on-ok="save"
+               :mask-closable="false"
                @on-cancel="cancel">
 
             <Form ref="formItems" :model="formItems" :rules="formRules" :label-width="120" inline>

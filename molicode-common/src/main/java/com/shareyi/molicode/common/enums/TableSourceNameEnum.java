@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.enums;
 /**
  * 来源名称
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/4
  */
 public enum TableSourceNameEnum implements EnumCode<String> {

@@ -17,7 +17,7 @@ import javax.annotation.Resource
 /**
  * tableModel生成的前置参数验证器
  * 及配置文件读取
- * @author zhangshibin
+ * @author david
  * @since 2018/10/7
  */
 @Service
@@ -54,7 +54,7 @@ class TableModelCheckHandler extends SimpleHandler<TableModelContext> implements
         Validate.notEmpty(driverName, "driverName 不能为空");
         Validate.notEmpty(url, "url 不能为空");
         Validate.notEmpty(username, "username 不能为空");
-        Validate.notEmpty(password, "password 不能为空");
+       // Validate.notEmpty(password, "password 不能为空");
 
         ValidateUtils.notEmptyField(tableModelPageVo, ConfigKeyConstant.PathConfig.TABLE_MODEL_DIR);
         ValidateUtils.notEmptyField(tableModelPageVo, "tableName");

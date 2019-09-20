@@ -13,6 +13,7 @@ import com.shareyi.molicode.service.common.CipherService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,7 +27,7 @@ import java.util.Objects;
 /**
  * 登录拦截
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/3
  */
 @Service
@@ -58,7 +59,12 @@ public class LoginInterceptor extends BaseAbstractInterceptor implements Handler
     private String tokenUserName;
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
+        //如果是资源请求，如ResourceHttpRequestHandler， 直接返回true
+        if (!(handler instanceof HandlerMethod)) {
+            return true;
+        }
+
         String url = httpServletRequest.getRequestURI();
         for (String excludeUrl : excludeUrlList) {
             if (url.startsWith(excludeUrl)) {
@@ -69,6 +75,7 @@ public class LoginInterceptor extends BaseAbstractInterceptor implements Handler
         if (StringUtils.isNotBlank(tokenValue) && StringUtils.isNotBlank(reqToken)) {
             if (Objects.equals(tokenValue, reqToken)) {
                 LoginContext loginContext = LoginContext.buildByUserName(tokenUserName);
+                loginContext.setByToken(true);
                 if (loadUserInfo(httpServletRequest, httpServletResponse, loginContext)) {
                     return true;
                 }

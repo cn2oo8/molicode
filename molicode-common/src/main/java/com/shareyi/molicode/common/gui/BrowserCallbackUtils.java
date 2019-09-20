@@ -5,7 +5,7 @@ import com.shareyi.molicode.common.utils.LogHelper;
 /**
  * 回调
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/10/29
  */
 public class BrowserCallbackUtils {

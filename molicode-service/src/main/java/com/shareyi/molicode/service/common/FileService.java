@@ -6,7 +6,7 @@ import com.shareyi.molicode.common.web.CommonResult;
 /**
  * 文件相关服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/10
  */
 public interface FileService {

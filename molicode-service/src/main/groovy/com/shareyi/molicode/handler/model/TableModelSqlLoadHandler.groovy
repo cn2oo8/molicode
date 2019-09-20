@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
 /**
  * 表模型sql模式加载器
  *
- * @author zhangshibin* @date 2019/7/4
+ * @author david* @date 2019/7/4
  */
 @Service
 class TableModelSqlLoadHandler extends SimpleHandler<TableModelContext> implements TableModelHandlerAware {

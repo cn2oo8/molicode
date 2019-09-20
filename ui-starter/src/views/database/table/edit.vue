@@ -2,6 +2,7 @@
     <Modal v-model="showModal"
            :title="title"
            ok-text="> 执行代码生成"
+           :mask-closable="false"
            @on-cancel="cancel"
            width="94%">
 

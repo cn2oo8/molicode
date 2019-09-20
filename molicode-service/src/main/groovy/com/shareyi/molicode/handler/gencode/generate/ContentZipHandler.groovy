@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service
 /**
  * 对输出文件进行压缩
  *
- * @author zhangshibin* @since 2019/06/09
+ * @author david* @since 2019/06/09
  */
 @Service
 class ContentZipHandler extends SimpleHandler<MoliCodeContext> implements

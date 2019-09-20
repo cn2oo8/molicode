@@ -255,7 +255,7 @@ public class TableNameUtil {
      * 获取排序字段
      *
      * @param tableModel
-     * @return
+     * @return 排序string
      */
     public String getOrderString(TableModelVo tableModel) {
         StringBuilder orderStr = new StringBuilder();
@@ -314,7 +314,7 @@ public class TableNameUtil {
      * @param data
      * @param column
      * @param dictMap
-     * @return
+     * @return 字典项数据
      */
     public static String genTestDataWithDict(String data, ColumnVo column, Map<String, DictVo> dictMap) {
         if (dictMap == null || StringUtils.isEmpty(column.getDictName())) {
@@ -327,7 +327,12 @@ public class TableNameUtil {
         return data;
     }
 
-
+    /**
+     * 将输入值用双引号包裹起来
+     *
+     * @param value
+     * @return "value"
+     */
     public static String wrapWithQuote(String value) {
         if (value == null) {
             return "null";

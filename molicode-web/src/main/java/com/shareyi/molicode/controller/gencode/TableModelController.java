@@ -25,7 +25,7 @@ public class TableModelController extends BaseController {
      */
     @RequestMapping("/getTableList")
     @ResponseBody
-    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.NORMAL)
+    @UserAuthPrivilege(level = CommonConstant.ROLE_LEVEL.GUEST)
     public Map getTableList(String projectKey) {
         return databaseTableService.getTableList(projectKey).getReturnMap();
     }

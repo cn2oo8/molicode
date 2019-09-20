@@ -3,7 +3,7 @@ package com.shareyi.molicode.common.vo.git;
 /**
  * git仓库相关配置
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/14
  */
 class GitRepoVo {

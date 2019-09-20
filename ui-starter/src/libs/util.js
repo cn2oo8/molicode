@@ -255,7 +255,7 @@ util.checkUpdate = function (vm) {
         duration: 7,
         desc: '<p>如果您正在使用moliCode，请到以下地址进行支持或者star!</p>' +
         '<p>您的鼓励与支持是我们前进的动力！</p>' +
-        '<a style="font-size:13px;" href="https://github.com/cn2oo8/molicode/issues/1" target="_blank">https://github.com/cn2oo8/molicode/issues/1</a>' + '<p>QQ群号：753207541</p> '
+        '<a style="font-size:13px;" href="https://gitee.com/zhangshibin1987/molicode/issues/I108PM" target="_blank">https://gitee.com/zhangshibin1987/molicode/issues/I108PM</a>' + '<p>QQ群号：753207541</p> '
     });
 };
 

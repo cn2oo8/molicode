@@ -5,7 +5,7 @@ import com.shareyi.molicode.common.web.CommonResult;
 /**
  * 远程文件服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/15
  */
 interface RemoteFileService {

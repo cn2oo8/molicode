@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * 远程资源请求服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/15
  */
 @Controller

@@ -1,15 +1,13 @@
 package com.shareyi.molicode.controller;
 
+import com.shareyi.molicode.common.enums.ResultCodeEnum;
+import com.shareyi.molicode.common.exception.DefaultExceptionMaker;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 页面功能
@@ -22,16 +20,16 @@ import java.util.Map;
 public class PageTestController {
 
 
-    @RequestMapping(value = "/error",produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/errorTest")
     @ResponseBody
-    public String error(ModelMap context){
-        return "templates/error.html";
+    public String error(ModelMap context) {
+        throw DefaultExceptionMaker.buildException("故意抛出异常", ResultCodeEnum.ERROR);
     }
 
     @RequestMapping(value = "/vmHello")
-    public String vmHello(ModelMap context){
-        context.put("hello","Hello world");
-        context.put("now",new Date());
+    public String vmHello(ModelMap context) {
+        context.put("hello", "Hello world");
+        context.put("now", new Date());
         return "hello";
     }
 }

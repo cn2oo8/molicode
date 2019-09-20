@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * git服务实现
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/15
  */
 @Service

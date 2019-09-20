@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 /**
  * spring拦截器相关配置
  *
- * @author zhangshibin
+ * @author david
  * @date 2018/11/4
  */
 @SpringBootConfiguration
@@ -34,8 +34,8 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/loginfree/**", "/dist/**", "");
-        registry.addInterceptor(privilegeInterceptor).addPathPatterns("/**").excludePathPatterns("/loginfree/**", "/dist/**", "");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/loginfree/**", "/dist/**", "", "/index.html");
+        registry.addInterceptor(privilegeInterceptor).addPathPatterns("/**").excludePathPatterns("/loginfree/**", "/dist/**", "", "/index.html");
 
     }
 

@@ -1,22 +1,18 @@
 package com.shareyi.molicode.service.websocket;
 
-import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
-
 import com.shareyi.molicode.common.utils.LogHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import javax.websocket.*;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
+import java.io.EOFException;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @ServerEndpoint("/websocket/{sid}")
@@ -58,8 +54,10 @@ public class WebSocketServer implements Comparable<WebSocketServer> {
      */
     @OnClose
     public void onClose() {
-        webSocketSet.remove(this);  //从set中删除
-        subOnlineCount();           //在线数减1
+        boolean removed = webSocketSet.remove(this);  //从set中删除
+        if(removed){
+            subOnlineCount();           //在线数减1
+        }
         LOGGER.info("有一连接关闭, sid={}, 当前在线人数为{}", this.sid, getOnlineCount());
     }
 
@@ -80,6 +78,9 @@ public class WebSocketServer implements Comparable<WebSocketServer> {
     @OnError
     public void onError(Session session, Throwable error) {
         LOGGER.error("发生错误, sid={}", sid, error);
+        if (error instanceof EOFException) {
+           this.onClose();
+        }
     }
 
     /**
@@ -94,7 +95,7 @@ public class WebSocketServer implements Comparable<WebSocketServer> {
      * 群发自定义消息
      */
     public static void sendInfo(String message, String sid) {
-      //  LOGGER.info("推送消息到窗口" + sid + "，推送内容:" + message);
+        //  LOGGER.info("推送消息到窗口" + sid + "，推送内容:" + message);
         for (WebSocketServer item : webSocketSet) {
             try {
                 if (!item.session.isOpen()) {

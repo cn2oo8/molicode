@@ -3,6 +3,7 @@
         <Button size="small" type="default" @click="show()">？关于模板工程</Button>
         <Modal v-model="showModal"
                title="模板工程信息" width="780"
+               :mask-closable="false"
                @on-ok="close">
 
             <Form :label-width="120" inline v-if="autoMake !=null ">

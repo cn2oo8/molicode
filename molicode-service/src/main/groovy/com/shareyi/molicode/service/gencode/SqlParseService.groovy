@@ -5,7 +5,7 @@ import com.shareyi.molicode.common.vo.code.TableModelVo;
 /**
  * sql解析服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/7/4
  */
 interface SqlParseService {

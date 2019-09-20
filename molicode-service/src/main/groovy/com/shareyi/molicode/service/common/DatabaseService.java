@@ -6,7 +6,7 @@ import com.shareyi.molicode.domain.conf.AcConfig;
 /**
  * 数据库服务
  *
- * @author zhangshibin
+ * @author david
  * @date 2019/6/29
  */
 public interface DatabaseService {
