@@ -16,6 +16,8 @@ MoliCode  is a code generator for java and other language. It's a standalone too
 
 ## 代码仓库
 
+ <span style="color:red;">github的仓库已经不再更新，请移步码云查看仓库代码@！~</span>
+
 * github仓库 [https://github.com/cn2oo8/molicode](https://github.com/cn2oo8/molicode)
 
 * 国内站点仓库 [https://gitee.com/zhangshibin1987/molicode](https://gitee.com/zhangshibin1987/molicode)
