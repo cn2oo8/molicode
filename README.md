@@ -41,7 +41,7 @@ MoliCode  is a code generator for java and other language. It's a standalone too
 
 ## 帮助文档 & 教程
 请访问以下地址，查看帮助文档：
-[https://cn2oo8.github.io/molicode_doc](https://cn2oo8.github.io/molicode_doc)
+[http://molicode_repo.gitee.io/molicode_doc/](http://molicode_repo.gitee.io/molicode_doc/)
 
 模板中心请访问：
 [https://gitee.com/molicode_repo/molicode_template_awesome](https://gitee.com/molicode_repo/molicode_template_awesome)
